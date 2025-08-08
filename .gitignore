@@ -1,17 +1,15 @@
-cat > .gitignore << 'EOF'
-# dependencies
+# Dependencies
 node_modules/
 
-# compiled output
+# Compiled output
 dist/
 
-# env files
+# Environment files
 .env
 .env.*
 
-# logs
+# Logs
 *.log
-npm-debug.log*
 
 # IDE
 .vscode/
@@ -21,9 +19,12 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Coverage
+# Testing
 coverage/
+*.lcov
 
 # Prisma
 prisma/dev.db*
-EOF
+
+# Husky (mantener .husky/ en el repo)
+# .husky/ <- NO agregar esto al .gitignore
