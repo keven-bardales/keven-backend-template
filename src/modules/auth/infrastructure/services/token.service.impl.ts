@@ -49,30 +49,27 @@ export class TokenServiceImpl extends TokenService {
       const accessTokenExpiry = new Date(now.getTime() + accessTokenExpiryMs);
       const refreshTokenExpiry = new Date(now.getTime() + refreshTokenExpiryMs);
 
-      // Create access token entity
-      const accessToken = AuthTokenEntity.create({
-        userId,
-        token: '', // Will be filled with JWT
-        type: TokenType.ACCESS,
-        expiresAt: accessTokenExpiry,
-        deviceInfo,
-        ipAddress,
-      });
+      const accessTokenPayload: AccessTokenPayload = {
+        userId: user.id,
+        email: user.email.getValue(),
+        tokenId: '', // Will be filled with JWT
+        roles: [], // TODO: Get from user roles when RBAC is implemented
+        permissions: [], // TODO: Get from user permissions when RBAC is implemented
+      };
 
-      // Create refresh token entity
-      const refreshToken = AuthTokenEntity.create({
-        userId,
-        token: '', // Will be filled with JWT
-        type: TokenType.REFRESH,
-        expiresAt: refreshTokenExpiry,
-        deviceInfo,
-        ipAddress,
-      });
+      const refreshTokenPayload: RefreshTokenPayload = {
+        userId: user.id,
+        email: user.email.getValue(),
+        tokenId: '', // Will be filled with JWT
+      };
+
+      const accessTokenJwt = await this.jwtService.generateAccessToken(accessTokenPayload);
+      const refreshTokenJwt = await this.jwtService.generateRefreshToken(refreshTokenPayload);
 
       // Store tokens in database first to get IDs
       const savedAccessToken = await this.authRepository.create({
         userId,
-        token: accessToken.id, // Temporary, will be updated
+        token: accessTokenJwt,
         type: TokenType.ACCESS,
         expiresAt: accessTokenExpiry,
         deviceInfo,
@@ -81,46 +78,19 @@ export class TokenServiceImpl extends TokenService {
 
       const savedRefreshToken = await this.authRepository.create({
         userId,
-        token: refreshToken.id, // Temporary, will be updated
+        token: refreshTokenJwt,
         type: TokenType.REFRESH,
         expiresAt: refreshTokenExpiry,
         deviceInfo,
         ipAddress,
       });
 
-      // Generate JWT tokens with token IDs
-      const accessTokenPayload: AccessTokenPayload = {
-        userId: user.id,
-        email: user.email.getValue(),
-        tokenId: savedAccessToken.id,
-        roles: [], // TODO: Get from user roles when RBAC is implemented
-        permissions: [], // TODO: Get from user permissions when RBAC is implemented
-      };
-
-      const refreshTokenPayload: RefreshTokenPayload = {
-        userId: user.id,
-        email: user.email.getValue(),
-        tokenId: savedRefreshToken.id,
-      };
-
-      const accessTokenJwt = await this.jwtService.generateAccessToken(accessTokenPayload);
-      const refreshTokenJwt = await this.jwtService.generateRefreshToken(refreshTokenPayload);
-
-      // Update tokens with actual JWT values
-      const updatedAccessToken = await this.authRepository.update(savedAccessToken.id, {
-        // Keep the token ID as the database value for lookup
-      });
-
-      const updatedRefreshToken = await this.authRepository.update(savedRefreshToken.id, {
-        // Keep the token ID as the database value for lookup
-      });
-
       this.log('Token pair created successfully', { userId });
 
       return {
         tokenPair: {
-          accessToken: updatedAccessToken,
-          refreshToken: updatedRefreshToken,
+          accessToken: savedAccessToken,
+          refreshToken: savedRefreshToken,
         },
         accessTokenJwt,
         refreshTokenJwt,

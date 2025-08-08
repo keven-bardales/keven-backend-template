@@ -80,7 +80,7 @@ export class AuthController {
       const { refreshToken, logoutAllSessions } = req.body || {};
 
       const result = await this.logoutUseCase.execute({
-        accessToken,
+        accessToken: accessToken || undefined,
         refreshToken,
         sessionId: req.user?.sessionId || undefined,
         logoutAllSessions: logoutAllSessions === true,

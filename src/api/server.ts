@@ -7,6 +7,7 @@ import { CorsMiddleware } from './middleware/cors.middleware';
 import { CompressionMiddleware } from './middleware/compression.middleware';
 import { createApiRoutes } from './routes/index';
 import { ApiResponse } from '../shared/domain/wrappers/api-response.wrapper';
+import { SwaggerService } from '../shared/infrastructure/swagger/swagger.service';
 
 export class Server {
   private readonly app: Application;
@@ -46,6 +47,9 @@ export class Server {
       });
     }
 
+    // Setup Swagger documentation
+    SwaggerService.setup(this.app);
+
     console.log('✅ Middlewares initialized');
   }
 
@@ -67,7 +71,7 @@ export class Server {
           endpoints: {
             api: '/api',
             health: '/api/health',
-            docs: '/api/docs', // TODO: Add swagger documentation
+            docs: '/api/docs',
           },
         },
         'Server is running successfully'

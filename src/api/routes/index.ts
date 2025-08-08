@@ -1,3 +1,9 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Health
+ *   description: Health check and API information
+ */
 import { Router } from 'express';
 import { createUsersRoutes } from '../../modules/users/infrastructure/routes/users.routes';
 import { UsersController } from '../../modules/users/infrastructure/controllers/users.controller';
@@ -16,7 +22,46 @@ export class ApiRoutes {
   }
 
   private setupRoutes(): void {
-    // Health check endpoint
+    /**
+     * @swagger
+     * /health:
+     *   get:
+     *     summary: Health check endpoint
+     *     description: Returns the health status of the service
+     *     tags: [Health]
+     *     responses:
+     *       200:
+     *         description: Service is healthy
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: Service is healthy
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     status:
+     *                       type: string
+     *                       example: healthy
+     *                     timestamp:
+     *                       type: string
+     *                       format: date-time
+     *                     version:
+     *                       type: string
+     *                       example: 1.0.0
+     *                     environment:
+     *                       type: string
+     *                       example: development
+     */
     this.router.get('/health', (req, res) => {
       const response = ApiResponse.success(
         {
@@ -31,14 +76,65 @@ export class ApiRoutes {
       res.status(response.statusCode).json(response.toJSON());
     });
 
-    // API version info
+    /**
+     * @swagger
+     * /:
+     *   get:
+     *     summary: API information
+     *     description: Returns information about the API
+     *     tags: [Health]
+     *     responses:
+     *       200:
+     *         description: API information retrieved successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: API information retrieved successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     name:
+     *                       type: string
+     *                       example: Keven Backend Template
+     *                     version:
+     *                       type: string
+     *                       example: 1.0.0
+     *                     description:
+     *                       type: string
+     *                       example: Clean Architecture Node.js Backend Template
+     *                     documentation:
+     *                       type: string
+     *                       example: /api/docs
+     *                     endpoints:
+     *                       type: object
+     *                       properties:
+     *                         health:
+     *                           type: string
+     *                           example: /api/health
+     *                         users:
+     *                           type: string
+     *                           example: /api/users
+     *                         auth:
+     *                           type: string
+     *                           example: /api/auth
+     */
     this.router.get('/', (req, res) => {
       const response = ApiResponse.success(
         {
           name: 'Keven Backend Template',
           version: process.env.npm_package_version || '1.0.0',
           description: 'Clean Architecture Node.js Backend Template',
-          documentation: '/api/docs', // TODO: Add swagger documentation
+          documentation: '/api/docs',
           endpoints: {
             health: '/api/health',
             users: '/api/users',

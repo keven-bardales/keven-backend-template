@@ -1,3 +1,9 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management operations
+ */
 import { Router } from 'express';
 import { UsersController } from '../controllers/users.controller';
 import { ValidationMiddleware } from '../../../../shared/application/middleware/validation.middleware';
@@ -16,6 +22,78 @@ export class UsersRoutes {
 
   private setupRoutes(): void {
     // Public routes (no authentication required)
+    /**
+     * @swagger
+     * /users:
+     *   post:
+     *     summary: Create a new user
+     *     tags: [Users]
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             required:
+     *               - email
+     *               - password
+     *               - firstName
+     *               - lastName
+     *             properties:
+     *               email:
+     *                 type: string
+     *                 format: email
+     *                 description: User email address
+     *               password:
+     *                 type: string
+     *                 format: password
+     *                 minLength: 8
+     *                 description: User password
+     *               firstName:
+     *                 type: string
+     *                 description: User's first name
+     *               lastName:
+     *                 type: string
+     *                 description: User's last name
+     *               phoneNumber:
+     *                 type: string
+     *                 description: User's phone number (optional)
+     *     responses:
+     *       201:
+     *         description: User created successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 201
+     *                 message:
+     *                   type: string
+     *                   example: User created successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     email:
+     *                       type: string
+     *                     firstName:
+     *                       type: string
+     *                     lastName:
+     *                       type: string
+     *       400:
+     *         description: Invalid request data
+     *       409:
+     *         description: User with this email already exists
+     *       500:
+     *         description: Server error
+     */
     this.router.post(
       '/',
       ValidationMiddleware.validate(CreateUserDto.getSchema(), 'body'),
@@ -23,6 +101,52 @@ export class UsersRoutes {
     );
 
     // Protected routes (authentication required)
+    /**
+     * @swagger
+     * /users:
+     *   get:
+     *     summary: Get all users
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     responses:
+     *       200:
+     *         description: A list of users
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: Users retrieved successfully
+     *                 data:
+     *                   type: array
+     *                   items:
+     *                     type: object
+     *                     properties:
+     *                       id:
+     *                         type: string
+     *                         format: uuid
+     *                       email:
+     *                         type: string
+     *                       firstName:
+     *                         type: string
+     *                       lastName:
+     *                         type: string
+     *                       isActive:
+     *                         type: boolean
+     *       401:
+     *         description: Unauthorized
+     *       500:
+     *         description: Server error
+     */
     this.router.get(
       '/',
       // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
@@ -35,6 +159,62 @@ export class UsersRoutes {
       this.asyncHandler(this.usersController.getCurrentUser.bind(this.usersController))
     );
 
+    /**
+     * @swagger
+     * /users/{id}:
+     *   get:
+     *     summary: Get a user by ID
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         schema:
+     *           type: string
+     *           format: uuid
+     *         required: true
+     *         description: UUID of the user
+     *     responses:
+     *       200:
+     *         description: User data retrieved successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: User retrieved successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     email:
+     *                       type: string
+     *                     firstName:
+     *                       type: string
+     *                     lastName:
+     *                       type: string
+     *                     isActive:
+     *                       type: boolean
+     *       400:
+     *         description: Invalid user ID
+     *       401:
+     *         description: Unauthorized
+     *       404:
+     *         description: User not found
+     *       500:
+     *         description: Server error
+     */
     this.router.get(
       '/:id',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),
