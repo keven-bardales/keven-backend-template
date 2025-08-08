@@ -14,7 +14,6 @@ export interface AccessTokenPayload extends TokenPayload {
 
 export interface RefreshTokenPayload extends TokenPayload {
   // Refresh tokens have minimal payload
-  test: string;
 }
 
 export interface TokenValidationResult {
