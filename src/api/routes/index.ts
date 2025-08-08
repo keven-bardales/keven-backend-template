@@ -68,10 +68,10 @@ export class ApiRoutes {
       console.error('Error setting up module routes:', error);
 
       // Fallback route for development
-      this.router.use('*', (req, res) => {
-        const response = ApiResponse.notFound('Endpoint not found or not yet implemented');
-        res.status(response.statusCode).json(response.toJSON());
-      });
+      // this.router.use('*', (req, res) => {
+      //   const response = ApiResponse.notFound('Endpoint not found or not yet implemented');
+      //   res.status(response.statusCode).json(response.toJSON());
+      // });
     }
   }
 

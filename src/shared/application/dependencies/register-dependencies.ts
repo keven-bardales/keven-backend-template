@@ -60,6 +60,9 @@ export class DependencyRegistrar {
     container.registerValue(TOKENS.DATABASE_CONFIG, databaseConfig);
 
     // Prisma client - register the actual PrismaClient instance
+    console.log({
+      config: databaseConfig,
+    });
     const prismaService = PrismaClientService.getInstance(databaseConfig);
     container.registerValue(TOKENS.PRISMA_CLIENT, prismaService.getClient());
   }

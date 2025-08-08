@@ -77,10 +77,10 @@ export class Server {
     });
 
     // Handle 404 errors
-    this.app.use('*', (req: Request, res: Response) => {
-      const response = ApiResponse.notFound(`Cannot ${req.method} ${req.originalUrl}`);
-      res.status(response.statusCode).json(response.toJSON());
-    });
+    // this.app.use('*', (req: Request, res: Response) => {
+    //   const response = ApiResponse.notFound(`Cannot ${req.method} ${req.originalUrl}`);
+    //   res.status(response.statusCode).json(response.toJSON());
+    // });
 
     console.log('✅ Routes initialized');
   }
