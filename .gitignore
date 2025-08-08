@@ -1,0 +1,29 @@
+cat > .gitignore << 'EOF'
+# dependencies
+node_modules/
+
+# compiled output
+dist/
+
+# env files
+.env
+.env.*
+
+# logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Prisma
+prisma/dev.db*
+EOF
