@@ -1,0 +1,30 @@
+{
+  "name": "keven-backend-template",
+  "version": "1.0.0",
+  "description": "A modern TypeScript backend with clean architecture",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "echo \"Tests not configured yet\"",
+    "lint": "echo \"Linting not configured yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keven-bardales/keven-backend-template.git"
+  },
+  "keywords": ["typescript", "backend", "clean-architecture"],
+  "author": "Keven Bardales",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/keven-bardales/keven-backend-template/issues"
+  },
+  "homepage": "https://github.com/keven-bardales/keven-backend-template#readme",
+  "devDependencies": {
+    "@types/node": "^24.2.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
