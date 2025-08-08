@@ -5,9 +5,13 @@
   "description": "A modern TypeScript backend with clean architecture",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false src/server.ts",
+    "dev": "tsx watch --clear-screen=false src/main.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/main.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:push": "prisma db push",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write src/",
@@ -75,6 +79,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "reflect-metadata": "^0.2.2",
     "uuid": "^11.1.0",
     "zod": "^4.0.15"
   }

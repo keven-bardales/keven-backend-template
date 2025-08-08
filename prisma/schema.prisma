@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  passwordHash      String   @map("password_hash")
+  firstName         String   @map("first_name")
+  lastName          String   @map("last_name")
+  isActive          Boolean  @default(true) @map("is_active")
+  mustChangePassword Boolean @default(true) @map("must_change_password")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  userRoles    UserRole[]
+  authTokens   AuthToken[]
+  loginSessions LoginSession[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false) @map("is_system")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  roleId String @map("role_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  permissions Permission[]
+
+  @@map("modules")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  moduleId    String   @map("module_id")
+  action      String
+  scope       String?
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_date")
+
+  module          Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  rolePermissions RolePermission[]
+
+  @@unique([moduleId, action, scope])
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String @id @default(uuid())
+  roleId       String @map("role_id")
+  permissionId String @map("permission_id")
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model AuthToken {
+  id         String    @id @default(uuid())
+  userId     String    @map("user_id")
+  token      String    @unique
+  type       String // ACCESS, REFRESH, RESET_PASSWORD, EMAIL_VERIFICATION
+  expiresAt  DateTime  @map("expires_at")
+  isRevoked  Boolean   @default(false) @map("is_revoked")
+  deviceInfo String?   @map("device_info")
+  ipAddress  String?   @map("ip_address")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessSessions  LoginSession[] @relation("AccessToken")
+  refreshSessions LoginSession[] @relation("RefreshToken")
+
+  @@index([userId])
+  @@index([token])
+  @@index([type])
+  @@index([expiresAt])
+  @@map("auth_tokens")
+}
+
+model LoginSession {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  accessTokenId   String    @map("access_token_id")
+  refreshTokenId  String    @map("refresh_token_id")
+  deviceInfo      String?   @map("device_info")
+  ipAddress       String?   @map("ip_address")
+  userAgent       String?   @map("user_agent")
+  isActive        Boolean   @default(true) @map("is_active")
+  lastActivityAt  DateTime  @map("last_activity_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  AuthToken @relation("AccessToken", fields: [accessTokenId], references: [id], onDelete: Cascade)
+  refreshToken AuthToken @relation("RefreshToken", fields: [refreshTokenId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([accessTokenId])
+  @@index([refreshTokenId])
+  @@index([isActive])
+  @@map("login_sessions")
+}

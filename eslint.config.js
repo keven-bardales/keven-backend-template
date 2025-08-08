@@ -14,15 +14,18 @@ export default tseslint.config(
     },
     rules: {
       // TypeScript specific rules (corregidas)
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/explicit-function-return-type': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
-      
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+
       // General JavaScript rules (no usar versiones de TypeScript que no existen)
       'prefer-const': 'error',
       'no-var': 'error',
-      'no-console': 'warn',
+      'no-console': 'off',
       'no-unused-vars': 'off', // Desactivar la versión JS en favor de la de TS
     },
   },

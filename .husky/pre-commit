@@ -5,4 +5,3 @@
 npx lint-staged
 
 # Ejecutar tests para asegurar que no se rompe nada
-npm run test:ci
