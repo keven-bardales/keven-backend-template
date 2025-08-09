@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { LoginUseCase } from '../../domain/use-cases/login.use-case';
 import { RefreshTokenUseCase } from '../../domain/use-cases/refresh-token.use-case';
 import { LogoutUseCase } from '../../domain/use-cases/logout.use-case';
+import { RegisterUseCase } from '../../domain/use-cases/register.use-case';
 import { LoginDto } from '../../application/dto/login.dto';
 import { RefreshTokenDto } from '../../application/dto/refresh-token.dto';
+import { RegisterDto } from '../../application/dto/register.dto';
 import { AuthResponseDto, RefreshTokenResponseDto } from '../../application/dto/auth-response.dto';
 import { ApiResponse } from '../../../../shared/domain/wrappers/api-response.wrapper';
 import { AuthenticatedRequest } from '../../../../shared/application/middleware/auth.middleware';
@@ -12,8 +14,27 @@ export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
-    private readonly logoutUseCase: LogoutUseCase
+    private readonly logoutUseCase: LogoutUseCase,
+    private readonly registerUseCase: RegisterUseCase
   ) {}
+
+  public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const registerDto = new RegisterDto(req.body);
+
+      const result = await this.registerUseCase.execute({
+        email: registerDto.email,
+        password: registerDto.password,
+        firstName: registerDto.firstName,
+        lastName: registerDto.lastName,
+      });
+
+      const response = ApiResponse.success(result, 'Registration successful');
+      res.status(response.statusCode).json(response.toJSON());
+    } catch (error) {
+      next(error);
+    }
+  }
 
   public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {

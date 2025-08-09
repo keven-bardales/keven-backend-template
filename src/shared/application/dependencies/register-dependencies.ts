@@ -17,7 +17,14 @@ import { AuthRepositoryImpl } from '../../../modules/auth/infrastructure/reposit
 import { LoginUseCaseImpl } from '../../../modules/auth/application/use-cases/login.use-case.impl';
 import { RefreshTokenUseCaseImpl } from '../../../modules/auth/application/use-cases/refresh-token.use-case.impl';
 import { LogoutUseCaseImpl } from '../../../modules/auth/application/use-cases/logout.use-case.impl';
+import { RegisterUseCaseImpl } from '../../../modules/auth/application/use-cases/register.use-case.impl';
 import { AuthController } from '../../../modules/auth/infrastructure/controllers/auth.controller';
+import { RoleRepositoryImpl } from '../../../modules/rbac/infrastructure/repositories/role.repository.impl';
+import { PermissionRepositoryImpl } from '../../../modules/rbac/infrastructure/repositories/permission.repository.impl';
+import { ModuleRepositoryImpl } from '../../../modules/rbac/infrastructure/repositories/module.repository.impl';
+import { CreateRoleUseCaseImpl } from '../../../modules/rbac/application/use-cases/create-role.use-case.impl';
+import { ListRolesUseCaseImpl } from '../../../modules/rbac/application/use-cases/list-roles.use-case.impl';
+import { RolesController } from '../../../modules/rbac/infrastructure/controllers/roles.controller';
 
 export class DependencyRegistrar {
   private constructor() {}
@@ -35,8 +42,7 @@ export class DependencyRegistrar {
       // Register module dependencies
       this.registerUserModule(container);
       this.registerAuthModule(container);
-      this.registerRoleModule(container);
-      this.registerPermissionModule(container);
+      this.registerRbacModule(container);
 
       // Validate all dependencies
       container.validateDependencies();
@@ -152,22 +158,54 @@ export class DependencyRegistrar {
       dependencies: [TOKENS.TOKEN_SERVICE, TOKENS.AUTH_REPOSITORY, TOKENS.JWT_SERVICE],
     });
 
+    container.registerClass(TOKENS.REGISTER_USE_CASE, RegisterUseCaseImpl, {
+      dependencies: [TOKENS.USER_REPOSITORY, TOKENS.PASSWORD_SERVICE],
+    });
+
     // Controller
     container.registerClass(TOKENS.AUTH_CONTROLLER, AuthController, {
-      dependencies: [TOKENS.LOGIN_USE_CASE, TOKENS.REFRESH_TOKEN_USE_CASE, TOKENS.LOGOUT_USE_CASE],
+      dependencies: [
+        TOKENS.LOGIN_USE_CASE,
+        TOKENS.REFRESH_TOKEN_USE_CASE,
+        TOKENS.LOGOUT_USE_CASE,
+        TOKENS.REGISTER_USE_CASE,
+      ],
     });
   }
 
-  private static registerRoleModule(container: DependencyContainer): void {
-    // Role module dependencies will be registered here
-    // This is a placeholder for now - we'll implement these when we create the actual classes
-    console.log('👑 Role module not implemented yet - skipping registration...');
-  }
+  private static registerRbacModule(container: DependencyContainer): void {
+    console.log('👑 Registering RBAC module dependencies...');
 
-  private static registerPermissionModule(container: DependencyContainer): void {
-    // Permission module dependencies will be registered here
-    // This is a placeholder for now - we'll implement these when we create the actual classes
-    console.log('🔑 Permission module not implemented yet - skipping registration...');
+    // Repositories
+    container.registerClass(TOKENS.ROLE_REPOSITORY, RoleRepositoryImpl, {
+      dependencies: [TOKENS.PRISMA_CLIENT],
+    });
+
+    container.registerClass(TOKENS.PERMISSION_REPOSITORY, PermissionRepositoryImpl, {
+      dependencies: [TOKENS.PRISMA_CLIENT],
+    });
+
+    container.registerClass(TOKENS.MODULE_REPOSITORY, ModuleRepositoryImpl, {
+      dependencies: [TOKENS.PRISMA_CLIENT],
+    });
+
+    // Use cases
+    container.registerClass(TOKENS.CREATE_ROLE_USE_CASE, CreateRoleUseCaseImpl, {
+      dependencies: [TOKENS.ROLE_REPOSITORY],
+    });
+
+    container.registerClass(TOKENS.LIST_ROLES_USE_CASE, ListRolesUseCaseImpl, {
+      dependencies: [TOKENS.ROLE_REPOSITORY],
+    });
+
+    // Controllers
+    container.registerClass(TOKENS.ROLES_CONTROLLER, RolesController, {
+      dependencies: [
+        TOKENS.CREATE_ROLE_USE_CASE,
+        TOKENS.LIST_ROLES_USE_CASE,
+        TOKENS.ROLE_REPOSITORY,
+      ],
+    });
   }
 }
 

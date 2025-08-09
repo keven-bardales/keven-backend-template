@@ -8,6 +8,7 @@ import { Router } from 'express';
 import { UsersController } from '../controllers/users.controller';
 import { ValidationMiddleware } from '../../../../shared/application/middleware/validation.middleware';
 import { AuthMiddleware } from '../../../../shared/application/middleware/auth.middleware';
+import { RateLimitMiddleware } from '../../../../api/middleware/rate-limit.middleware';
 import { CreateUserDto } from '../../application/dto/create-user.dto';
 import { UpdateUserDto } from '../../application/dto/update-user.dto';
 import { GetUserByIdDto } from '../../application/dto/get-user-by-id.dto';
@@ -21,6 +22,9 @@ export class UsersRoutes {
   }
 
   private setupRoutes(): void {
+    // Apply rate limiting to all user routes
+    this.router.use(RateLimitMiddleware.users());
+
     // Public routes (no authentication required)
     /**
      * @swagger

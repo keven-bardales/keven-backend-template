@@ -4,7 +4,12 @@
       "Bash(npm install:*)",
       "Bash(mkdir:*)",
       "Bash(npx prisma generate:*)",
-      "Bash(npm run type-check:*)"
+      "Bash(npm run type-check:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run:*)",
+      "Bash(npx prisma db seed:*)",
+      "Bash(npm test)"
     ],
     "deny": []
   }

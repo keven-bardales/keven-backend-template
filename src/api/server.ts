@@ -5,6 +5,8 @@ import { PrismaClientService } from '../shared/infrastructure/database/prisma.cl
 import { ErrorHandlerMiddleware } from '../shared/application/middleware/error-handler.middleware';
 import { CorsMiddleware } from './middleware/cors.middleware';
 import { CompressionMiddleware } from './middleware/compression.middleware';
+import { SecurityMiddleware } from './middleware/security.middleware';
+import { RateLimitMiddleware } from './middleware/rate-limit.middleware';
 import { createApiRoutes } from './routes/index';
 import { ApiResponse } from '../shared/domain/wrappers/api-response.wrapper';
 import { SwaggerService } from '../shared/infrastructure/swagger/swagger.service';
@@ -25,7 +27,14 @@ export class Server {
   private initializeMiddlewares(): void {
     console.log('🔧 Initializing middlewares...');
 
-    // Security and performance middlewares
+    // Security middlewares (apply first)
+    this.app.use(SecurityMiddleware.configure());
+    this.app.use(SecurityMiddleware.additionalHeaders());
+
+    // Rate limiting (apply early)
+    this.app.use(RateLimitMiddleware.general());
+
+    // CORS and compression middlewares
     this.app.use(CorsMiddleware.configure());
     this.app.use(CompressionMiddleware.configure());
 

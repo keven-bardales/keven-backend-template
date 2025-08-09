@@ -9,6 +9,8 @@ import { createUsersRoutes } from '../../modules/users/infrastructure/routes/use
 import { UsersController } from '../../modules/users/infrastructure/controllers/users.controller';
 import { createAuthRoutes } from '../../modules/auth/infrastructure/routes/auth.routes';
 import { AuthController } from '../../modules/auth/infrastructure/controllers/auth.controller';
+import { createRolesRoutes } from '../../modules/rbac/infrastructure/routes/roles.routes';
+import { RolesController } from '../../modules/rbac/infrastructure/controllers/roles.controller';
 import { globalContainer } from '../../shared/application/dependencies/register-dependencies';
 import { TOKENS } from '../../shared/application/dependencies/tokens';
 import { ApiResponse } from '../../shared/domain/wrappers/api-response.wrapper';
@@ -139,6 +141,7 @@ export class ApiRoutes {
             health: '/api/health',
             users: '/api/users',
             auth: '/api/auth',
+            roles: '/api/rbac/roles',
           },
         },
         'API information retrieved successfully'
@@ -160,6 +163,10 @@ export class ApiRoutes {
       // Auth module routes
       const authController = globalContainer.resolve<AuthController>(TOKENS.AUTH_CONTROLLER);
       this.router.use('/auth', createAuthRoutes(authController));
+
+      // RBAC module routes
+      const rolesController = globalContainer.resolve<RolesController>(TOKENS.ROLES_CONTROLLER);
+      this.router.use('/rbac/roles', createRolesRoutes(rolesController));
     } catch (error) {
       console.error('Error setting up module routes:', error);
 

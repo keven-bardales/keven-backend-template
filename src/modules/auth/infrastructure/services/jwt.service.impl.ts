@@ -32,7 +32,7 @@ export class JwtServiceImpl extends JwtService {
     try {
       this.log('Generating access token', { userId: payload.userId });
 
-      const signOptions: SignOptions = {
+      const signOptions: any = {
         expiresIn: this.accessTokenExpiresIn,
         issuer: 'keven-backend',
         audience: 'keven-app',
@@ -81,7 +81,7 @@ export class JwtServiceImpl extends JwtService {
           audience: 'keven-app',
           subject: payload.userId,
           jwtid: payload.tokenId,
-        }
+        } as any
       );
 
       this.log('Refresh token generated successfully');

@@ -8,6 +8,7 @@ import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller';
 import { ValidationMiddleware } from '../../../../shared/application/middleware/validation.middleware';
 import { AuthMiddleware } from '../../../../shared/application/middleware/auth.middleware';
+import { RateLimitMiddleware } from '../../../../api/middleware/rate-limit.middleware';
 import { LoginDto } from '../../application/dto/login.dto';
 import { RefreshTokenDto } from '../../application/dto/refresh-token.dto';
 
@@ -21,6 +22,89 @@ export class AuthRoutes {
 
   private setupRoutes(): void {
     // Public authentication routes
+    /**
+     * @swagger
+     * /auth/register:
+     *   post:
+     *     summary: Register new user
+     *     description: Create a new user account with email and password
+     *     tags: [Authentication]
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             required:
+     *               - email
+     *               - password
+     *               - firstName
+     *               - lastName
+     *             properties:
+     *               email:
+     *                 type: string
+     *                 format: email
+     *                 description: User email address
+     *               password:
+     *                 type: string
+     *                 format: password
+     *                 minLength: 8
+     *                 description: User password (minimum 8 characters)
+     *               firstName:
+     *                 type: string
+     *                 description: User first name
+     *               lastName:
+     *                 type: string
+     *                 description: User last name
+     *     responses:
+     *       200:
+     *         description: Registration successful
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: Registration successful
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     email:
+     *                       type: string
+     *                     firstName:
+     *                       type: string
+     *                     lastName:
+     *                       type: string
+     *                     isActive:
+     *                       type: boolean
+     *                     mustChangePassword:
+     *                       type: boolean
+     *                     createdAt:
+     *                       type: string
+     *                       format: date-time
+     *       400:
+     *         description: Invalid registration data
+     *       409:
+     *         description: User already exists
+     *       500:
+     *         description: Server error
+     */
+    this.router.post(
+      '/register',
+      RateLimitMiddleware.auth(),
+      this.asyncHandler(this.authController.register.bind(this.authController))
+    );
+
     /**
      * @swagger
      * /auth/login:
@@ -91,6 +175,7 @@ export class AuthRoutes {
      */
     this.router.post(
       '/login',
+      RateLimitMiddleware.auth(),
       ValidationMiddleware.validate(LoginDto.getSchema(), 'body'),
       this.asyncHandler(this.authController.login.bind(this.authController))
     );
@@ -147,6 +232,7 @@ export class AuthRoutes {
      */
     this.router.post(
       '/refresh',
+      RateLimitMiddleware.auth(),
       ValidationMiddleware.validate(RefreshTokenDto.getSchema(), 'body'),
       this.asyncHandler(this.authController.refreshToken.bind(this.authController))
     );
