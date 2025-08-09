@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Permission, PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -55,52 +55,220 @@ async function main() {
     console.log('🔐 Creating permissions...');
     const permissions = [
       // Auth permissions
-      { moduleId: authModule.id, action: 'login', scope: 'auth', name: 'Login', description: 'Ability to login to the system' },
-      { moduleId: authModule.id, action: 'register', scope: 'auth', name: 'Register', description: 'Ability to register new accounts' },
-      { moduleId: authModule.id, action: 'refresh', scope: 'auth', name: 'Refresh Token', description: 'Ability to refresh authentication tokens' },
-      { moduleId: authModule.id, action: 'logout', scope: 'auth', name: 'Logout', description: 'Ability to logout from the system' },
+      {
+        moduleId: authModule.id,
+        action: 'login',
+        scope: 'auth',
+        name: 'Login',
+        description: 'Ability to login to the system',
+      },
+      {
+        moduleId: authModule.id,
+        action: 'register',
+        scope: 'auth',
+        name: 'Register',
+        description: 'Ability to register new accounts',
+      },
+      {
+        moduleId: authModule.id,
+        action: 'refresh',
+        scope: 'auth',
+        name: 'Refresh Token',
+        description: 'Ability to refresh authentication tokens',
+      },
+      {
+        moduleId: authModule.id,
+        action: 'logout',
+        scope: 'auth',
+        name: 'Logout',
+        description: 'Ability to logout from the system',
+      },
 
       // User permissions
-      { moduleId: usersModule.id, action: 'create', scope: 'user', name: 'Create User', description: 'Create new users' },
-      { moduleId: usersModule.id, action: 'read', scope: 'user', name: 'Read User', description: 'View user details' },
-      { moduleId: usersModule.id, action: 'update', scope: 'user', name: 'Update User', description: 'Update user information' },
-      { moduleId: usersModule.id, action: 'delete', scope: 'user', name: 'Delete User', description: 'Delete users' },
-      { moduleId: usersModule.id, action: 'list', scope: 'users', name: 'List Users', description: 'View list of users' },
+      {
+        moduleId: usersModule.id,
+        action: 'create',
+        scope: 'user',
+        name: 'Create User',
+        description: 'Create new users',
+      },
+      {
+        moduleId: usersModule.id,
+        action: 'read',
+        scope: 'user',
+        name: 'Read User',
+        description: 'View user details',
+      },
+      {
+        moduleId: usersModule.id,
+        action: 'update',
+        scope: 'user',
+        name: 'Update User',
+        description: 'Update user information',
+      },
+      {
+        moduleId: usersModule.id,
+        action: 'delete',
+        scope: 'user',
+        name: 'Delete User',
+        description: 'Delete users',
+      },
+      {
+        moduleId: usersModule.id,
+        action: 'list',
+        scope: 'users',
+        name: 'List Users',
+        description: 'View list of users',
+      },
 
       // RBAC permissions
-      { moduleId: rbacModule.id, action: 'create', scope: 'role', name: 'Create Role', description: 'Create new roles' },
-      { moduleId: rbacModule.id, action: 'read', scope: 'role', name: 'Read Role', description: 'View role details' },
-      { moduleId: rbacModule.id, action: 'update', scope: 'role', name: 'Update Role', description: 'Update role information' },
-      { moduleId: rbacModule.id, action: 'delete', scope: 'role', name: 'Delete Role', description: 'Delete roles' },
-      { moduleId: rbacModule.id, action: 'list', scope: 'roles', name: 'List Roles', description: 'View list of roles' },
-      { moduleId: rbacModule.id, action: 'assign', scope: 'role', name: 'Assign Role', description: 'Assign roles to users' },
+      {
+        moduleId: rbacModule.id,
+        action: 'create',
+        scope: 'role',
+        name: 'Create Role',
+        description: 'Create new roles',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'read',
+        scope: 'role',
+        name: 'Read Role',
+        description: 'View role details',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'update',
+        scope: 'role',
+        name: 'Update Role',
+        description: 'Update role information',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'delete',
+        scope: 'role',
+        name: 'Delete Role',
+        description: 'Delete roles',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'list',
+        scope: 'roles',
+        name: 'List Roles',
+        description: 'View list of roles',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'assign',
+        scope: 'role',
+        name: 'Assign Role',
+        description: 'Assign roles to users',
+      },
 
-      { moduleId: rbacModule.id, action: 'create', scope: 'permission', name: 'Create Permission', description: 'Create new permissions' },
-      { moduleId: rbacModule.id, action: 'read', scope: 'permission', name: 'Read Permission', description: 'View permission details' },
-      { moduleId: rbacModule.id, action: 'update', scope: 'permission', name: 'Update Permission', description: 'Update permission information' },
-      { moduleId: rbacModule.id, action: 'delete', scope: 'permission', name: 'Delete Permission', description: 'Delete permissions' },
-      { moduleId: rbacModule.id, action: 'list', scope: 'permissions', name: 'List Permissions', description: 'View list of permissions' },
+      {
+        moduleId: rbacModule.id,
+        action: 'create',
+        scope: 'permission',
+        name: 'Create Permission',
+        description: 'Create new permissions',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'read',
+        scope: 'permission',
+        name: 'Read Permission',
+        description: 'View permission details',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'update',
+        scope: 'permission',
+        name: 'Update Permission',
+        description: 'Update permission information',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'delete',
+        scope: 'permission',
+        name: 'Delete Permission',
+        description: 'Delete permissions',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'list',
+        scope: 'permissions',
+        name: 'List Permissions',
+        description: 'View list of permissions',
+      },
 
-      { moduleId: rbacModule.id, action: 'create', scope: 'module', name: 'Create Module', description: 'Create new modules' },
-      { moduleId: rbacModule.id, action: 'read', scope: 'module', name: 'Read Module', description: 'View module details' },
-      { moduleId: rbacModule.id, action: 'update', scope: 'module', name: 'Update Module', description: 'Update module information' },
-      { moduleId: rbacModule.id, action: 'delete', scope: 'module', name: 'Delete Module', description: 'Delete modules' },
-      { moduleId: rbacModule.id, action: 'list', scope: 'modules', name: 'List Modules', description: 'View list of modules' },
+      {
+        moduleId: rbacModule.id,
+        action: 'create',
+        scope: 'module',
+        name: 'Create Module',
+        description: 'Create new modules',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'read',
+        scope: 'module',
+        name: 'Read Module',
+        description: 'View module details',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'update',
+        scope: 'module',
+        name: 'Update Module',
+        description: 'Update module information',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'delete',
+        scope: 'module',
+        name: 'Delete Module',
+        description: 'Delete modules',
+      },
+      {
+        moduleId: rbacModule.id,
+        action: 'list',
+        scope: 'modules',
+        name: 'List Modules',
+        description: 'View list of modules',
+      },
 
       // System permissions
-      { moduleId: systemModule.id, action: 'admin', scope: '*', name: 'System Admin', description: 'Full system administration access' },
-      { moduleId: systemModule.id, action: 'config', scope: 'system', name: 'System Config', description: 'Manage system configuration' },
-      { moduleId: systemModule.id, action: 'health', scope: 'system', name: 'System Health', description: 'View system health status' },
+      {
+        moduleId: systemModule.id,
+        action: 'admin',
+        scope: '*',
+        name: 'System Admin',
+        description: 'Full system administration access',
+      },
+      {
+        moduleId: systemModule.id,
+        action: 'config',
+        scope: 'system',
+        name: 'System Config',
+        description: 'Manage system configuration',
+      },
+      {
+        moduleId: systemModule.id,
+        action: 'health',
+        scope: 'system',
+        name: 'System Health',
+        description: 'View system health status',
+      },
     ];
 
-    const createdPermissions = [];
+    const createdPermissions: Permission[] = [];
     for (const permission of permissions) {
       const createdPermission = await prisma.permission.upsert({
         where: {
           moduleId_action_scope: {
             moduleId: permission.moduleId,
             action: permission.action,
-            scope: permission.scope || null,
+            scope: permission.scope || '',
           },
         },
         update: {},
@@ -176,8 +344,8 @@ async function main() {
     }
 
     // Admin gets most permissions (excluding super admin permissions)
-    const adminPermissions = createdPermissions.filter(p => 
-      !(p.action === 'admin' && p.scope === '*')
+    const adminPermissions = createdPermissions.filter(
+      p => !(p.action === 'admin' && p.scope === '*')
     );
     for (const permission of adminPermissions) {
       await prisma.rolePermission.upsert({
@@ -196,12 +364,13 @@ async function main() {
     }
 
     // User gets basic permissions
-    const userPermissions = createdPermissions.filter(p => 
-      (p.action === 'login' && p.scope === 'auth') || 
-      (p.action === 'logout' && p.scope === 'auth') || 
-      (p.action === 'refresh' && p.scope === 'auth') ||
-      (p.action === 'read' && p.scope === 'user') ||
-      (p.action === 'update' && p.scope === 'user')
+    const userPermissions = createdPermissions.filter(
+      p =>
+        (p.action === 'login' && p.scope === 'auth') ||
+        (p.action === 'logout' && p.scope === 'auth') ||
+        (p.action === 'refresh' && p.scope === 'auth') ||
+        (p.action === 'read' && p.scope === 'user') ||
+        (p.action === 'update' && p.scope === 'user')
     );
     for (const permission of userPermissions) {
       await prisma.rolePermission.upsert({
@@ -220,9 +389,10 @@ async function main() {
     }
 
     // Guest gets minimal permissions
-    const guestPermissions = createdPermissions.filter(p => 
-      (p.action === 'login' && p.scope === 'auth') || 
-      (p.action === 'register' && p.scope === 'auth')
+    const guestPermissions = createdPermissions.filter(
+      p =>
+        (p.action === 'login' && p.scope === 'auth') ||
+        (p.action === 'register' && p.scope === 'auth')
     );
     for (const permission of guestPermissions) {
       await prisma.rolePermission.upsert({
@@ -297,7 +467,7 @@ async function main() {
 
     for (const demoUser of demoUsers) {
       const hashedDemoPassword = await bcrypt.hash(demoUser.password, 12);
-      
+
       const createdUser = await prisma.user.upsert({
         where: { email: demoUser.email },
         update: {},
@@ -347,7 +517,6 @@ async function main() {
     console.log('   - users (User management)');
     console.log('   - rbac (Role-based access control)');
     console.log('   - system (System administration)');
-
   } catch (error) {
     console.error('❌ Error during seeding:', error);
     throw error;
@@ -355,7 +524,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error(e);
     process.exit(1);
   })
