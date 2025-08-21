@@ -49,22 +49,16 @@ export class TokenServiceImpl extends TokenService {
       const accessTokenExpiry = new Date(now.getTime() + accessTokenExpiryMs);
       const refreshTokenExpiry = new Date(now.getTime() + refreshTokenExpiryMs);
 
-      const accessTokenPayload: AccessTokenPayload = {
+      // Generate token pair using new JWT service
+      const tokenPair = await this.jwtService.generateTokenPair({
         userId: user.id,
         email: user.email.getValue(),
-        tokenId: '', // Will be filled with JWT
         roles: [], // TODO: Get from user roles when RBAC is implemented
         permissions: [], // TODO: Get from user permissions when RBAC is implemented
-      };
+      });
 
-      const refreshTokenPayload: RefreshTokenPayload = {
-        userId: user.id,
-        email: user.email.getValue(),
-        tokenId: '', // Will be filled with JWT
-      };
-
-      const accessTokenJwt = await this.jwtService.generateAccessToken(accessTokenPayload);
-      const refreshTokenJwt = await this.jwtService.generateRefreshToken(refreshTokenPayload);
+      const accessTokenJwt = tokenPair.accessToken;
+      const refreshTokenJwt = tokenPair.refreshToken;
 
       // Store tokens in database first to get IDs
       const savedAccessToken = await this.authRepository.create({
@@ -116,7 +110,9 @@ export class TokenServiceImpl extends TokenService {
       }
 
       // Find the refresh token in database
-      const refreshToken = await this.authRepository.findById(verification.payload.tokenId);
+      const refreshToken = await this.authRepository.findById(
+        verification.payload.tokenId || verification.payload.jti
+      );
       if (!refreshToken || !refreshToken.isValid()) {
         throw new UnauthorizedException('Refresh token is not valid');
       }
@@ -184,7 +180,9 @@ export class TokenServiceImpl extends TokenService {
         return null;
       }
 
-      const token = await this.authRepository.findById(verification.payload.tokenId);
+      const token = await this.authRepository.findById(
+        verification.payload.tokenId || verification.payload.jti
+      );
       if (!token || !token.isValid() || !token.isAccessToken()) {
         return null;
       }
@@ -205,7 +203,9 @@ export class TokenServiceImpl extends TokenService {
         return null;
       }
 
-      const token = await this.authRepository.findById(verification.payload.tokenId);
+      const token = await this.authRepository.findById(
+        verification.payload.tokenId || verification.payload.jti
+      );
       if (!token || !token.isValid() || !token.isRefreshToken()) {
         return null;
       }

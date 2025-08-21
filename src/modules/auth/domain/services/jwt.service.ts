@@ -3,31 +3,64 @@ import { BaseService } from '../../../../shared/domain/services/base.service';
 export interface TokenPayload {
   userId: string;
   email: string;
-  tokenId: string;
+  jti: string; // JWT ID for blacklisting
+  tokenId?: string; // Legacy support - maps to jti
+  iat: number; // Issued at
+  exp: number; // Expires at
   sessionId?: string;
 }
 
 export interface AccessTokenPayload extends TokenPayload {
   roles?: string[];
   permissions?: string[];
+  type: 'access';
 }
 
 export interface RefreshTokenPayload extends TokenPayload {
-  // Refresh tokens have minimal payload
+  type: 'refresh';
 }
 
 export interface TokenValidationResult {
   isValid: boolean;
   payload?: TokenPayload;
   error?: string;
+  isBlacklisted?: boolean;
+}
+
+export interface TokenPair {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiry: string;
+  refreshTokenExpiry: string;
 }
 
 export abstract class JwtService extends BaseService {
-  abstract generateAccessToken(payload: AccessTokenPayload): Promise<string>;
-  abstract generateRefreshToken(payload: RefreshTokenPayload): Promise<string>;
+  abstract generateAccessToken(
+    payload: Omit<AccessTokenPayload, 'jti' | 'iat' | 'exp' | 'type'>
+  ): Promise<string>;
+  abstract generateRefreshToken(
+    payload: Omit<RefreshTokenPayload, 'jti' | 'iat' | 'exp' | 'type'>
+  ): Promise<string>;
+  abstract generateTokenPair(payload: {
+    userId: string;
+    email: string;
+    roles?: string[];
+    permissions?: string[];
+    sessionId?: string;
+  }): Promise<TokenPair>;
   abstract verifyAccessToken(token: string): Promise<TokenValidationResult>;
   abstract verifyRefreshToken(token: string): Promise<TokenValidationResult>;
   abstract decodeToken(token: string): TokenPayload | null;
   abstract getTokenExpiry(token: string): Date | null;
   abstract isTokenExpired(token: string): boolean;
+  abstract blacklistToken(
+    jti: string,
+    userId: string,
+    tokenType: 'access' | 'refresh',
+    reason?: string
+  ): Promise<void>;
+  abstract blacklistAllUserTokens(userId: string, reason?: string): Promise<number>;
+  abstract blacklistUserRefreshTokens(userId: string, reason?: string): Promise<number>;
+  abstract isTokenBlacklisted(jti: string): Promise<boolean>;
+  abstract refreshTokens(refreshToken: string): Promise<TokenPair>;
 }

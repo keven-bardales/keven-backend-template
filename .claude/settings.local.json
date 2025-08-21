@@ -9,7 +9,92 @@
       "Bash(npm run build:*)",
       "Bash(npm run:*)",
       "Bash(npx prisma db seed:*)",
-      "Bash(npm test)"
+      "Bash(npm test)",
+
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npx prisma migrate reset:*)",
+      "Bash(npx prisma migrate deploy:*)",
+      "Bash(npx prisma studio:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(npx prisma db pull:*)",
+      "Bash(npx prisma format:*)",
+      "Bash(npx prisma validate:*)",
+
+      "Bash(npm start:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run watch:*)",
+      "Bash(npm run serve:*)",
+
+      "Bash(npm run lint:*)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(npm run format:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx prettier:*)",
+
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(docker-compose build:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker build:*)",
+
+      "Bash(git status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+
+      "Bash(cp .env.example .env:*)",
+      "Bash(cat .env:*)",
+      "Bash(echo:*)",
+
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+
+      "Bash(npm ci:*)",
+      "Bash(npm update:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm audit fix:*)",
+      "Bash(npm outdated:*)",
+      "Bash(npm list:*)",
+
+      "Bash(ng:*)",
+      "Bash(ng generate:*)",
+      "Bash(ng build:*)",
+      "Bash(ng serve:*)",
+      "Bash(ng test:*)",
+      "Bash(ng e2e:*)",
+      "Bash(ng lint:*)",
+
+      "Bash(npm run test:watch:*)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(npm run e2e:*)",
+      "Bash(npx jest:*)",
+      "Bash(npx cypress:*)",
+
+      "Bash(node -e:*)",
+
+      "Bash(ps aux:*)",
+      "Bash(kill:*)",
+      "Bash(pkill:*)",
+
+      "Bash(netstat:*)",
+      "Bash(lsof:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+
+      "Bash(tar:*)",
+      "Bash(zip:*)",
+      "Bash(unzip:*)"
     ],
     "deny": []
   }

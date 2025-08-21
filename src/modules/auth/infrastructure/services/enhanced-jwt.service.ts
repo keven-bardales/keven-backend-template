@@ -12,8 +12,13 @@ import { EnvironmentConfigService } from '../../../../shared/infrastructure/conf
 import { TokenBlacklistService } from '../../../../shared/infrastructure/cache/token-blacklist.service';
 import { LoggerService } from '../../../../shared/infrastructure/logging/logger.service';
 import { DateUtils } from '../../../../shared/infrastructure/utils/date.utils';
+import {
+  TokenExpiredError,
+  InvalidTokenError,
+  UnauthorizedError,
+} from '../../../../shared/domain/errors/domain-errors';
 
-export class JwtServiceImpl extends JwtService {
+export class EnhancedJwtService extends JwtService {
   private readonly accessTokenSecret: string;
   private readonly refreshTokenSecret: string;
   private readonly accessTokenExpiresIn: string;
@@ -42,7 +47,6 @@ export class JwtServiceImpl extends JwtService {
       const fullPayload: AccessTokenPayload = {
         ...payload,
         jti,
-        tokenId: jti, // Legacy support
         iat: now,
         exp: now + this.parseExpiryToSeconds(this.accessTokenExpiresIn),
         type: 'access',
@@ -77,7 +81,6 @@ export class JwtServiceImpl extends JwtService {
       const fullPayload: RefreshTokenPayload = {
         ...payload,
         jti,
-        tokenId: jti, // Legacy support
         iat: now,
         exp: now + this.parseExpiryToSeconds(this.refreshTokenExpiresIn),
         type: 'refresh',
@@ -156,6 +159,14 @@ export class JwtServiceImpl extends JwtService {
         };
       }
 
+      // Verify token type
+      if (payload.type !== 'access') {
+        return {
+          isValid: false,
+          error: 'Invalid token type',
+        };
+      }
+
       return {
         isValid: true,
         payload,
@@ -176,6 +187,14 @@ export class JwtServiceImpl extends JwtService {
           isValid: false,
           error: 'Token is blacklisted',
           isBlacklisted: true,
+        };
+      }
+
+      // Verify token type
+      if (payload.type !== 'refresh') {
+        return {
+          isValid: false,
+          error: 'Invalid token type',
         };
       }
 
@@ -319,7 +338,7 @@ export class JwtServiceImpl extends JwtService {
       // Verify the refresh token
       const verification = await this.verifyRefreshToken(refreshToken);
       if (!verification.isValid || !verification.payload) {
-        throw new Error('Invalid refresh token');
+        throw new InvalidTokenError('Invalid refresh token');
       }
 
       const payload = verification.payload as RefreshTokenPayload;
