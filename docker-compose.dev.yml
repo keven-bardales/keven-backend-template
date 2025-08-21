@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Development
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: keven-backend-postgres-dev
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: keven_dev_db
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./database/init-dev.sql:/docker-entrypoint-initdb.d/01-init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d keven_dev_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - dev-network
+
+  # Backend Application with Hot Reload
+  backend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: keven-backend-dev
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://dev_user:dev_password@postgres-dev:5432/keven_dev_db
+      JWT_ACCESS_SECRET: dev-super-secret-access-key-at-least-32-chars-long-for-security
+      JWT_REFRESH_SECRET: dev-super-secret-refresh-key-at-least-32-chars-long-for-security
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      BCRYPT_SALT_ROUNDS: 10
+      SUPER_ADMIN_EMAIL: admin@dev.local
+      PORT: 3000
+      # CORS Configuration
+      CORS_ORIGINS: http://localhost:3001,http://localhost:4200,http://localhost:5173,http://127.0.0.1:3001
+      CORS_CREDENTIALS: true
+      # Logging
+      LOG_LEVEL: debug
+      # Swagger
+      SWAGGER_ENABLED: true
+      # Development specific
+      HOT_RELOAD: true
+    ports:
+      - "3000:3000"
+      - "9229:9229" # Node.js debugger port
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+      # Mount logs
+      - ./logs:/app/logs
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - dev-network
+    # Enable development debugging
+    stdin_open: true
+    tty: true
+
+  # Redis for Development (Session store, caching)
+  redis-dev:
+    image: redis:7-alpine
+    container_name: keven-backend-redis-dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - dev-network
+    command: redis-server --appendonly yes
+
+  # Adminer for Database Management (Development only)
+  adminer:
+    image: adminer:4.8.1
+    container_name: keven-backend-adminer-dev
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres-dev
+      ADMINER_DESIGN: dracula
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+    networks:
+      - dev-network
+    profiles:
+      - tools
+
+  # Redis Commander for Redis Management (Development only)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: keven-backend-redis-commander-dev
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: local:redis-dev:6379
+      HTTP_USER: admin
+      HTTP_PASSWORD: dev_password
+    depends_on:
+      - redis-dev
+    networks:
+      - dev-network
+    profiles:
+      - tools
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+
+networks:
+  dev-network:
+    driver: bridge
+    name: keven-dev-network

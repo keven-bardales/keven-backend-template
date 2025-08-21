@@ -157,6 +157,56 @@ export class UsersRoutes {
       this.asyncHandler(this.usersController.getUsers.bind(this.usersController))
     );
 
+    /**
+     * @swagger
+     * /users/me:
+     *   get:
+     *     summary: Get current user profile
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     responses:
+     *       200:
+     *         description: Current user profile retrieved successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: Current user retrieved successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     email:
+     *                       type: string
+     *                     firstName:
+     *                       type: string
+     *                     lastName:
+     *                       type: string
+     *                     isActive:
+     *                       type: boolean
+     *                     createdAt:
+     *                       type: string
+     *                       format: date-time
+     *                     updatedAt:
+     *                       type: string
+     *                       format: date-time
+     *       401:
+     *         description: Unauthorized
+     *       500:
+     *         description: Server error
+     */
     this.router.get(
       '/me',
       // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
@@ -226,6 +276,77 @@ export class UsersRoutes {
       this.asyncHandler(this.usersController.getUserById.bind(this.usersController))
     );
 
+    /**
+     * @swagger
+     * /users/{id}:
+     *   put:
+     *     summary: Update a user
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         schema:
+     *           type: string
+     *           format: uuid
+     *         required: true
+     *         description: UUID of the user to update
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               email:
+     *                 type: string
+     *                 format: email
+     *                 description: Updated email address
+     *               firstName:
+     *                 type: string
+     *                 description: Updated first name
+     *               lastName:
+     *                 type: string
+     *                 description: Updated last name
+     *     responses:
+     *       200:
+     *         description: User updated successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: User updated successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     email:
+     *                       type: string
+     *                     firstName:
+     *                       type: string
+     *                     lastName:
+     *                       type: string
+     *       400:
+     *         description: Invalid request data
+     *       401:
+     *         description: Unauthorized
+     *       404:
+     *         description: User not found
+     *       500:
+     *         description: Server error
+     */
     this.router.put(
       '/:id',
       ValidationMiddleware.validateMultiple([
@@ -237,6 +358,52 @@ export class UsersRoutes {
       this.asyncHandler(this.usersController.updateUser.bind(this.usersController))
     );
 
+    /**
+     * @swagger
+     * /users/{id}:
+     *   delete:
+     *     summary: Delete a user
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         schema:
+     *           type: string
+     *           format: uuid
+     *         required: true
+     *         description: UUID of the user to delete
+     *     responses:
+     *       200:
+     *         description: User deleted successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: User deleted successfully
+     *                 data:
+     *                   type: null
+     *       400:
+     *         description: Invalid user ID
+     *       401:
+     *         description: Unauthorized
+     *       403:
+     *         description: Insufficient permissions
+     *       404:
+     *         description: User not found
+     *       500:
+     *         description: Server error
+     */
     this.router.delete(
       '/:id',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),
@@ -246,6 +413,60 @@ export class UsersRoutes {
     );
 
     // Admin routes (require special permissions)
+    /**
+     * @swagger
+     * /users/{id}/activate:
+     *   patch:
+     *     summary: Activate a user account
+     *     description: Reactivate a previously deactivated user account (admin only)
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         schema:
+     *           type: string
+     *           format: uuid
+     *         required: true
+     *         description: UUID of the user to activate
+     *     responses:
+     *       200:
+     *         description: User activated successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: User activated successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     isActive:
+     *                       type: boolean
+     *                       example: true
+     *       400:
+     *         description: Invalid user ID
+     *       401:
+     *         description: Unauthorized
+     *       403:
+     *         description: Insufficient permissions (admin required)
+     *       404:
+     *         description: User not found
+     *       500:
+     *         description: Server error
+     */
     this.router.patch(
       '/:id/activate',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),
@@ -254,6 +475,60 @@ export class UsersRoutes {
       this.asyncHandler(this.usersController.activateUser.bind(this.usersController))
     );
 
+    /**
+     * @swagger
+     * /users/{id}/deactivate:
+     *   patch:
+     *     summary: Deactivate a user account
+     *     description: Temporarily deactivate a user account without deletion (admin only)
+     *     tags: [Users]
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         schema:
+     *           type: string
+     *           format: uuid
+     *         required: true
+     *         description: UUID of the user to deactivate
+     *     responses:
+     *       200:
+     *         description: User deactivated successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: string
+     *                   example: success
+     *                 statusCode:
+     *                   type: number
+     *                   example: 200
+     *                 message:
+     *                   type: string
+     *                   example: User deactivated successfully
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       format: uuid
+     *                     isActive:
+     *                       type: boolean
+     *                       example: false
+     *       400:
+     *         description: Invalid user ID
+     *       401:
+     *         description: Unauthorized
+     *       403:
+     *         description: Insufficient permissions (admin required)
+     *       404:
+     *         description: User not found
+     *       500:
+     *         description: Server error
+     */
     this.router.patch(
       '/:id/deactivate',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),

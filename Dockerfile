@@ -77,10 +77,11 @@ FROM node:20-alpine AS development
 ENV NODE_ENV=development
 ENV PORT=3000
 
-# Install system dependencies
+# Install system dependencies including nodemon for watch mode
 RUN apk add --no-cache \
     libc6-compat \
-    curl
+    curl \
+    git
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
@@ -89,31 +90,36 @@ RUN addgroup -g 1001 -S nodejs && \
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for better layer caching
 COPY package*.json ./
 COPY prisma ./prisma/
 
 # Install all dependencies (including dev dependencies)
 RUN npm ci && npm cache clean --force
 
+# Install additional dev tools globally for better development experience
+RUN npm install -g nodemon ts-node typescript
+
 # Generate Prisma client
 RUN npx prisma generate
 
-# Copy source code
+# Copy source code (this layer will be replaced by volume mount in dev)
 COPY --chown=nodejs:nodejs . .
 
-# Create logs directory
-RUN mkdir -p /app/logs && chown -R nodejs:nodejs /app/logs
+# Create necessary directories
+RUN mkdir -p /app/logs && \
+    mkdir -p /app/dist && \
+    chown -R nodejs:nodejs /app/logs /app/dist
 
 # Switch to non-root user
 USER nodejs
 
-# Expose port
-EXPOSE 3000
+# Expose ports for app and debugging
+EXPOSE 3000 9229
 
-# Development health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+# Development health check with longer timeout for initial build
+HEALTHCHECK --interval=30s --timeout=15s --start-period=60s --retries=5 \
     CMD curl -f http://localhost:3000/api/health || exit 1
 
-# Start development server
+# Start development server with watch mode
 CMD ["npm", "run", "dev"]
