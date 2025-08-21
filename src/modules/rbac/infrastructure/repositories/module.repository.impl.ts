@@ -277,4 +277,71 @@ export class ModuleRepositoryImpl extends ModuleRepository {
       },
     });
   }
+
+  async findMany<TFilter extends Record<string, unknown> = Record<string, unknown>>(options?: {
+    filter?: TFilter;
+    pagination?: {
+      page: number;
+      limit: number;
+    };
+    orderBy?: {
+      field: keyof ModuleEntity;
+      direction: 'asc' | 'desc';
+    };
+  }): Promise<{
+    data: ModuleEntity[];
+    total: number;
+  }> {
+    const where = this.buildWhereClause(options?.filter);
+    const orderBy = options?.orderBy
+      ? { [options.orderBy.field]: options.orderBy.direction }
+      : { createdAt: 'desc' as const };
+
+    const [data, total] = await Promise.all([
+      this.prisma.module.findMany({
+        where,
+        orderBy,
+        skip: options?.pagination
+          ? (options.pagination.page - 1) * options.pagination.limit
+          : undefined,
+        take: options?.pagination?.limit,
+      }),
+      this.prisma.module.count({ where }),
+    ]);
+
+    return {
+      data: data.map(module =>
+        ModuleEntity.fromPersistence({
+          id: module.id,
+          name: module.name,
+          description: module.description || undefined,
+          isActive: module.isActive,
+          createdAt: module.createdAt,
+          updatedAt: module.updatedAt,
+        })
+      ),
+      total,
+    };
+  }
+
+  private buildWhereClause(filter: Record<string, unknown> | undefined): Record<string, unknown> {
+    if (!filter) return {};
+
+    const where: Record<string, unknown> = {};
+
+    // Handle search by name
+    if (filter.name && typeof filter.name === 'string') {
+      where.OR = [
+        { name: { contains: filter.name, mode: 'insensitive' } },
+        { description: { contains: filter.name, mode: 'insensitive' } },
+      ];
+    }
+
+    // Handle isActive filter
+    if (typeof filter.isActive === 'boolean') {
+      where.isActive = filter.isActive;
+    }
+
+    return where;
+  }
 }

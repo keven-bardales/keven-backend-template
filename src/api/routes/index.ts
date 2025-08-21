@@ -11,6 +11,10 @@ import { createAuthRoutes } from '../../modules/auth/infrastructure/routes/auth.
 import { AuthController } from '../../modules/auth/infrastructure/controllers/auth.controller';
 import { createRolesRoutes } from '../../modules/rbac/infrastructure/routes/roles.routes';
 import { RolesController } from '../../modules/rbac/infrastructure/controllers/roles.controller';
+import { createModulesRoutes } from '../../modules/rbac/infrastructure/routes/modules.routes';
+import { ModulesController } from '../../modules/rbac/infrastructure/controllers/modules.controller';
+import { createLogsRoutes } from '../../modules/admin/infrastructure/routes/logs.routes';
+import { LogsController } from '../../modules/admin/infrastructure/controllers/logs.controller';
 import { globalContainer } from '../../shared/application/dependencies/register-dependencies';
 import { TOKENS } from '../../shared/application/dependencies/tokens';
 import { ApiResponse } from '../../shared/domain/wrappers/api-response.wrapper';
@@ -142,6 +146,8 @@ export class ApiRoutes {
             users: '/api/users',
             auth: '/api/auth',
             roles: '/api/rbac/roles',
+            modules: '/api/rbac/modules',
+            logs: '/api/admin/logs',
           },
         },
         'API information retrieved successfully'
@@ -167,6 +173,16 @@ export class ApiRoutes {
       // RBAC module routes
       const rolesController = globalContainer.resolve<RolesController>(TOKENS.ROLES_CONTROLLER);
       this.router.use('/rbac/roles', createRolesRoutes(rolesController));
+
+      // Modules controller and routes
+      const modulesController = globalContainer.resolve<ModulesController>(
+        TOKENS.MODULES_CONTROLLER
+      );
+      this.router.use('/rbac/modules', createModulesRoutes(modulesController));
+
+      // Admin logs routes
+      const logsController = new LogsController();
+      this.router.use('/admin/logs', createLogsRoutes(logsController));
     } catch (error) {
       console.error('Error setting up module routes:', error);
 

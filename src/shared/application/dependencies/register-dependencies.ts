@@ -25,6 +25,11 @@ import { ModuleRepositoryImpl } from '../../../modules/rbac/infrastructure/repos
 import { CreateRoleUseCaseImpl } from '../../../modules/rbac/application/use-cases/create-role.use-case.impl';
 import { ListRolesUseCaseImpl } from '../../../modules/rbac/application/use-cases/list-roles.use-case.impl';
 import { RolesController } from '../../../modules/rbac/infrastructure/controllers/roles.controller';
+import { ListModulesUseCaseImpl } from '../../../modules/rbac/application/use-cases/list-modules.use-case.impl';
+import { CreateModuleUseCaseImpl } from '../../../modules/rbac/application/use-cases/create-module.use-case.impl';
+import { UpdateModuleUseCaseImpl } from '../../../modules/rbac/application/use-cases/update-module.use-case.impl';
+import { DeleteModuleUseCaseImpl } from '../../../modules/rbac/application/use-cases/delete-module.use-case.impl';
+import { ModulesController } from '../../../modules/rbac/infrastructure/controllers/modules.controller';
 
 export class DependencyRegistrar {
   private constructor() {}
@@ -198,12 +203,39 @@ export class DependencyRegistrar {
       dependencies: [TOKENS.ROLE_REPOSITORY],
     });
 
+    // Module use cases
+    container.registerClass(TOKENS.LIST_MODULES_USE_CASE, ListModulesUseCaseImpl, {
+      dependencies: [TOKENS.MODULE_REPOSITORY],
+    });
+
+    container.registerClass(TOKENS.CREATE_MODULE_USE_CASE, CreateModuleUseCaseImpl, {
+      dependencies: [TOKENS.MODULE_REPOSITORY],
+    });
+
+    container.registerClass(TOKENS.UPDATE_MODULE_USE_CASE, UpdateModuleUseCaseImpl, {
+      dependencies: [TOKENS.MODULE_REPOSITORY],
+    });
+
+    container.registerClass(TOKENS.DELETE_MODULE_USE_CASE, DeleteModuleUseCaseImpl, {
+      dependencies: [TOKENS.MODULE_REPOSITORY],
+    });
+
     // Controllers
     container.registerClass(TOKENS.ROLES_CONTROLLER, RolesController, {
       dependencies: [
         TOKENS.CREATE_ROLE_USE_CASE,
         TOKENS.LIST_ROLES_USE_CASE,
         TOKENS.ROLE_REPOSITORY,
+      ],
+    });
+
+    container.registerClass(TOKENS.MODULES_CONTROLLER, ModulesController, {
+      dependencies: [
+        TOKENS.LIST_MODULES_USE_CASE,
+        TOKENS.CREATE_MODULE_USE_CASE,
+        TOKENS.UPDATE_MODULE_USE_CASE,
+        TOKENS.DELETE_MODULE_USE_CASE,
+        TOKENS.MODULE_REPOSITORY,
       ],
     });
   }

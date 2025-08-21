@@ -18,6 +18,20 @@ export abstract class ModuleRepository extends BaseRepository<
   CreateModuleData,
   UpdateModuleData
 > {
+  abstract findMany<TFilter extends Record<string, unknown> = Record<string, unknown>>(options?: {
+    filter?: TFilter;
+    pagination?: {
+      page: number;
+      limit: number;
+    };
+    orderBy?: {
+      field: keyof ModuleEntity;
+      direction: 'asc' | 'desc';
+    };
+  }): Promise<{
+    data: ModuleEntity[];
+    total: number;
+  }>;
   abstract findByName(name: string): Promise<ModuleEntity | null>;
   abstract findActiveModules(): Promise<ModuleEntity[]>;
   abstract findInactiveModules(): Promise<ModuleEntity[]>;
