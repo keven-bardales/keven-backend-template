@@ -144,6 +144,7 @@ export class Server {
         console.log(`🌐 Server is running on port ${this.port}`);
         console.log(`🔗 API URL: http://localhost:${this.port}/api`);
         console.log(`💚 Health check: http://localhost:${this.port}/api/health`);
+        console.log(`📖 Documentation: http://localhost:${this.port}/api/docs`);
         console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
       });
 

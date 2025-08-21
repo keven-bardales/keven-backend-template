@@ -1,0 +1,4281 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+The content has been processed where comments have been removed, empty lines have been removed, content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Code comments have been removed from supported file types
+- Empty lines have been removed from all files
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Long base64 data strings (e.g., data:image/png;base64,...) have been truncated to reduce token count
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.claude/settings.local.json
+.dockerignore
+.env.example
+.gitattributes
+.github/workflows/ci.yml
+.gitignore
+.husky/pre-commit
+.prettierignore
+.prettierrc
+.repomixignore
+docker-compose.prod.yml
+docker-compose.yml
+DOCKER.md
+Dockerfile
+eslint.config.js
+jest.config.cjs
+nginx.conf
+package.json
+prisma/migrations/20250808071623_init/migration.sql
+prisma/migrations/migration_lock.toml
+prisma/schema.prisma
+prisma/seed.ts
+redis.conf
+repomix.config.json
+src/__tests__/integration/api.integration.test.ts
+src/__tests__/integration/auth.integration.test.ts
+src/__tests__/integration/rbac.integration.test.ts
+src/__tests__/integration/test-setup.ts
+src/__tests__/integration/users.integration.test.ts
+src/__tests__/server.test.ts
+src/api/middleware/async-handler.middleware.ts
+src/api/middleware/compression.middleware.ts
+src/api/middleware/cors.middleware.ts
+src/api/middleware/rate-limit.middleware.ts
+src/api/middleware/security.middleware.ts
+src/api/routes/index.ts
+src/api/server.ts
+src/main.ts
+src/modules/auth/application/dto/auth-response.dto.ts
+src/modules/auth/application/dto/login.dto.ts
+src/modules/auth/application/dto/refresh-token.dto.ts
+src/modules/auth/application/dto/register.dto.ts
+src/modules/auth/application/use-cases/__tests__/register.use-case.impl.test.ts
+src/modules/auth/application/use-cases/login.use-case.impl.ts
+src/modules/auth/application/use-cases/logout.use-case.impl.ts
+src/modules/auth/application/use-cases/refresh-token.use-case.impl.ts
+src/modules/auth/application/use-cases/register.use-case.impl.ts
+src/modules/auth/domain/entities/auth-token.entity.ts
+src/modules/auth/domain/entities/login-session.entity.ts
+src/modules/auth/domain/repositories/auth.repository.ts
+src/modules/auth/domain/services/jwt.service.ts
+src/modules/auth/domain/services/token.service.ts
+src/modules/auth/domain/use-cases/login.use-case.ts
+src/modules/auth/domain/use-cases/logout.use-case.ts
+src/modules/auth/domain/use-cases/refresh-token.use-case.ts
+src/modules/auth/domain/use-cases/register.use-case.ts
+src/modules/auth/infrastructure/controllers/auth.controller.ts
+src/modules/auth/infrastructure/mappers/auth.mapper.ts
+src/modules/auth/infrastructure/repositories/auth.repository.impl.ts
+src/modules/auth/infrastructure/routes/auth.routes.ts
+src/modules/auth/infrastructure/services/jwt.service.impl.ts
+src/modules/auth/infrastructure/services/token.service.impl.ts
+src/modules/rbac/application/dto/create-role.dto.ts
+src/modules/rbac/application/dto/list-roles.dto.ts
+src/modules/rbac/application/dto/update-role.dto.ts
+src/modules/rbac/application/use-cases/__tests__/create-role.use-case.impl.test.ts
+src/modules/rbac/application/use-cases/__tests__/list-roles.use-case.impl.test.ts
+src/modules/rbac/application/use-cases/create-role.use-case.impl.ts
+src/modules/rbac/application/use-cases/list-roles.use-case.impl.ts
+src/modules/rbac/domain/entities/module.entity.ts
+src/modules/rbac/domain/entities/permission.entity.ts
+src/modules/rbac/domain/entities/role.entity.ts
+src/modules/rbac/domain/repositories/module.repository.ts
+src/modules/rbac/domain/repositories/permission.repository.ts
+src/modules/rbac/domain/repositories/role.repository.ts
+src/modules/rbac/domain/use-cases/create-role.use-case.ts
+src/modules/rbac/domain/use-cases/list-roles.use-case.ts
+src/modules/rbac/infrastructure/controllers/permissions.controller.ts
+src/modules/rbac/infrastructure/controllers/roles.controller.ts
+src/modules/rbac/infrastructure/repositories/module.repository.impl.ts
+src/modules/rbac/infrastructure/repositories/permission.repository.impl.ts
+src/modules/rbac/infrastructure/repositories/role.repository.impl.ts
+src/modules/rbac/infrastructure/routes/roles.routes.ts
+src/modules/users/application/dto/create-user.dto.ts
+src/modules/users/application/dto/get-user-by-id.dto.ts
+src/modules/users/application/dto/get-users.dto.ts
+src/modules/users/application/dto/update-user.dto.ts
+src/modules/users/application/dto/user-response.dto.ts
+src/modules/users/application/use-cases/__tests__/create-user.use-case.impl.test.ts
+src/modules/users/application/use-cases/create-user.use-case.impl.ts
+src/modules/users/application/use-cases/delete-user.use-case.impl.ts
+src/modules/users/application/use-cases/get-user-by-id.use-case.impl.ts
+src/modules/users/application/use-cases/get-users.use-case.impl.ts
+src/modules/users/application/use-cases/update-user.use-case.impl.ts
+src/modules/users/domain/entities/user.entity.ts
+src/modules/users/domain/repositories/user.repository.ts
+src/modules/users/domain/services/password.service.ts
+src/modules/users/domain/use-cases/create-user.use-case.ts
+src/modules/users/domain/use-cases/delete-user.use-case.ts
+src/modules/users/domain/use-cases/get-user-by-id.use-case.ts
+src/modules/users/domain/use-cases/get-users.use-case.ts
+src/modules/users/domain/use-cases/update-user.use-case.ts
+src/modules/users/infrastructure/controllers/users.controller.ts
+src/modules/users/infrastructure/mappers/user.mapper.ts
+src/modules/users/infrastructure/repositories/user.repository.impl.ts
+src/modules/users/infrastructure/routes/users.routes.ts
+src/modules/users/infrastructure/services/bcrypt-password.service.ts
+src/server.ts
+src/shared/application/dependencies/dependency.container.ts
+src/shared/application/dependencies/register-dependencies.ts
+src/shared/application/dependencies/tokens.ts
+src/shared/application/middleware/auth.middleware.ts
+src/shared/application/middleware/error-handler.middleware.ts
+src/shared/application/middleware/permission.middleware.ts
+src/shared/application/middleware/permissions.middleware.ts
+src/shared/application/middleware/validation.middleware.ts
+src/shared/domain/entities/base.entity.ts
+src/shared/domain/exceptions/global-exceptions.ts
+src/shared/domain/repositories/base.repository.ts
+src/shared/domain/services/base.service.ts
+src/shared/domain/use-cases/base.use-case.ts
+src/shared/domain/value-objects/base.value-object.ts
+src/shared/domain/value-objects/email.value-object.ts
+src/shared/domain/value-objects/password.value-object.ts
+src/shared/domain/value-objects/uuid.value-object.ts
+src/shared/domain/wrappers/api-response.wrapper.ts
+src/shared/domain/wrappers/pagination-wrapper.ts
+src/shared/infrastructure/config/database.config.ts
+src/shared/infrastructure/config/environment.config.ts
+src/shared/infrastructure/database/prisma.client.ts
+src/shared/infrastructure/swagger/swagger.config.ts
+src/shared/infrastructure/swagger/swagger.service.ts
+src/test/setup.ts
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".env.example">
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/starter_db"
+
+# JWT
+JWT_ACCESS_SECRET="your-super-secure-access-secret-here-at-least-32-characters-long"
+JWT_REFRESH_SECRET="your-super-secure-refresh-secret-here-at-least-32-characters-long"
+JWT_ACCESS_EXPIRES_IN="15m"
+JWT_REFRESH_EXPIRES_IN="7d"
+
+# Application
+PORT=3000
+NODE_ENV="development"
+
+# Security
+BCRYPT_SALT_ROUNDS=12
+
+# Super Admin
+SUPER_ADMIN_EMAIL="admin@example.com"
+</file>
+
+<file path=".repomixignore">
+# Build & deps
+node_modules/
+dist/
+coverage/
+.next/
+.out/
+
+# Env & secrets
+.env*
+!.env.example
+
+# Noise
+*.log
+*.DS_Store
+</file>
+
+<file path="repomix.config.json">
+{
+  "output": {
+    "style": "xml",
+    "path": "repomix.xml",
+    "remove_comments": true,
+    "remove_empty_lines": true,
+    "truncate_base64": 64
+  },
+  "ignore": {
+    "useDefaultPatterns": true,
+    "useGitignore": true,
+    "custom_patterns": [
+      "dist/",
+      "coverage/",
+      "build/",
+      "*.log",
+      "*.lock",
+      "pnpm-*.yaml",
+      "**/*.min.*",
+      "public/**/*.{png,jpg,jpeg,webp,gif,svg}",
+      "**/__tests__/**",
+      "**/*.snap"
+    ]
+  },
+  "headerText": "This file was generated by Repomix for LLM assistance. Focus on understanding architecture, entry points, and key services.",
+  "instructionFilePath": "repomix-instructions.md"
+}
+</file>
+
+<file path=".dockerignore">
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Production build
+dist
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Coverage reports
+coverage
+*.lcov
+.nyc_output
+
+# Test files
+**/*.test.ts
+**/*.spec.ts
+**/__tests__/
+src/test/
+
+# Documentation
+*.md
+docs/
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+
+# Temporary files
+*.tmp
+*.temp
+
+# ESLint cache
+.eslintcache
+
+# Prisma migrations during development (optional - comment out if needed)
+# prisma/migrations/
+
+# Husky
+.husky
+</file>
+
+<file path=".gitattributes">
+# Auto detect text files and perform LF normalization
+* text=auto
+</file>
+
+<file path=".github/workflows/ci.yml">
+name: Backend CI
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Run linter
+      run: npm run lint
+    - name: Run tests
+      run: npm test
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+    - name: Build
+      run: npm run build
+</file>
+
+<file path=".prettierignore">
+# Build outputs
+dist/
+build/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env*
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE
+.vscode/
+.idea/
+</file>
+
+<file path=".prettierrc">
+{
+    "printWidth": 100,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": true,
+    "endOfLine": "lf",
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
+  }
+</file>
+
+<file path="docker-compose.prod.yml">
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: keven-backend-postgres-prod
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-starter_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-starter_db}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - keven-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        - NODE_ENV=production
+    container_name: keven-backend-app-prod
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-starter_db}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - PORT=${PORT:-3000}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    volumes:
+      - app_logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT:-3000}/api/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 60s
+    networks:
+      - keven-network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  redis:
+    image: redis:7-alpine
+    container_name: keven-backend-redis-prod
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - keven-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+  nginx:
+    image: nginx:alpine
+    container_name: keven-backend-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - keven-network
+    profiles:
+      - with-nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_logs:
+    driver: local
+  nginx_logs:
+    driver: local
+networks:
+  keven-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+</file>
+
+<file path="DOCKER.md">
+# Docker Deployment Guide
+
+This guide covers how to deploy the Keven Backend Template using Docker and Docker Compose.
+
+## Prerequisites
+
+- Docker Engine 20.10+
+- Docker Compose 2.0+
+- At least 2GB RAM
+- At least 5GB disk space
+
+## Quick Start
+
+### Development Environment
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd keven-backend-template
+   ```
+
+2. **Start development environment:**
+   ```bash
+   # Start PostgreSQL database only
+   docker-compose up postgres
+
+   # Or start with Redis (optional)
+   docker-compose --profile with-redis up postgres redis
+
+   # Start development server with hot reload
+   docker-compose --profile dev up
+   ```
+
+3. **Access the application:**
+   - API: http://localhost:3000/api
+   - Health Check: http://localhost:3000/api/health
+   - API Documentation: http://localhost:3000/api/docs
+
+### Production Environment
+
+1. **Setup environment variables:**
+   ```bash
+   cp .env.docker.example .env
+   # Edit .env with your production values
+   ```
+
+2. **Deploy production stack:**
+   ```bash
+   # Basic production deployment
+   docker-compose -f docker-compose.prod.yml up -d
+
+   # With Nginx reverse proxy
+   docker-compose -f docker-compose.prod.yml --profile with-nginx up -d
+   ```
+
+3. **Run database migrations:**
+   ```bash
+   docker-compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
+   ```
+
+4. **Seed the database (optional):**
+   ```bash
+   docker-compose -f docker-compose.prod.yml exec app npx prisma db seed
+   ```
+
+## Docker Images
+
+### Multi-Stage Build
+
+The Dockerfile uses a multi-stage build process:
+
+1. **Builder Stage**: Installs dependencies and builds the application
+2. **Production Stage**: Creates minimal production image with only necessary files
+3. **Development Stage**: Full development environment with hot reload
+
+### Available Targets
+
+```bash
+# Build development image
+docker build --target development -t keven-backend:dev .
+
+# Build production image
+docker build --target production -t keven-backend:prod .
+```
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `NODE_ENV` | Environment mode | `development` | No |
+| `PORT` | Application port | `3000` | No |
+| `DATABASE_URL` | PostgreSQL connection string | - | Yes |
+| `JWT_SECRET` | JWT signing secret | - | Yes |
+| `JWT_REFRESH_SECRET` | Refresh token secret | - | Yes |
+| `POSTGRES_USER` | Database username | `user` | No |
+| `POSTGRES_PASSWORD` | Database password | `password` | No |
+| `POSTGRES_DB` | Database name | `starter_db` | No |
+
+### Docker Compose Profiles
+
+| Profile | Services | Use Case |
+|---------|----------|----------|
+| `dev` | postgres, app-dev | Development with hot reload |
+| `prod` | postgres, app-prod | Production deployment |
+| `with-redis` | + redis | Add Redis caching |
+| `with-nginx` | + nginx | Add reverse proxy |
+
+## Commands
+
+### Development Commands
+
+```bash
+# Start development environment
+docker-compose --profile dev up
+
+# View logs
+docker-compose logs -f app-dev
+
+# Execute commands in container
+docker-compose exec app-dev npm run test
+docker-compose exec app-dev npx prisma studio
+
+# Stop services
+docker-compose down
+```
+
+### Production Commands
+
+```bash
+# Deploy production
+docker-compose -f docker-compose.prod.yml up -d
+
+# Scale application
+docker-compose -f docker-compose.prod.yml up -d --scale app=3
+
+# Update application
+docker-compose -f docker-compose.prod.yml pull
+docker-compose -f docker-compose.prod.yml up -d --no-deps app
+
+# Backup database
+docker-compose -f docker-compose.prod.yml exec postgres pg_dump -U user starter_db > backup.sql
+
+# View production logs
+docker-compose -f docker-compose.prod.yml logs -f app
+```
+
+## Health Checks
+
+### Application Health
+- **Endpoint**: `/api/health`
+- **Interval**: 30 seconds
+- **Timeout**: 10 seconds
+- **Retries**: 3
+
+### Database Health
+- **Command**: `pg_isready`
+- **Interval**: 30 seconds
+- **Timeout**: 10 seconds
+- **Retries**: 5
+
+### Redis Health
+- **Command**: `redis-cli ping`
+- **Interval**: 30 seconds
+- **Timeout**: 10 seconds
+- **Retries**: 5
+
+## Security
+
+### Security Features
+
+1. **Non-root user**: Application runs as non-root user (nodejs:1001)
+2. **Minimal base image**: Alpine Linux for smaller attack surface
+3. **Security headers**: Helmet middleware with comprehensive headers
+4. **Rate limiting**: Express rate limit with Redis backing
+5. **HTTPS ready**: SSL configuration available in Nginx
+
+### Security Recommendations
+
+1. **Change default passwords** in environment variables
+2. **Use secrets management** for production credentials
+3. **Enable SSL/TLS** with valid certificates
+4. **Configure firewall** to restrict access
+5. **Regular updates** of base images and dependencies
+
+## Performance
+
+### Resource Limits
+
+| Service | Memory Limit | Memory Reservation | CPU Limit |
+|---------|-------------|-------------------|-----------|
+| App | 1GB | 512MB | 1.0 |
+| PostgreSQL | 512MB | 256MB | - |
+| Redis | 256MB | 128MB | - |
+
+### Performance Tuning
+
+1. **Database connections**: Configure Prisma connection pool
+2. **Memory usage**: Monitor and adjust Node.js heap size
+3. **Caching**: Implement Redis caching for frequently accessed data
+4. **Load balancing**: Use multiple app instances behind Nginx
+
+## Monitoring
+
+### Logs
+
+```bash
+# Application logs
+docker-compose logs -f app
+
+# Database logs
+docker-compose logs -f postgres
+
+# All services
+docker-compose logs -f
+```
+
+### Metrics
+
+- **Health endpoints**: Built-in health checks
+- **Docker stats**: `docker stats`
+- **Resource usage**: Monitor CPU, memory, and disk usage
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Port already in use**:
+   ```bash
+   # Change ports in docker-compose.yml or stop conflicting services
+   lsof -ti:3000 | xargs kill -9
+   ```
+
+2. **Database connection issues**:
+   ```bash
+   # Check database health
+   docker-compose exec postgres pg_isready -U user -d starter_db
+   
+   # View database logs
+   docker-compose logs postgres
+   ```
+
+3. **Build failures**:
+   ```bash
+   # Clean build cache
+   docker builder prune
+   
+   # Rebuild without cache
+   docker-compose build --no-cache
+   ```
+
+4. **Permission issues**:
+   ```bash
+   # Fix volume permissions
+   docker-compose down
+   docker volume rm $(docker volume ls -q)
+   docker-compose up
+   ```
+
+### Debug Mode
+
+```bash
+# Run with debug logs
+NODE_ENV=development docker-compose up
+
+# Access container shell
+docker-compose exec app sh
+
+# Check application status
+docker-compose exec app npm run health-check
+```
+
+## Backup and Recovery
+
+### Database Backup
+
+```bash
+# Create backup
+docker-compose exec postgres pg_dump -U user starter_db > backup-$(date +%Y%m%d).sql
+
+# Restore backup
+docker-compose exec -T postgres psql -U user -d starter_db < backup-20240101.sql
+```
+
+### Volume Backup
+
+```bash
+# Backup volumes
+docker run --rm -v keven-backend-template_postgres_data:/data -v $(pwd):/backup alpine tar czf /backup/postgres-data.tar.gz -C /data .
+
+# Restore volumes
+docker run --rm -v keven-backend-template_postgres_data:/data -v $(pwd):/backup alpine tar xzf /backup/postgres-data.tar.gz -C /data
+```
+
+## Scaling
+
+### Horizontal Scaling
+
+```bash
+# Scale application instances
+docker-compose -f docker-compose.prod.yml up -d --scale app=3
+
+# Use with load balancer (Nginx)
+docker-compose -f docker-compose.prod.yml --profile with-nginx up -d --scale app=3
+```
+
+### Vertical Scaling
+
+Adjust resource limits in `docker-compose.prod.yml`:
+
+```yaml
+deploy:
+  resources:
+    limits:
+      memory: 2G
+      cpus: '2.0'
+```
+
+## Deployment Strategies
+
+### Blue-Green Deployment
+
+1. Deploy new version to different port
+2. Test new version
+3. Switch traffic to new version
+4. Remove old version
+
+### Rolling Updates
+
+```bash
+# Update with zero downtime
+docker-compose -f docker-compose.prod.yml pull
+docker-compose -f docker-compose.prod.yml up -d --no-deps app
+```
+
+## Best Practices
+
+1. **Use specific image tags** in production
+2. **Implement proper logging** strategy
+3. **Monitor resource usage** continuously
+4. **Backup data regularly**
+5. **Test disaster recovery** procedures
+6. **Keep images updated** with security patches
+7. **Use secrets management** for sensitive data
+8. **Configure log rotation** to prevent disk full
+9. **Implement proper monitoring** and alerting
+10. **Document custom configurations**
+</file>
+
+<file path="Dockerfile">
+# Multi-stage Dockerfile for Keven Backend Template
+# Stage 1: Builder - Install dependencies and build the application
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# Install build dependencies
+RUN apk add --no-cache libc6-compat
+
+# Copy package files
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy source code
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build application
+RUN npm run build
+
+# Stage 2: Production - Create minimal production image
+FROM node:20-alpine AS production
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Install required system dependencies
+RUN apk add --no-cache \
+    dumb-init \
+    curl
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application from builder stage
+COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
+COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
+
+# Create necessary directories
+RUN mkdir -p /app/logs && chown -R nodejs:nodejs /app/logs
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Start application using dumb-init
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "dist/main.js"]
+
+# Stage 3: Development - Development environment with hot reload
+FROM node:20-alpine AS development
+
+# Set environment variables
+ENV NODE_ENV=development
+ENV PORT=3000
+
+# Install system dependencies
+RUN apk add --no-cache \
+    libc6-compat \
+    curl
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install all dependencies (including dev dependencies)
+RUN npm ci && npm cache clean --force
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Copy source code
+COPY --chown=nodejs:nodejs . .
+
+# Create logs directory
+RUN mkdir -p /app/logs && chown -R nodejs:nodejs /app/logs
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Development health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Start development server
+CMD ["npm", "run", "dev"]
+</file>
+
+<file path="nginx.conf">
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    # Logging format
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+    # Access and error logs
+    access_log /var/log/nginx/access.log main;
+    error_log /var/log/nginx/error.log warn;
+
+    # Basic settings
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    client_max_body_size 10M;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 10240;
+    gzip_proxied expired no-cache no-store private must-revalidate auth;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        text/javascript
+        application/json
+        application/javascript
+        application/xml+rss
+        application/atom+xml
+        image/svg+xml;
+
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+    limit_req_zone $binary_remote_addr zone=auth:10m rate=5r/s;
+
+    # Security headers
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'" always;
+
+    # Upstream backend
+    upstream backend {
+        server app:3000 max_fails=3 fail_timeout=30s;
+    }
+
+    server {
+        listen 80;
+        server_name _;
+
+        # Health check endpoint
+        location /health {
+            access_log off;
+            return 200 "healthy\n";
+            add_header Content-Type text/plain;
+        }
+
+        # API endpoints with rate limiting
+        location /api/auth {
+            limit_req zone=auth burst=10 nodelay;
+            limit_req_status 429;
+            
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_connect_timeout 30s;
+            proxy_send_timeout 30s;
+            proxy_read_timeout 30s;
+            
+            # CORS headers
+            add_header Access-Control-Allow-Origin $http_origin always;
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With" always;
+            add_header Access-Control-Allow-Credentials true always;
+            
+            if ($request_method = 'OPTIONS') {
+                return 204;
+            }
+        }
+
+        # General API endpoints
+        location /api {
+            limit_req zone=api burst=20 nodelay;
+            limit_req_status 429;
+            
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_connect_timeout 30s;
+            proxy_send_timeout 30s;
+            proxy_read_timeout 30s;
+            
+            # CORS headers
+            add_header Access-Control-Allow-Origin $http_origin always;
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With" always;
+            add_header Access-Control-Allow-Credentials true always;
+            
+            if ($request_method = 'OPTIONS') {
+                return 204;
+            }
+        }
+
+        # Root redirect to API docs
+        location / {
+            return 301 /api/docs;
+        }
+
+        # Error pages
+        error_page 429 /429.html;
+        location = /429.html {
+            internal;
+            return 429 '{"status":"error","statusCode":429,"message":"Too Many Requests","data":null}';
+            add_header Content-Type application/json always;
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            internal;
+            return 500 '{"status":"error","statusCode":500,"message":"Internal Server Error","data":null}';
+            add_header Content-Type application/json always;
+        }
+    }
+
+    # SSL configuration (uncomment when SSL certificates are available)
+    # server {
+    #     listen 443 ssl http2;
+    #     server_name _;
+    #     
+    #     ssl_certificate /etc/nginx/ssl/cert.pem;
+    #     ssl_certificate_key /etc/nginx/ssl/key.pem;
+    #     ssl_session_cache shared:SSL:1m;
+    #     ssl_session_timeout 5m;
+    #     ssl_ciphers HIGH:!aNULL:!MD5;
+    #     ssl_prefer_server_ciphers on;
+    #     
+    #     # Same location blocks as HTTP server
+    # }
+}
+</file>
+
+<file path="prisma/migrations/20250808071623_init/migration.sql">
+CREATE TABLE "public"."users" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password_hash" TEXT NOT NULL,
+    "first_name" TEXT NOT NULL,
+    "last_name" TEXT NOT NULL,
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "must_change_password" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."roles" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "is_system" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "roles_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."user_roles" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "role_id" TEXT NOT NULL,
+    CONSTRAINT "user_roles_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."modules" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "modules_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."permissions" (
+    "id" TEXT NOT NULL,
+    "module_id" TEXT NOT NULL,
+    "action" TEXT NOT NULL,
+    "scope" TEXT,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_date" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "permissions_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."role_permissions" (
+    "id" TEXT NOT NULL,
+    "role_id" TEXT NOT NULL,
+    "permission_id" TEXT NOT NULL,
+    CONSTRAINT "role_permissions_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."auth_tokens" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "expires_at" TIMESTAMP(3) NOT NULL,
+    "is_revoked" BOOLEAN NOT NULL DEFAULT false,
+    "device_info" TEXT,
+    "ip_address" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "auth_tokens_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "public"."login_sessions" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "access_token_id" TEXT NOT NULL,
+    "refresh_token_id" TEXT NOT NULL,
+    "device_info" TEXT,
+    "ip_address" TEXT,
+    "user_agent" TEXT,
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "last_activity_at" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "login_sessions_pkey" PRIMARY KEY ("id")
+);
+CREATE UNIQUE INDEX "users_email_key" ON "public"."users"("email");
+CREATE UNIQUE INDEX "roles_name_key" ON "public"."roles"("name");
+CREATE UNIQUE INDEX "user_roles_user_id_role_id_key" ON "public"."user_roles"("user_id", "role_id");
+CREATE UNIQUE INDEX "modules_name_key" ON "public"."modules"("name");
+CREATE UNIQUE INDEX "permissions_module_id_action_scope_key" ON "public"."permissions"("module_id", "action", "scope");
+CREATE UNIQUE INDEX "role_permissions_role_id_permission_id_key" ON "public"."role_permissions"("role_id", "permission_id");
+CREATE UNIQUE INDEX "auth_tokens_token_key" ON "public"."auth_tokens"("token");
+CREATE INDEX "auth_tokens_user_id_idx" ON "public"."auth_tokens"("user_id");
+CREATE INDEX "auth_tokens_token_idx" ON "public"."auth_tokens"("token");
+CREATE INDEX "auth_tokens_type_idx" ON "public"."auth_tokens"("type");
+CREATE INDEX "auth_tokens_expires_at_idx" ON "public"."auth_tokens"("expires_at");
+CREATE INDEX "login_sessions_user_id_idx" ON "public"."login_sessions"("user_id");
+CREATE INDEX "login_sessions_access_token_id_idx" ON "public"."login_sessions"("access_token_id");
+CREATE INDEX "login_sessions_refresh_token_id_idx" ON "public"."login_sessions"("refresh_token_id");
+CREATE INDEX "login_sessions_is_active_idx" ON "public"."login_sessions"("is_active");
+ALTER TABLE "public"."user_roles" ADD CONSTRAINT "user_roles_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."user_roles" ADD CONSTRAINT "user_roles_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."roles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."permissions" ADD CONSTRAINT "permissions_module_id_fkey" FOREIGN KEY ("module_id") REFERENCES "public"."modules"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."role_permissions" ADD CONSTRAINT "role_permissions_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."roles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."role_permissions" ADD CONSTRAINT "role_permissions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "public"."permissions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."auth_tokens" ADD CONSTRAINT "auth_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."login_sessions" ADD CONSTRAINT "login_sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."login_sessions" ADD CONSTRAINT "login_sessions_access_token_id_fkey" FOREIGN KEY ("access_token_id") REFERENCES "public"."auth_tokens"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."login_sessions" ADD CONSTRAINT "login_sessions_refresh_token_id_fkey" FOREIGN KEY ("refresh_token_id") REFERENCES "public"."auth_tokens"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+</file>
+
+<file path="prisma/migrations/migration_lock.toml">
+# Please do not edit this file manually
+# It should be added in your version-control system (e.g., Git)
+provider = "postgresql"
+</file>
+
+<file path="prisma/schema.prisma">
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  passwordHash      String   @map("password_hash")
+  firstName         String   @map("first_name")
+  lastName          String   @map("last_name")
+  isActive          Boolean  @default(true) @map("is_active")
+  mustChangePassword Boolean @default(true) @map("must_change_password")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  userRoles    UserRole[]
+  authTokens   AuthToken[]
+  loginSessions LoginSession[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false) @map("is_system")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  roleId String @map("role_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  permissions Permission[]
+
+  @@map("modules")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  moduleId    String   @map("module_id")
+  action      String
+  scope       String?
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_date")
+
+  module          Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  rolePermissions RolePermission[]
+
+  @@unique([moduleId, action, scope])
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String @id @default(uuid())
+  roleId       String @map("role_id")
+  permissionId String @map("permission_id")
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model AuthToken {
+  id         String    @id @default(uuid())
+  userId     String    @map("user_id")
+  token      String    @unique
+  type       String // ACCESS, REFRESH, RESET_PASSWORD, EMAIL_VERIFICATION
+  expiresAt  DateTime  @map("expires_at")
+  isRevoked  Boolean   @default(false) @map("is_revoked")
+  deviceInfo String?   @map("device_info")
+  ipAddress  String?   @map("ip_address")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessSessions  LoginSession[] @relation("AccessToken")
+  refreshSessions LoginSession[] @relation("RefreshToken")
+
+  @@index([userId])
+  @@index([token])
+  @@index([type])
+  @@index([expiresAt])
+  @@map("auth_tokens")
+}
+
+model LoginSession {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  accessTokenId   String    @map("access_token_id")
+  refreshTokenId  String    @map("refresh_token_id")
+  deviceInfo      String?   @map("device_info")
+  ipAddress       String?   @map("ip_address")
+  userAgent       String?   @map("user_agent")
+  isActive        Boolean   @default(true) @map("is_active")
+  lastActivityAt  DateTime  @map("last_activity_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  AuthToken @relation("AccessToken", fields: [accessTokenId], references: [id], onDelete: Cascade)
+  refreshToken AuthToken @relation("RefreshToken", fields: [refreshTokenId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([accessTokenId])
+  @@index([refreshTokenId])
+  @@index([isActive])
+  @@map("login_sessions")
+}
+</file>
+
+<file path="redis.conf">
+# Redis Configuration for Production
+
+# Network
+bind 0.0.0.0
+port 6379
+protected-mode yes
+
+# General
+daemonize no
+supervised no
+pidfile /var/run/redis_6379.pid
+
+# Logging
+loglevel notice
+logfile ""
+syslog-enabled no
+
+# Persistence
+save 900 1
+save 300 10
+save 60 10000
+
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename dump.rdb
+dir /data
+
+# Security
+# requirepass your_redis_password_here
+
+# Memory management
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+
+# Clients
+maxclients 10000
+timeout 0
+tcp-keepalive 300
+
+# Slow log
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+
+# Latency monitoring
+latency-monitor-threshold 100
+
+# Advanced config
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-size -2
+list-compress-depth 0
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+hll-sparse-max-bytes 3000
+stream-node-max-bytes 4096
+stream-node-max-entries 100
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit replica 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10
+dynamic-hz yes
+aof-rewrite-incremental-fsync yes
+rdb-save-incremental-fsync yes
+</file>
+
+<file path="src/__tests__/integration/api.integration.test.ts">
+import request from 'supertest';
+import { Application } from 'express';
+import { TestSetup } from './test-setup';
+import { Server } from '../../api/server';
+</file>
+
+<file path="src/__tests__/integration/auth.integration.test.ts">
+import request from 'supertest';
+import { Application } from 'express';
+import { TestSetup } from './test-setup';
+import { Server } from '../../api/server';
+</file>
+
+<file path="src/__tests__/integration/rbac.integration.test.ts">
+import request from 'supertest';
+import { Application } from 'express';
+import { TestSetup } from './test-setup';
+import { Server } from '../../api/server';
+⋮----
+name: '', // Empty name should be invalid
+⋮----
+name: '', // Empty name should be invalid
+</file>
+
+<file path="src/__tests__/integration/test-setup.ts">
+import { Server } from '../../api/server';
+import { PrismaClientService } from '../../shared/infrastructure/database/prisma.client';
+import { DatabaseConfig } from '../../shared/infrastructure/config/database.config';
+import { EnvironmentConfigService } from '../../shared/infrastructure/config/environment.config';
+import {
+  globalContainer,
+  DependencyRegistrar,
+} from '../../shared/application/dependencies/register-dependencies';
+export class TestSetup
+⋮----
+public static async initialize(): Promise<Server>
+private static async setupTestDatabase(): Promise<void>
+private static async cleanDatabase(): Promise<void>
+public static async cleanup(): Promise<void>
+public static getServer(): Server
+public static getPrismaService(): PrismaClientService
+</file>
+
+<file path="src/__tests__/integration/users.integration.test.ts">
+import request from 'supertest';
+import { Application } from 'express';
+import { TestSetup } from './test-setup';
+import { Server } from '../../api/server';
+⋮----
+firstName: '', // Empty string should be invalid
+</file>
+
+<file path="src/__tests__/server.test.ts">
+
+</file>
+
+<file path="src/api/middleware/async-handler.middleware.ts">
+import { Request, Response, NextFunction } from 'express';
+export function asyncHandler(
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+)
+</file>
+
+<file path="src/api/middleware/compression.middleware.ts">
+import compression from 'compression';
+import { Request, Response } from 'express';
+export class CompressionMiddleware
+⋮----
+public static configure()
+</file>
+
+<file path="src/api/middleware/cors.middleware.ts">
+import cors, { CorsOptions } from 'cors';
+import { EnvironmentConfigService } from '../../shared/infrastructure/config/environment.config';
+export class CorsMiddleware
+⋮----
+public static configure()
+</file>
+
+<file path="src/api/middleware/rate-limit.middleware.ts">
+import rateLimit from 'express-rate-limit';
+import { Request, Response } from 'express';
+⋮----
+interface Request {
+    rateLimit?: {
+      limit: number;
+      current: number;
+      remaining: number;
+      resetTime: number;
+    };
+  }
+⋮----
+export class RateLimitMiddleware
+⋮----
+public static general()
+public static auth()
+public static sensitive()
+public static users()
+public static rbac()
+</file>
+
+<file path="src/api/middleware/security.middleware.ts">
+import helmet from 'helmet';
+import { Request, Response, NextFunction } from 'express';
+export class SecurityMiddleware
+⋮----
+public static configure()
+public static additionalHeaders()
+</file>
+
+<file path="src/main.ts">
+import { Server } from './api/server';
+import { EnvironmentConfigService } from './shared/infrastructure/config/environment.config';
+import {
+  globalContainer,
+  DependencyRegistrar,
+} from './shared/application/dependencies/register-dependencies';
+async function bootstrap(): Promise<void>
+</file>
+
+<file path="src/modules/auth/application/dto/auth-response.dto.ts">
+import { UserEntity } from '../../../users/domain/entities/user.entity';
+import { LoginResult } from '../../domain/services/token.service';
+export interface AuthUserData {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  mustChangePassword: boolean;
+  isActive: boolean;
+}
+export interface LoginResponseData {
+  user: AuthUserData;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+  tokenType: string;
+  sessionId: string;
+}
+export interface RefreshTokenResponseData {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+  tokenType: string;
+}
+export class AuthResponseDto
+⋮----
+constructor(user: UserEntity, loginResult: LoginResult)
+public static fromLoginResult(user: UserEntity, loginResult: LoginResult): AuthResponseDto
+public toJSON(): LoginResponseData
+⋮----
+export class RefreshTokenResponseDto
+⋮----
+constructor(data:
+public toJSON(): RefreshTokenResponseData
+</file>
+
+<file path="src/modules/auth/application/dto/login.dto.ts">
+import { z } from 'zod';
+⋮----
+export type LoginDtoType = z.infer<typeof LoginDtoSchema>;
+export class LoginDto
+⋮----
+constructor(data: unknown)
+public static getSchema()
+public static validate(data: unknown): LoginDtoType
+public toJSON(): LoginDtoType
+</file>
+
+<file path="src/modules/auth/application/dto/refresh-token.dto.ts">
+import { z } from 'zod';
+⋮----
+export type RefreshTokenDtoType = z.infer<typeof RefreshTokenDtoSchema>;
+export class RefreshTokenDto
+⋮----
+constructor(data: unknown)
+public static getSchema()
+public static validate(data: unknown): RefreshTokenDtoType
+public toJSON(): RefreshTokenDtoType
+</file>
+
+<file path="src/modules/auth/application/dto/register.dto.ts">
+import { BadRequestException } from '../../../../shared/domain/exceptions/global-exceptions';
+export class RegisterDto
+⋮----
+constructor(data: any)
+private validate(): void
+</file>
+
+<file path="src/modules/auth/application/use-cases/__tests__/register.use-case.impl.test.ts">
+import { RegisterUseCaseImpl } from '../register.use-case.impl';
+import { UserRepository } from '../../../../users/domain/repositories/user.repository';
+import { PasswordService } from '../../../../users/domain/services/password.service';
+import { UserEntity } from '../../../../users/domain/entities/user.entity';
+import {
+  ConflictException,
+  BadRequestException,
+} from '../../../../../shared/domain/exceptions/global-exceptions';
+⋮----
+// Act & Assert
+⋮----
+// Act & Assert
+</file>
+
+<file path="src/modules/auth/application/use-cases/login.use-case.impl.ts">
+import {
+  UnauthorizedException,
+  NotFoundException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+import { LoginUseCase, LoginRequest, LoginResponse } from '../../domain/use-cases/login.use-case';
+import { UserRepository } from '../../../users/domain/repositories/user.repository';
+import { PasswordService } from '../../../users/domain/services/password.service';
+import { TokenService } from '../../domain/services/token.service';
+import { AuthRepository } from '../../domain/repositories/auth.repository';
+export class LoginUseCaseImpl extends LoginUseCase
+⋮----
+constructor(
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService,
+    private readonly tokenService: TokenService,
+    private readonly authRepository: AuthRepository
+)
+public async execute(request: LoginRequest): Promise<LoginResponse>
+</file>
+
+<file path="src/modules/auth/application/use-cases/logout.use-case.impl.ts">
+import {
+  LogoutUseCase,
+  LogoutRequest,
+  LogoutResponse,
+} from '../../domain/use-cases/logout.use-case';
+import { TokenService } from '../../domain/services/token.service';
+import { AuthRepository } from '../../domain/repositories/auth.repository';
+import { JwtService } from '../../domain/services/jwt.service';
+export class LogoutUseCaseImpl extends LogoutUseCase
+⋮----
+constructor(
+    private readonly tokenService: TokenService,
+    private readonly authRepository: AuthRepository,
+    private readonly jwtService: JwtService
+)
+public async execute(request: LogoutRequest): Promise<LogoutResponse>
+</file>
+
+<file path="src/modules/auth/application/use-cases/refresh-token.use-case.impl.ts">
+import { UnauthorizedException } from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  RefreshTokenUseCase,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+} from '../../domain/use-cases/refresh-token.use-case';
+import { TokenService } from '../../domain/services/token.service';
+import { AuthRepository } from '../../domain/repositories/auth.repository';
+import { UserRepository } from '../../../users/domain/repositories/user.repository';
+export class RefreshTokenUseCaseImpl extends RefreshTokenUseCase
+⋮----
+constructor(
+    private readonly tokenService: TokenService,
+    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository
+)
+public async execute(request: RefreshTokenRequest): Promise<RefreshTokenResponse>
+</file>
+
+<file path="src/modules/auth/application/use-cases/register.use-case.impl.ts">
+import {
+  ConflictException,
+  BadRequestException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  RegisterUseCase,
+  RegisterRequest,
+  RegisterResponse,
+} from '../../domain/use-cases/register.use-case';
+import { UserRepository } from '../../../users/domain/repositories/user.repository';
+import { PasswordService } from '../../../users/domain/services/password.service';
+import { UserEntity } from '../../../users/domain/entities/user.entity';
+export class RegisterUseCaseImpl extends RegisterUseCase
+⋮----
+constructor(
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService
+)
+public async execute(request: RegisterRequest): Promise<RegisterResponse>
+private validateRequest(request: RegisterRequest): void
+</file>
+
+<file path="src/modules/auth/domain/entities/auth-token.entity.ts">
+import { BaseEntity } from '../../../../shared/domain/entities/base.entity';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
+import { DomainException } from '../../../../shared/domain/exceptions/global-exceptions';
+export enum TokenType {
+  ACCESS = 'ACCESS',
+  REFRESH = 'REFRESH',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+  EMAIL_VERIFICATION = 'EMAIL_VERIFICATION',
+}
+export interface AuthTokenProps {
+  id: string;
+  userId: string;
+  token: string;
+  type: TokenType;
+  expiresAt: Date;
+  isRevoked: boolean;
+  deviceInfo?: string;
+  ipAddress?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export class AuthTokenEntity extends BaseEntity
+⋮----
+constructor(props: AuthTokenProps)
+public static create(data: {
+    userId: string;
+    token: string;
+    type: TokenType;
+    expiresAt: Date;
+    deviceInfo?: string;
+    ipAddress?: string;
+}): AuthTokenEntity
+public static fromPrimitives(data: {
+    id: string;
+    userId: string;
+    token: string;
+    type: string;
+    expiresAt: Date;
+    isRevoked: boolean;
+    deviceInfo?: string;
+    ipAddress?: string;
+    createdAt: Date;
+    updatedAt: Date;
+}): AuthTokenEntity
+public isExpired(): boolean
+public isValid(): boolean
+public revoke(): AuthTokenEntity
+public getTimeUntilExpiry(): number
+public isAccessToken(): boolean
+public isRefreshToken(): boolean
+public isResetPasswordToken(): boolean
+public isEmailVerificationToken(): boolean
+private validate(): void
+public toPrimitives():
+</file>
+
+<file path="src/modules/auth/domain/entities/login-session.entity.ts">
+import { BaseEntity } from '../../../../shared/domain/entities/base.entity';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
+import { DomainException } from '../../../../shared/domain/exceptions/global-exceptions';
+export interface LoginSessionProps {
+  id: string;
+  userId: string;
+  accessTokenId: string;
+  refreshTokenId: string;
+  deviceInfo?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  isActive: boolean;
+  lastActivityAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export class LoginSessionEntity extends BaseEntity
+⋮----
+constructor(props: LoginSessionProps)
+public static create(data: {
+    userId: string;
+    accessTokenId: string;
+    refreshTokenId: string;
+    deviceInfo?: string;
+    ipAddress?: string;
+    userAgent?: string;
+}): LoginSessionEntity
+public static fromPrimitives(data: {
+    id: string;
+    userId: string;
+    accessTokenId: string;
+    refreshTokenId: string;
+    deviceInfo?: string;
+    ipAddress?: string;
+    userAgent?: string;
+    isActive: boolean;
+    lastActivityAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+}): LoginSessionEntity
+public deactivate(): LoginSessionEntity
+public updateLastActivity(): LoginSessionEntity
+public isExpired(maxInactivityMinutes: number = 30): boolean
+public getInactivityDuration(): number
+public getDeviceFingerprint(): string
+private validate(): void
+public toPrimitives():
+</file>
+
+<file path="src/modules/auth/domain/repositories/auth.repository.ts">
+import { BaseRepository } from '../../../../shared/domain/repositories/base.repository';
+import { AuthTokenEntity, TokenType } from '../entities/auth-token.entity';
+import { LoginSessionEntity } from '../entities/login-session.entity';
+export interface CreateAuthTokenData {
+  userId: string;
+  token: string;
+  type: TokenType;
+  expiresAt: Date;
+  deviceInfo?: string;
+  ipAddress?: string;
+}
+export interface UpdateAuthTokenData {
+  isRevoked?: boolean;
+}
+export interface CreateLoginSessionData {
+  userId: string;
+  accessTokenId: string;
+  refreshTokenId: string;
+  deviceInfo?: string;
+  ipAddress?: string;
+  userAgent?: string;
+}
+export interface UpdateLoginSessionData {
+  isActive?: boolean;
+  lastActivityAt?: Date;
+}
+export abstract class AuthRepository extends BaseRepository<
+⋮----
+abstract findTokenByValue(token: string): Promise<AuthTokenEntity | null>;
+abstract findTokensByUserId(userId: string, type?: TokenType): Promise<AuthTokenEntity[]>;
+abstract findValidTokenByValue(token: string): Promise<AuthTokenEntity | null>;
+abstract revokeToken(tokenId: string): Promise<void>;
+abstract revokeAllUserTokens(userId: string, type?: TokenType): Promise<void>;
+abstract deleteExpiredTokens(): Promise<void>;
+abstract findExpiredTokens(): Promise<AuthTokenEntity[]>;
+abstract createSession(data: CreateLoginSessionData): Promise<LoginSessionEntity>;
+abstract findSessionById(id: string): Promise<LoginSessionEntity | null>;
+abstract findSessionByTokenId(tokenId: string): Promise<LoginSessionEntity | null>;
+abstract findActiveSessionsByUserId(userId: string): Promise<LoginSessionEntity[]>;
+abstract updateSession(id: string, data: UpdateLoginSessionData): Promise<LoginSessionEntity>;
+abstract deactivateSession(id: string): Promise<void>;
+abstract deactivateAllUserSessions(userId: string): Promise<void>;
+abstract findInactiveSessions(maxInactivityMinutes: number): Promise<LoginSessionEntity[]>;
+abstract cleanupInactiveSessions(maxInactivityMinutes: number): Promise<void>;
+abstract findSessionWithTokens(sessionId: string): Promise<
+abstract revokeSessionAndTokens(sessionId: string): Promise<void>;
+</file>
+
+<file path="src/modules/auth/domain/services/token.service.ts">
+import { BaseService } from '../../../../shared/domain/services/base.service';
+import { AuthTokenEntity, TokenType } from '../entities/auth-token.entity';
+import { LoginSessionEntity } from '../entities/login-session.entity';
+export interface TokenPair {
+  accessToken: AuthTokenEntity;
+  refreshToken: AuthTokenEntity;
+}
+export interface LoginResult {
+  session: LoginSessionEntity;
+  tokens: TokenPair;
+  accessTokenJwt: string;
+  refreshTokenJwt: string;
+}
+export abstract class TokenService extends BaseService
+⋮----
+abstract createTokenPair(
+    userId: string,
+    deviceInfo?: string,
+    ipAddress?: string
+): Promise<
+abstract refreshTokenPair(refreshToken: string): Promise<
+abstract revokeToken(tokenId: string): Promise<void>;
+abstract revokeAllUserTokens(userId: string): Promise<void>;
+abstract validateAccessToken(token: string): Promise<AuthTokenEntity | null>;
+abstract validateRefreshToken(token: string): Promise<AuthTokenEntity | null>;
+abstract cleanupExpiredTokens(): Promise<void>;
+abstract createResetPasswordToken(userId: string): Promise<AuthTokenEntity>;
+abstract createEmailVerificationToken(userId: string): Promise<AuthTokenEntity>;
+abstract validateResetPasswordToken(token: string): Promise<AuthTokenEntity | null>;
+abstract validateEmailVerificationToken(token: string): Promise<AuthTokenEntity | null>;
+</file>
+
+<file path="src/modules/auth/domain/use-cases/login.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+import { LoginResult } from '../services/token.service';
+export interface LoginRequest {
+  email: string;
+  password: string;
+  deviceInfo?: string;
+  ipAddress?: string;
+  userAgent?: string;
+}
+export interface LoginResponse {
+  result: LoginResult;
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    mustChangePassword: boolean;
+  };
+}
+export abstract class LoginUseCase extends BaseUseCase<LoginRequest, LoginResponse>
+⋮----
+abstract execute(request: LoginRequest): Promise<LoginResponse>;
+</file>
+
+<file path="src/modules/auth/domain/use-cases/logout.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+export interface LogoutRequest {
+  accessToken?: string;
+  refreshToken?: string;
+  sessionId?: string;
+  logoutAllSessions?: boolean;
+}
+export interface LogoutResponse {
+  success: boolean;
+  message: string;
+}
+export abstract class LogoutUseCase extends BaseUseCase<LogoutRequest, LogoutResponse>
+⋮----
+abstract execute(request: LogoutRequest): Promise<LogoutResponse>;
+</file>
+
+<file path="src/modules/auth/domain/use-cases/refresh-token.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+export interface RefreshTokenRequest {
+  refreshToken: string;
+  deviceInfo?: string;
+  ipAddress?: string;
+}
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+}
+export abstract class RefreshTokenUseCase extends BaseUseCase<
+⋮----
+abstract execute(request: RefreshTokenRequest): Promise<RefreshTokenResponse>;
+</file>
+
+<file path="src/modules/auth/domain/use-cases/register.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+export interface RegisterResponse {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+  mustChangePassword: boolean;
+  createdAt: Date;
+}
+export abstract class RegisterUseCase extends BaseUseCase<RegisterRequest, RegisterResponse>
+⋮----
+abstract execute(request: RegisterRequest): Promise<RegisterResponse>;
+</file>
+
+<file path="src/modules/auth/infrastructure/mappers/auth.mapper.ts">
+import { AuthToken as PrismaAuthToken, LoginSession as PrismaLoginSession } from '@prisma/client';
+import { AuthTokenEntity, TokenType } from '../../domain/entities/auth-token.entity';
+import { LoginSessionEntity } from '../../domain/entities/login-session.entity';
+import {
+  CreateAuthTokenData,
+  CreateLoginSessionData,
+  UpdateAuthTokenData,
+  UpdateLoginSessionData,
+} from '../../domain/repositories/auth.repository';
+import { v4 as uuidv4 } from 'uuid';
+export class AuthMapper
+⋮----
+public static authTokenToDomain(prismaToken: PrismaAuthToken): AuthTokenEntity
+public static authTokensToDomainArray(prismaTokens: PrismaAuthToken[]): AuthTokenEntity[]
+public static authTokenToPrismaCreate(createData: CreateAuthTokenData):
+public static authTokenToPrismaUpdate(updateData: UpdateAuthTokenData): Partial<PrismaAuthToken>
+public static loginSessionToDomain(prismaSession: PrismaLoginSession): LoginSessionEntity
+public static loginSessionsToDomainArray(
+    prismaSessions: PrismaLoginSession[]
+): LoginSessionEntity[]
+public static loginSessionToPrismaCreate(createData: CreateLoginSessionData):
+public static loginSessionToPrismaUpdate(
+    updateData: UpdateLoginSessionData
+): Partial<PrismaLoginSession>
+public static validateTokenType(type: string): TokenType
+public static tokenTypeToString(type: TokenType): string
+</file>
+
+<file path="src/modules/auth/infrastructure/repositories/auth.repository.impl.ts">
+import { PrismaClient } from '@prisma/client';
+import {
+  AuthRepository,
+  CreateAuthTokenData,
+  UpdateAuthTokenData,
+  CreateLoginSessionData,
+  UpdateLoginSessionData,
+} from '../../domain/repositories/auth.repository';
+import { AuthTokenEntity, TokenType } from '../../domain/entities/auth-token.entity';
+import { LoginSessionEntity } from '../../domain/entities/login-session.entity';
+import { AuthMapper } from '../mappers/auth.mapper';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+export class AuthRepositoryImpl extends AuthRepository
+⋮----
+constructor(private readonly prisma: PrismaClient)
+public async findById(id: string): Promise<AuthTokenEntity | null>
+public async findAll(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+    where?: Record<string, any>;
+}): Promise<AuthTokenEntity[]>
+public async create(data: CreateAuthTokenData): Promise<AuthTokenEntity>
+public async update(id: string, data: UpdateAuthTokenData): Promise<AuthTokenEntity>
+public async delete(id: string): Promise<void>
+public async exists(id: string): Promise<boolean>
+public async count(where?: Record<string, any>): Promise<number>
+public async findTokenByValue(token: string): Promise<AuthTokenEntity | null>
+public async findTokensByUserId(userId: string, type?: TokenType): Promise<AuthTokenEntity[]>
+public async findValidTokenByValue(token: string): Promise<AuthTokenEntity | null>
+public async revokeToken(tokenId: string): Promise<void>
+public async revokeAllUserTokens(userId: string, type?: TokenType): Promise<void>
+public async deleteExpiredTokens(): Promise<void>
+public async findExpiredTokens(): Promise<AuthTokenEntity[]>
+public async createSession(data: CreateLoginSessionData): Promise<LoginSessionEntity>
+public async findSessionById(id: string): Promise<LoginSessionEntity | null>
+public async findSessionByTokenId(tokenId: string): Promise<LoginSessionEntity | null>
+public async findActiveSessionsByUserId(userId: string): Promise<LoginSessionEntity[]>
+public async updateSession(
+    id: string,
+    data: UpdateLoginSessionData
+): Promise<LoginSessionEntity>
+public async deactivateSession(id: string): Promise<void>
+public async deactivateAllUserSessions(userId: string): Promise<void>
+public async findInactiveSessions(maxInactivityMinutes: number): Promise<LoginSessionEntity[]>
+public async cleanupInactiveSessions(maxInactivityMinutes: number): Promise<void>
+public async findSessionWithTokens(sessionId: string): Promise<
+public async revokeSessionAndTokens(sessionId: string): Promise<void>
+</file>
+
+<file path="src/modules/rbac/application/dto/create-role.dto.ts">
+import { BadRequestException } from '../../../../shared/domain/exceptions/global-exceptions';
+export class CreateRoleDto
+⋮----
+constructor(data: any)
+private validate(): void
+</file>
+
+<file path="src/modules/rbac/application/dto/list-roles.dto.ts">
+import { BadRequestException } from '../../../../shared/domain/exceptions/global-exceptions';
+export class ListRolesDto
+⋮----
+constructor(query: any)
+private validate(): void
+</file>
+
+<file path="src/modules/rbac/application/dto/update-role.dto.ts">
+import { BadRequestException } from '../../../../shared/domain/exceptions/global-exceptions';
+export class UpdateRoleDto
+⋮----
+constructor(data: any)
+private validate(): void
+</file>
+
+<file path="src/modules/rbac/application/use-cases/__tests__/create-role.use-case.impl.test.ts">
+import { CreateRoleUseCaseImpl } from '../create-role.use-case.impl';
+import { RoleRepository } from '../../../domain/repositories/role.repository';
+import { RoleEntity } from '../../../domain/entities/role.entity';
+import {
+  ConflictException,
+  BadRequestException,
+} from '../../../../../shared/domain/exceptions/global-exceptions';
+⋮----
+// Act & Assert
+</file>
+
+<file path="src/modules/rbac/application/use-cases/__tests__/list-roles.use-case.impl.test.ts">
+import { ListRolesUseCaseImpl } from '../list-roles.use-case.impl';
+import { RoleRepository } from '../../../domain/repositories/role.repository';
+import { RoleEntity } from '../../../domain/entities/role.entity';
+</file>
+
+<file path="src/modules/rbac/application/use-cases/create-role.use-case.impl.ts">
+import {
+  ConflictException,
+  BadRequestException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  CreateRoleUseCase,
+  CreateRoleRequest,
+  CreateRoleResponse,
+} from '../../domain/use-cases/create-role.use-case';
+import { RoleRepository } from '../../domain/repositories/role.repository';
+export class CreateRoleUseCaseImpl extends CreateRoleUseCase
+⋮----
+constructor(private readonly roleRepository: RoleRepository)
+public async execute(request: CreateRoleRequest): Promise<CreateRoleResponse>
+private validateRequest(request: CreateRoleRequest): void
+</file>
+
+<file path="src/modules/rbac/application/use-cases/list-roles.use-case.impl.ts">
+import {
+  ListRolesUseCase,
+  ListRolesRequest,
+  ListRolesResponse,
+} from '../../domain/use-cases/list-roles.use-case';
+import { RoleRepository } from '../../domain/repositories/role.repository';
+export class ListRolesUseCaseImpl extends ListRolesUseCase
+⋮----
+constructor(private readonly roleRepository: RoleRepository)
+public async execute(request: ListRolesRequest): Promise<ListRolesResponse>
+</file>
+
+<file path="src/modules/rbac/domain/entities/module.entity.ts">
+import { BaseEntity } from '../../../../shared/domain/entities/base.entity';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
+import { DomainException } from '../../../../shared/domain/exceptions/global-exceptions';
+export interface ModuleProps {
+  id: string;
+  name: string;
+  description?: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export class ModuleEntity extends BaseEntity
+⋮----
+constructor(props: ModuleProps)
+public static create(data: {
+    name: string;
+    description?: string;
+    isActive?: boolean;
+}): ModuleEntity
+public static fromPersistence(data: {
+    id: string;
+    name: string;
+    description?: string;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}): ModuleEntity
+public update(data:
+public activate(): ModuleEntity
+public deactivate(): ModuleEntity
+private validate(): void
+public toJSON()
+</file>
+
+<file path="src/modules/rbac/domain/entities/permission.entity.ts">
+import { BaseEntity } from '../../../../shared/domain/entities/base.entity';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
+import { DomainException } from '../../../../shared/domain/exceptions/global-exceptions';
+export interface PermissionProps {
+  id: string;
+  moduleId: string;
+  action: string;
+  scope?: string;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export class PermissionEntity extends BaseEntity
+⋮----
+constructor(props: PermissionProps)
+public static create(data: {
+    moduleId: string;
+    action: string;
+    scope?: string;
+    name: string;
+    description?: string;
+}): PermissionEntity
+public static fromPersistence(data: {
+    id: string;
+    moduleId: string;
+    action: string;
+    scope?: string;
+    name: string;
+    description?: string;
+    createdAt: Date;
+    updatedAt: Date;
+}): PermissionEntity
+public update(data:
+public getFullPermissionKey(): string
+public matches(action: string, scope?: string): boolean
+private validate(): void
+public toJSON()
+</file>
+
+<file path="src/modules/rbac/domain/entities/role.entity.ts">
+import { BaseEntity } from '../../../../shared/domain/entities/base.entity';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
+import { DomainException } from '../../../../shared/domain/exceptions/global-exceptions';
+export interface RoleProps {
+  id: string;
+  name: string;
+  description?: string;
+  isSystem: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export class RoleEntity extends BaseEntity
+⋮----
+constructor(props: RoleProps)
+public static create(data: {
+    name: string;
+    description?: string;
+    isSystem?: boolean;
+}): RoleEntity
+public static fromPersistence(data: {
+    id: string;
+    name: string;
+    description?: string;
+    isSystem: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}): RoleEntity
+public update(data:
+public canBeDeleted(): boolean
+private validate(): void
+public toJSON()
+</file>
+
+<file path="src/modules/rbac/domain/repositories/module.repository.ts">
+import { BaseRepository } from '../../../../shared/domain/repositories/base.repository';
+import { ModuleEntity } from '../entities/module.entity';
+export interface CreateModuleData {
+  name: string;
+  description?: string;
+  isActive?: boolean;
+}
+export interface UpdateModuleData {
+  name?: string;
+  description?: string;
+  isActive?: boolean;
+}
+export abstract class ModuleRepository extends BaseRepository<
+⋮----
+abstract findByName(name: string): Promise<ModuleEntity | null>;
+abstract findActiveModules(): Promise<ModuleEntity[]>;
+abstract findInactiveModules(): Promise<ModuleEntity[]>;
+abstract existsByName(name: string): Promise<boolean>;
+abstract findModulesWithPermissions(): Promise<ModuleEntity[]>;
+abstract countActiveModules(): Promise<number>;
+abstract countInactiveModules(): Promise<number>;
+abstract searchModules(
+    searchTerm: string,
+    options?: {
+      skip?: number;
+      take?: number;
+      includeInactive?: boolean;
+    }
+  ): Promise<ModuleEntity[]>;
+abstract bulkUpdateStatus(moduleIds: string[], isActive: boolean): Promise<void>;
+</file>
+
+<file path="src/modules/rbac/domain/repositories/permission.repository.ts">
+import { BaseRepository } from '../../../../shared/domain/repositories/base.repository';
+import { PermissionEntity } from '../entities/permission.entity';
+export interface CreatePermissionData {
+  moduleId: string;
+  action: string;
+  scope?: string;
+  name: string;
+  description?: string;
+}
+export interface UpdatePermissionData {
+  name?: string;
+  description?: string;
+}
+export abstract class PermissionRepository extends BaseRepository<
+⋮----
+abstract findByModuleAndAction(
+    moduleId: string,
+    action: string,
+    scope?: string
+  ): Promise<PermissionEntity | null>;
+abstract findByModule(moduleId: string): Promise<PermissionEntity[]>;
+abstract findByAction(action: string): Promise<PermissionEntity[]>;
+abstract existsByModuleAndAction(
+    moduleId: string,
+    action: string,
+    scope?: string
+  ): Promise<boolean>;
+abstract findPermissionsByRoleId(roleId: string): Promise<PermissionEntity[]>;
+abstract findPermissionsByUserId(userId: string): Promise<PermissionEntity[]>;
+abstract findPermissionsByRoleIds(roleIds: string[]): Promise<PermissionEntity[]>;
+abstract searchPermissions(
+    searchTerm: string,
+    options?: {
+      skip?: number;
+      take?: number;
+      moduleId?: string;
+    }
+  ): Promise<PermissionEntity[]>;
+abstract countPermissionsByModule(moduleId: string): Promise<number>;
+abstract bulkCreate(permissions: CreatePermissionData[]): Promise<PermissionEntity[]>;
+abstract bulkDelete(permissionIds: string[]): Promise<void>;
+</file>
+
+<file path="src/modules/rbac/domain/repositories/role.repository.ts">
+import { BaseRepository } from '../../../../shared/domain/repositories/base.repository';
+import { RoleEntity } from '../entities/role.entity';
+export interface CreateRoleData {
+  name: string;
+  description?: string;
+  isSystem?: boolean;
+}
+export interface UpdateRoleData {
+  name?: string;
+  description?: string;
+}
+export abstract class RoleRepository extends BaseRepository<
+⋮----
+abstract findByName(name: string): Promise<RoleEntity | null>;
+abstract findSystemRoles(): Promise<RoleEntity[]>;
+abstract findNonSystemRoles(): Promise<RoleEntity[]>;
+abstract existsByName(name: string): Promise<boolean>;
+abstract findRolesWithPermissions(roleIds: string[]): Promise<RoleEntity[]>;
+abstract assignPermissionToRole(roleId: string, permissionId: string): Promise<void>;
+abstract removePermissionFromRole(roleId: string, permissionId: string): Promise<void>;
+abstract getRolePermissions(roleId: string): Promise<string[]>;
+abstract findRolesByUserId(userId: string): Promise<RoleEntity[]>;
+abstract assignRoleToUser(userId: string, roleId: string): Promise<void>;
+abstract removeRoleFromUser(userId: string, roleId: string): Promise<void>;
+abstract getUserRoles(userId: string): Promise<string[]>;
+abstract bulkAssignRolesToUser(userId: string, roleIds: string[]): Promise<void>;
+abstract bulkRemoveRolesFromUser(userId: string, roleIds: string[]): Promise<void>;
+</file>
+
+<file path="src/modules/rbac/domain/use-cases/create-role.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+export interface CreateRoleRequest {
+  name: string;
+  description?: string;
+  isSystem?: boolean;
+}
+export interface CreateRoleResponse {
+  id: string;
+  name: string;
+  description?: string;
+  isSystem: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export abstract class CreateRoleUseCase extends BaseUseCase<CreateRoleRequest, CreateRoleResponse>
+⋮----
+abstract execute(request: CreateRoleRequest): Promise<CreateRoleResponse>;
+</file>
+
+<file path="src/modules/rbac/domain/use-cases/list-roles.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+export interface ListRolesRequest {
+  skip?: number;
+  take?: number;
+  includeSystem?: boolean;
+  searchTerm?: string;
+}
+export interface RoleListItem {
+  id: string;
+  name: string;
+  description?: string;
+  isSystem: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface ListRolesResponse {
+  roles: RoleListItem[];
+  total: number;
+  skip: number;
+  take: number;
+}
+export abstract class ListRolesUseCase extends BaseUseCase<ListRolesRequest, ListRolesResponse>
+⋮----
+abstract execute(request: ListRolesRequest): Promise<ListRolesResponse>;
+</file>
+
+<file path="src/modules/rbac/infrastructure/controllers/permissions.controller.ts">
+import { Request, Response, NextFunction } from 'express';
+import { ApiResponse } from '../../../../shared/domain/wrappers/api-response.wrapper';
+import { AuthenticatedRequest } from '../../../../shared/application/middleware/auth.middleware';
+export class PermissionsController
+⋮----
+constructor()
+public async createPermission(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async listPermissions(req: Request, res: Response, next: NextFunction): Promise<void>
+public async getPermissionById(req: Request, res: Response, next: NextFunction): Promise<void>
+public async updatePermission(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async deletePermission(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async getPermissionsByModule(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async assignPermissionToRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async removePermissionFromRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+</file>
+
+<file path="src/modules/rbac/infrastructure/controllers/roles.controller.ts">
+import { Request, Response, NextFunction } from 'express';
+import { CreateRoleUseCase } from '../../domain/use-cases/create-role.use-case';
+import { ListRolesUseCase } from '../../domain/use-cases/list-roles.use-case';
+import { RoleRepository } from '../../domain/repositories/role.repository';
+import { CreateRoleDto } from '../../application/dto/create-role.dto';
+import { UpdateRoleDto } from '../../application/dto/update-role.dto';
+import { ListRolesDto } from '../../application/dto/list-roles.dto';
+import { ApiResponse } from '../../../../shared/domain/wrappers/api-response.wrapper';
+import { AuthenticatedRequest } from '../../../../shared/application/middleware/auth.middleware';
+import { NotFoundException } from '../../../../shared/domain/exceptions/global-exceptions';
+export class RolesController
+⋮----
+constructor(
+public async createRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async listRoles(req: Request, res: Response, next: NextFunction): Promise<void>
+public async getRoleById(req: Request, res: Response, next: NextFunction): Promise<void>
+public async updateRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async deleteRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async assignPermissionToRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async removePermissionFromRole(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async getRolePermissions(req: Request, res: Response, next: NextFunction): Promise<void>
+public async assignRoleToUser(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async removeRoleFromUser(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async getUserRoles(req: Request, res: Response, next: NextFunction): Promise<void>
+</file>
+
+<file path="src/modules/rbac/infrastructure/repositories/module.repository.impl.ts">
+import { PrismaClient } from '@prisma/client';
+import {
+  ModuleRepository,
+  CreateModuleData,
+  UpdateModuleData,
+} from '../../domain/repositories/module.repository';
+import { ModuleEntity } from '../../domain/entities/module.entity';
+import {
+  NotFoundException,
+  ConflictException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+export class ModuleRepositoryImpl extends ModuleRepository
+⋮----
+constructor(private readonly prisma: PrismaClient)
+async findAll(options?:
+async findById(id: string): Promise<ModuleEntity | null>
+async create(data: CreateModuleData): Promise<ModuleEntity>
+async update(id: string, data: UpdateModuleData): Promise<ModuleEntity>
+async delete(id: string): Promise<void>
+async exists(id: string): Promise<boolean>
+async count(): Promise<number>
+async findByName(name: string): Promise<ModuleEntity | null>
+async findActiveModules(): Promise<ModuleEntity[]>
+async findInactiveModules(): Promise<ModuleEntity[]>
+async existsByName(name: string): Promise<boolean>
+async findModulesWithPermissions(): Promise<ModuleEntity[]>
+async countActiveModules(): Promise<number>
+async countInactiveModules(): Promise<number>
+async searchModules(
+    searchTerm: string,
+    options?: {
+      skip?: number;
+      take?: number;
+      includeInactive?: boolean;
+    }
+): Promise<ModuleEntity[]>
+async bulkUpdateStatus(moduleIds: string[], isActive: boolean): Promise<void>
+</file>
+
+<file path="src/modules/rbac/infrastructure/repositories/permission.repository.impl.ts">
+import { PrismaClient } from '@prisma/client';
+import {
+  PermissionRepository,
+  CreatePermissionData,
+  UpdatePermissionData,
+} from '../../domain/repositories/permission.repository';
+import { PermissionEntity } from '../../domain/entities/permission.entity';
+import {
+  NotFoundException,
+  ConflictException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+export class PermissionRepositoryImpl extends PermissionRepository
+⋮----
+constructor(private readonly prisma: PrismaClient)
+async findAll(options?:
+async findById(id: string): Promise<PermissionEntity | null>
+async create(data: CreatePermissionData): Promise<PermissionEntity>
+async update(id: string, data: UpdatePermissionData): Promise<PermissionEntity>
+async delete(id: string): Promise<void>
+async exists(id: string): Promise<boolean>
+async count(): Promise<number>
+async findByModuleAndAction(
+    moduleId: string,
+    action: string,
+    scope?: string
+): Promise<PermissionEntity | null>
+async findByModule(moduleId: string): Promise<PermissionEntity[]>
+async findByAction(action: string): Promise<PermissionEntity[]>
+async existsByModuleAndAction(
+    moduleId: string,
+    action: string,
+    scope?: string
+): Promise<boolean>
+async findPermissionsByRoleId(roleId: string): Promise<PermissionEntity[]>
+async findPermissionsByUserId(userId: string): Promise<PermissionEntity[]>
+async findPermissionsByRoleIds(roleIds: string[]): Promise<PermissionEntity[]>
+async searchPermissions(
+    searchTerm: string,
+    options?: {
+      skip?: number;
+      take?: number;
+      moduleId?: string;
+    }
+): Promise<PermissionEntity[]>
+async countPermissionsByModule(moduleId: string): Promise<number>
+async bulkCreate(permissions: CreatePermissionData[]): Promise<PermissionEntity[]>
+async bulkDelete(permissionIds: string[]): Promise<void>
+</file>
+
+<file path="src/modules/rbac/infrastructure/repositories/role.repository.impl.ts">
+import { PrismaClient } from '@prisma/client';
+import {
+  RoleRepository,
+  CreateRoleData,
+  UpdateRoleData,
+} from '../../domain/repositories/role.repository';
+import { RoleEntity } from '../../domain/entities/role.entity';
+import {
+  NotFoundException,
+  ConflictException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+export class RoleRepositoryImpl extends RoleRepository
+⋮----
+constructor(private readonly prisma: PrismaClient)
+async findAll(options?:
+async findById(id: string): Promise<RoleEntity | null>
+async create(data: CreateRoleData): Promise<RoleEntity>
+async update(id: string, data: UpdateRoleData): Promise<RoleEntity>
+async delete(id: string): Promise<void>
+async exists(id: string): Promise<boolean>
+async count(): Promise<number>
+async findByName(name: string): Promise<RoleEntity | null>
+async findSystemRoles(): Promise<RoleEntity[]>
+async findNonSystemRoles(): Promise<RoleEntity[]>
+async existsByName(name: string): Promise<boolean>
+async findRolesWithPermissions(roleIds: string[]): Promise<RoleEntity[]>
+async assignPermissionToRole(roleId: string, permissionId: string): Promise<void>
+async removePermissionFromRole(roleId: string, permissionId: string): Promise<void>
+async getRolePermissions(roleId: string): Promise<string[]>
+async findRolesByUserId(userId: string): Promise<RoleEntity[]>
+async assignRoleToUser(userId: string, roleId: string): Promise<void>
+async removeRoleFromUser(userId: string, roleId: string): Promise<void>
+async getUserRoles(userId: string): Promise<string[]>
+async bulkAssignRolesToUser(userId: string, roleIds: string[]): Promise<void>
+async bulkRemoveRolesFromUser(userId: string, roleIds: string[]): Promise<void>
+</file>
+
+<file path="src/modules/rbac/infrastructure/routes/roles.routes.ts">
+import { Router } from 'express';
+import { RolesController } from '../controllers/roles.controller';
+import { AuthMiddleware } from '../../../../shared/application/middleware/auth.middleware';
+import { RateLimitMiddleware } from '../../../../api/middleware/rate-limit.middleware';
+import {
+  PermissionMiddleware,
+  CommonPermissions,
+} from '../../../../shared/application/middleware/permission.middleware';
+export class RolesRoutes
+⋮----
+constructor(private readonly rolesController: RolesController)
+private setupRoutes(): void
+private asyncHandler(fn: any)
+public getRouter(): Router
+⋮----
+export function createRolesRoutes(rolesController: RolesController): Router
+</file>
+
+<file path="src/modules/users/application/dto/create-user.dto.ts">
+import { z } from 'zod';
+⋮----
+export type CreateUserDtoType = z.infer<typeof CreateUserDtoSchema>;
+export class CreateUserDto
+⋮----
+constructor(data: unknown)
+public static getSchema()
+public static validate(data: unknown): CreateUserDtoType
+public toJSON(): CreateUserDtoType
+</file>
+
+<file path="src/modules/users/application/dto/get-user-by-id.dto.ts">
+import { z } from 'zod';
+⋮----
+export type GetUserByIdDtoType = z.infer<typeof GetUserByIdDtoSchema>;
+export class GetUserByIdDto
+⋮----
+constructor(data: unknown)
+public static getSchema()
+public static validate(data: unknown): GetUserByIdDtoType
+public toJSON(): GetUserByIdDtoType
+</file>
+
+<file path="src/modules/users/application/dto/get-users.dto.ts">
+import { z } from 'zod';
+⋮----
+export type GetUsersDtoType = z.infer<typeof GetUsersDtoSchema>;
+export class GetUsersDto
+⋮----
+constructor(data: unknown)
+public static getSchema()
+public static validate(data: unknown): GetUsersDtoType
+public getSkip(): number
+public getTake(): number
+public getOrderByObject(): Record<string, 'asc' | 'desc'>
+public toJSON(): GetUsersDtoType
+</file>
+
+<file path="src/modules/users/application/dto/update-user.dto.ts">
+import { z } from 'zod';
+⋮----
+export type UpdateUserDtoType = z.infer<typeof UpdateUserDtoSchema>;
+export class UpdateUserDto
+⋮----
+constructor(data: unknown)
+public static getSchema()
+public static validate(data: unknown): UpdateUserDtoType
+public hasChanges(): boolean
+public toJSON(): UpdateUserDtoType
+</file>
+
+<file path="src/modules/users/application/dto/user-response.dto.ts">
+import { UserEntity } from '../../domain/entities/user.entity';
+export interface UserResponseData {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  isActive: boolean;
+  mustChangePassword: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+export class UserResponseDto
+⋮----
+constructor(user: UserEntity)
+public static fromEntity(user: UserEntity): UserResponseDto
+public static fromEntities(users: UserEntity[]): UserResponseDto[]
+public toJSON(): UserResponseData
+</file>
+
+<file path="src/modules/users/application/use-cases/__tests__/create-user.use-case.impl.test.ts">
+import { CreateUserUseCaseImpl } from '../create-user.use-case.impl';
+import { UserRepository } from '../../../domain/repositories/user.repository';
+import { PasswordService } from '../../../domain/services/password.service';
+import { UserEntity } from '../../../domain/entities/user.entity';
+import {
+  ConflictException,
+  BadRequestException,
+  DomainException,
+} from '../../../../../shared/domain/exceptions/global-exceptions';
+⋮----
+// Act & Assert
+</file>
+
+<file path="src/modules/users/application/use-cases/create-user.use-case.impl.ts">
+import {
+  ConflictException,
+  DomainException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  CreateUserUseCase,
+  CreateUserRequest,
+  CreateUserResponse,
+} from '../../domain/use-cases/create-user.use-case';
+import { UserRepository } from '../../domain/repositories/user.repository';
+import { PasswordService } from '../../domain/services/password.service';
+import { UserEntity } from '../../domain/entities/user.entity';
+import { Password } from '../../../../shared/domain/value-objects/password.value-object';
+export class CreateUserUseCaseImpl extends CreateUserUseCase
+⋮----
+constructor(
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService
+)
+public async execute(request: CreateUserRequest): Promise<CreateUserResponse>
+private async validatePassword(password: string): Promise<void>
+private async ensureUserDoesNotExist(email: string): Promise<void>
+</file>
+
+<file path="src/modules/users/application/use-cases/delete-user.use-case.impl.ts">
+import { NotFoundException } from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  DeleteUserUseCase,
+  DeleteUserRequest,
+  DeleteUserResponse,
+} from '../../domain/use-cases/delete-user.use-case';
+import { UserRepository } from '../../domain/repositories/user.repository';
+export class DeleteUserUseCaseImpl extends DeleteUserUseCase
+⋮----
+constructor(private readonly userRepository: UserRepository)
+public async execute(request: DeleteUserRequest): Promise<DeleteUserResponse>
+</file>
+
+<file path="src/modules/users/application/use-cases/get-user-by-id.use-case.impl.ts">
+import { NotFoundException } from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  GetUserByIdUseCase,
+  GetUserByIdRequest,
+  GetUserByIdResponse,
+} from '../../domain/use-cases/get-user-by-id.use-case';
+import { UserRepository } from '../../domain/repositories/user.repository';
+export class GetUserByIdUseCaseImpl extends GetUserByIdUseCase
+⋮----
+constructor(private readonly userRepository: UserRepository)
+public async execute(request: GetUserByIdRequest): Promise<GetUserByIdResponse>
+</file>
+
+<file path="src/modules/users/application/use-cases/get-users.use-case.impl.ts">
+import {
+  GetUsersUseCase,
+  GetUsersRequest,
+  GetUsersResponse,
+} from '../../domain/use-cases/get-users.use-case';
+import { UserRepository } from '../../domain/repositories/user.repository';
+import {
+  PaginatedResult,
+  PaginationHelper,
+} from '../../../../shared/domain/wrappers/pagination-wrapper';
+import { UserEntity } from '../../domain/entities/user.entity';
+export class GetUsersUseCaseImpl extends GetUsersUseCase
+⋮----
+constructor(private readonly userRepository: UserRepository)
+public async execute(request: GetUsersRequest): Promise<GetUsersResponse>
+</file>
+
+<file path="src/modules/users/application/use-cases/update-user.use-case.impl.ts">
+import {
+  NotFoundException,
+  ConflictException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+import {
+  UpdateUserUseCase,
+  UpdateUserRequest,
+  UpdateUserResponse,
+} from '../../domain/use-cases/update-user.use-case';
+import { UserRepository } from '../../domain/repositories/user.repository';
+export class UpdateUserUseCaseImpl extends UpdateUserUseCase
+⋮----
+constructor(private readonly userRepository: UserRepository)
+public async execute(request: UpdateUserRequest): Promise<UpdateUserResponse>
+private async ensureEmailNotTaken(email: string, currentUserId: string): Promise<void>
+</file>
+
+<file path="src/modules/users/domain/entities/user.entity.ts">
+import { BaseEntity } from '../../../../shared/domain/entities/base.entity';
+import { Email } from '../../../../shared/domain/value-objects/email.value-object';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
+import { DomainException } from '../../../../shared/domain/exceptions/global-exceptions';
+export interface UserProps {
+  id: string;
+  email: Email;
+  passwordHash: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+  mustChangePassword: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export class UserEntity extends BaseEntity
+⋮----
+constructor(props: UserProps)
+public static create(data: {
+    email: string;
+    passwordHash: string;
+    firstName: string;
+    lastName: string;
+    isActive?: boolean;
+    mustChangePassword?: boolean;
+}): UserEntity
+public static fromPrimitives(data: {
+    id: string;
+    email: string;
+    passwordHash: string;
+    firstName: string;
+    lastName: string;
+    isActive: boolean;
+    mustChangePassword: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}): UserEntity
+public getFullName(): string
+public getDisplayName(): string
+public activate(): UserEntity
+public deactivate(): UserEntity
+public markPasswordChangeNotRequired(): UserEntity
+public updatePassword(newPasswordHash: string): UserEntity
+public updateProfile(data: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+}): UserEntity
+private validate(): void
+public toPrimitives():
+</file>
+
+<file path="src/modules/users/domain/repositories/user.repository.ts">
+import { BaseRepository } from '../../../../shared/domain/repositories/base.repository';
+import { UserEntity } from '../entities/user.entity';
+export interface CreateUserData {
+  email: string;
+  passwordHash: string;
+  firstName: string;
+  lastName: string;
+  isActive?: boolean;
+  mustChangePassword?: boolean;
+}
+export interface UpdateUserData {
+  email?: string;
+  passwordHash?: string;
+  firstName?: string;
+  lastName?: string;
+  isActive?: boolean;
+  mustChangePassword?: boolean;
+}
+export abstract class UserRepository extends BaseRepository<
+⋮----
+abstract findByEmail(email: string): Promise<UserEntity | null>;
+abstract findByEmailWithRoles(email: string): Promise<UserEntity | null>;
+abstract existsByEmail(email: string): Promise<boolean>;
+abstract findActiveUsers(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+  }): Promise<UserEntity[]>;
+abstract findInactiveUsers(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+  }): Promise<UserEntity[]>;
+abstract countActiveUsers(): Promise<number>;
+abstract countInactiveUsers(): Promise<number>;
+abstract findUsersThatMustChangePassword(): Promise<UserEntity[]>;
+abstract bulkUpdateStatus(userIds: string[], isActive: boolean): Promise<void>;
+abstract searchUsers(
+    searchTerm: string,
+    options?: {
+      skip?: number;
+      take?: number;
+      includeInactive?: boolean;
+    }
+  ): Promise<UserEntity[]>;
+</file>
+
+<file path="src/modules/users/domain/services/password.service.ts">
+import { BaseService } from '../../../../shared/domain/services/base.service';
+export abstract class PasswordService extends BaseService
+⋮----
+abstract hash(password: string): Promise<string>;
+abstract compare(password: string, hash: string): Promise<boolean>;
+abstract generateRandomPassword(length?: number): string;
+abstract isPasswordCompromised(password: string): Promise<boolean>;
+abstract getPasswordStrength(password: string):
+⋮----
+export interface PasswordValidationResult {
+  isValid: boolean;
+  errors: string[];
+  strength: 'weak' | 'medium' | 'strong';
+}
+export abstract class PasswordValidationService extends BaseService
+⋮----
+abstract validate(password: string): PasswordValidationResult;
+abstract validatePasswordChange(
+    currentPassword: string,
+    newPassword: string,
+    userPasswordHistory?: string[]
+  ): Promise<PasswordValidationResult>;
+</file>
+
+<file path="src/modules/users/domain/use-cases/create-user.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+import { UserEntity } from '../entities/user.entity';
+export interface CreateUserRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  isActive?: boolean;
+  mustChangePassword?: boolean;
+}
+export interface CreateUserResponse {
+  user: UserEntity;
+}
+export abstract class CreateUserUseCase extends BaseUseCase<CreateUserRequest, CreateUserResponse>
+⋮----
+abstract execute(request: CreateUserRequest): Promise<CreateUserResponse>;
+</file>
+
+<file path="src/modules/users/domain/use-cases/delete-user.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+export interface DeleteUserRequest {
+  id: string;
+}
+export interface DeleteUserResponse {
+  success: boolean;
+}
+export abstract class DeleteUserUseCase extends BaseUseCase<DeleteUserRequest, DeleteUserResponse>
+⋮----
+abstract execute(request: DeleteUserRequest): Promise<DeleteUserResponse>;
+</file>
+
+<file path="src/modules/users/domain/use-cases/get-user-by-id.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+import { UserEntity } from '../entities/user.entity';
+export interface GetUserByIdRequest {
+  id: string;
+}
+export interface GetUserByIdResponse {
+  user: UserEntity;
+}
+export abstract class GetUserByIdUseCase extends BaseUseCase<
+⋮----
+abstract execute(request: GetUserByIdRequest): Promise<GetUserByIdResponse>;
+</file>
+
+<file path="src/modules/users/domain/use-cases/get-users.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+import { PaginatedResult } from '../../../../shared/domain/wrappers/pagination-wrapper';
+import { UserEntity } from '../entities/user.entity';
+export interface GetUsersRequest {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  includeInactive?: boolean;
+  orderBy?: Record<string, 'asc' | 'desc'>;
+}
+export interface GetUsersResponse {
+  result: PaginatedResult<UserEntity>;
+}
+export abstract class GetUsersUseCase extends BaseUseCase<GetUsersRequest, GetUsersResponse>
+⋮----
+abstract execute(request: GetUsersRequest): Promise<GetUsersResponse>;
+</file>
+
+<file path="src/modules/users/domain/use-cases/update-user.use-case.ts">
+import { BaseUseCase } from '../../../../shared/domain/use-cases/base.use-case';
+import { UserEntity } from '../entities/user.entity';
+export interface UpdateUserRequest {
+  id: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  isActive?: boolean;
+  mustChangePassword?: boolean;
+}
+export interface UpdateUserResponse {
+  user: UserEntity;
+}
+export abstract class UpdateUserUseCase extends BaseUseCase<UpdateUserRequest, UpdateUserResponse>
+⋮----
+abstract execute(request: UpdateUserRequest): Promise<UpdateUserResponse>;
+</file>
+
+<file path="src/modules/users/infrastructure/controllers/users.controller.ts">
+import { Request, Response, NextFunction } from 'express';
+import { CreateUserUseCase } from '../../domain/use-cases/create-user.use-case';
+import { GetUsersUseCase } from '../../domain/use-cases/get-users.use-case';
+import { GetUserByIdUseCase } from '../../domain/use-cases/get-user-by-id.use-case';
+import { UpdateUserUseCase } from '../../domain/use-cases/update-user.use-case';
+import { DeleteUserUseCase } from '../../domain/use-cases/delete-user.use-case';
+import { CreateUserDto } from '../../application/dto/create-user.dto';
+import { UpdateUserDto } from '../../application/dto/update-user.dto';
+import { GetUsersDto } from '../../application/dto/get-users.dto';
+import { GetUserByIdDto } from '../../application/dto/get-user-by-id.dto';
+import { UserResponseDto } from '../../application/dto/user-response.dto';
+import { ApiResponse } from '../../../../shared/domain/wrappers/api-response.wrapper';
+import { AuthenticatedRequest } from '../../../../shared/application/middleware/auth.middleware';
+export class UsersController
+⋮----
+constructor(
+public async createUser(req: Request, res: Response, next: NextFunction): Promise<void>
+public async getUsers(req: Request, res: Response, next: NextFunction): Promise<void>
+public async getUserById(req: Request, res: Response, next: NextFunction): Promise<void>
+public async updateUser(req: Request, res: Response, next: NextFunction): Promise<void>
+public async deleteUser(req: Request, res: Response, next: NextFunction): Promise<void>
+public async getCurrentUser(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async activateUser(req: Request, res: Response, next: NextFunction): Promise<void>
+public async deactivateUser(req: Request, res: Response, next: NextFunction): Promise<void>
+</file>
+
+<file path="src/modules/users/infrastructure/mappers/user.mapper.ts">
+import { User as PrismaUser } from '@prisma/client';
+import { UserEntity } from '../../domain/entities/user.entity';
+import { Email } from '../../../../shared/domain/value-objects/email.value-object';
+import { CreateUserData, UpdateUserData } from '../../domain/repositories/user.repository';
+import { v4 as uuidv4 } from 'uuid';
+export class UserMapper
+⋮----
+public static toDomain(prismaUser: PrismaUser): UserEntity
+public static toDomainArray(prismaUsers: PrismaUser[]): UserEntity[]
+public static toPrismaCreate(createData: CreateUserData):
+public static toPrismaUpdate(updateData: UpdateUserData): Partial<PrismaUser>
+public static fromDomainToPrisma(
+    userEntity: UserEntity
+): Omit<PrismaUser, 'createdAt' | 'updatedAt'>
+public static validateEmail(email: string): boolean
+</file>
+
+<file path="src/modules/users/infrastructure/repositories/user.repository.impl.ts">
+import { PrismaClient } from '@prisma/client';
+import {
+  UserRepository,
+  CreateUserData,
+  UpdateUserData,
+} from '../../domain/repositories/user.repository';
+import { UserEntity } from '../../domain/entities/user.entity';
+import { UserMapper } from '../mappers/user.mapper';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+export class UserRepositoryImpl extends UserRepository
+⋮----
+constructor(private readonly prisma: PrismaClient)
+public async findById(id: string): Promise<UserEntity | null>
+public async findByEmail(email: string): Promise<UserEntity | null>
+public async findByEmailWithRoles(email: string): Promise<UserEntity | null>
+public async findAll(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+    where?: Record<string, any>;
+}): Promise<UserEntity[]>
+public async create(data: CreateUserData): Promise<UserEntity>
+public async update(id: string, data: UpdateUserData): Promise<UserEntity>
+public async delete(id: string): Promise<void>
+public async exists(id: string): Promise<boolean>
+public async existsByEmail(email: string): Promise<boolean>
+public async count(where?: Record<string, any>): Promise<number>
+public async findActiveUsers(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+}): Promise<UserEntity[]>
+public async findInactiveUsers(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+}): Promise<UserEntity[]>
+public async countActiveUsers(): Promise<number>
+public async countInactiveUsers(): Promise<number>
+public async findUsersThatMustChangePassword(): Promise<UserEntity[]>
+public async bulkUpdateStatus(userIds: string[], isActive: boolean): Promise<void>
+public async searchUsers(
+    searchTerm: string,
+    options?: {
+      skip?: number;
+      take?: number;
+      includeInactive?: boolean;
+    }
+): Promise<UserEntity[]>
+</file>
+
+<file path="src/modules/users/infrastructure/services/bcrypt-password.service.ts">
+import bcrypt from 'bcrypt';
+import {
+  PasswordService,
+  PasswordValidationService,
+  PasswordValidationResult,
+} from '../../domain/services/password.service';
+import { EnvironmentConfigService } from '../../../../shared/infrastructure/config/environment.config';
+import { InternalServerErrorException } from '../../../../shared/domain/exceptions/global-exceptions';
+export class BcryptPasswordService extends PasswordService
+⋮----
+constructor()
+public async hash(password: string): Promise<string>
+public async compare(password: string, hash: string): Promise<boolean>
+public generateRandomPassword(length: number = 16): string
+⋮----
+// Ensure at least one character from each required type
+⋮----
+public async isPasswordCompromised(password: string): Promise<boolean>
+⋮----
+// In a real implementation, this would check against services like HaveIBeenPwned
+// For now, we'll implement a basic check against common passwords
+⋮----
+public getPasswordStrength(password: string):
+⋮----
+export class BcryptPasswordValidationService extends PasswordValidationService
+⋮----
+constructor(passwordService: BcryptPasswordService)
+public validate(password: string): PasswordValidationResult
+public async validatePasswordChange(
+    currentPassword: string,
+    newPassword: string,
+    userPasswordHistory?: string[]
+): Promise<PasswordValidationResult>
+</file>
+
+<file path="src/shared/application/dependencies/dependency.container.ts">
+import { TokenType } from './tokens';
+export interface DependencyDescriptor {
+  implementation: new (...args: any[]) => any;
+  dependencies?: TokenType[];
+  isSingleton?: boolean;
+}
+export class DependencyContainer
+⋮----
+public registerClass<T>(
+    token: TokenType,
+    implementation: new (...args: any[]) => T,
+    options?: {
+      dependencies?: TokenType[];
+      isSingleton?: boolean;
+    }
+): void
+public registerValue<T>(token: TokenType, value: T): void
+public resolve<T>(token: TokenType): T
+public has(token: TokenType): boolean
+public clear(): void
+public getDependencyGraph(): Record<string, string[]>
+public validateDependencies(): void
+⋮----
+const visit = (token: TokenType) =>
+</file>
+
+<file path="src/shared/application/middleware/error-handler.middleware.ts">
+import { Request, Response, NextFunction } from 'express';
+import { BaseException, ValidationException } from '../../domain/exceptions/global-exceptions';
+import { ApiResponse } from '../../domain/wrappers/api-response.wrapper';
+import { ZodError } from 'zod';
+export class ErrorHandlerMiddleware
+⋮----
+public static handle(error: Error, req: Request, res: Response, next: NextFunction): void
+private static handleBaseException(error: BaseException, res: Response): void
+private static handleZodError(error: ZodError, res: Response): void
+private static handleJwtError(error: Error, res: Response): void
+private static handleJwtExpiredError(error: Error, res: Response): void
+private static handleSyntaxError(error: Error, res: Response): void
+private static handleUnknownError(error: Error, res: Response): void
+</file>
+
+<file path="src/shared/application/middleware/permission.middleware.ts">
+import { Request, Response, NextFunction } from 'express';
+import {
+  ForbiddenException,
+  UnauthorizedException,
+} from '../../domain/exceptions/global-exceptions';
+import { AuthenticatedRequest, AuthenticatedUser } from './auth.middleware';
+import { PermissionRepository } from '../../../modules/rbac/domain/repositories/permission.repository';
+import { RoleRepository } from '../../../modules/rbac/domain/repositories/role.repository';
+export interface PermissionCheckOptions {
+  module: string;
+  action: string;
+  scope?: string;
+  operator?: 'AND' | 'OR';
+}
+export class PermissionMiddleware
+⋮----
+public static setRepositories(
+    permissionRepository: PermissionRepository,
+    roleRepository: RoleRepository
+)
+public static requirePermission(permissions: PermissionCheckOptions | PermissionCheckOptions[])
+public static requireRole(roles: string | string[], operator: 'AND' | 'OR' = 'OR')
+public static requireAny(permissions?: PermissionCheckOptions[], roles?: string[])
+public static requireOwnershipOrPermission(
+    getResourceOwnerId: (req: AuthenticatedRequest) => Promise<string> | string,
+    fallbackPermissions: PermissionCheckOptions[]
+)
+public static adminOnly()
+public static superAdminOnly()
+private static async checkUserPermissions(
+    user: AuthenticatedUser,
+    permissions: PermissionCheckOptions[],
+    operator: 'AND' | 'OR' = 'OR'
+): Promise<boolean>
+private static async getUserRoles(userId: string): Promise<string[]>
+⋮----
+export function hasPermission(permission: PermissionCheckOptions)
+export function hasRole(roles: string | string[])
+export function hasAnyPermission(permissions: PermissionCheckOptions[])
+export function isOwnerOr(
+  getOwnerId: (req: AuthenticatedRequest) => Promise<string> | string,
+  fallbackPermissions: PermissionCheckOptions[]
+)
+</file>
+
+<file path="src/shared/application/middleware/permissions.middleware.ts">
+import { Request, Response, NextFunction } from 'express';
+import {
+  ForbiddenException,
+  UnauthorizedException,
+} from '../../domain/exceptions/global-exceptions';
+import { AuthenticatedRequest } from './auth.middleware';
+export interface PermissionRequirement {
+  action: string;
+  scope?: string;
+  module?: string;
+}
+export class PermissionsMiddleware
+⋮----
+public static requirePermission(requirement: PermissionRequirement)
+public static requireAnyPermission(requirements: PermissionRequirement[])
+public static requireAllPermissions(requirements: PermissionRequirement[])
+public static requireRole(roleName: string)
+public static requireAnyRole(roleNames: string[])
+private static checkUserPermission(
+    userPermissions: string[],
+    requirement: PermissionRequirement
+): boolean
+</file>
+
+<file path="src/shared/application/middleware/validation.middleware.ts">
+import { Request, Response, NextFunction } from 'express';
+import { ZodSchema } from 'zod';
+import { ValidationException } from '../../domain/exceptions/global-exceptions';
+export type ValidationTarget = 'body' | 'params' | 'query';
+export class ValidationMiddleware
+⋮----
+public static validate(schema: ZodSchema, target: ValidationTarget = 'body')
+public static validateMultiple(
+    validations: Array<{ schema: ZodSchema; target: ValidationTarget }>
+)
+private static getDataToValidate(req: Request, target: ValidationTarget): any
+private static setValidatedData(req: Request, target: ValidationTarget, data: any): void
+</file>
+
+<file path="src/shared/domain/entities/base.entity.ts">
+export abstract class BaseEntity
+⋮----
+constructor(
+public equals(entity: BaseEntity): boolean
+public toString(): string
+</file>
+
+<file path="src/shared/domain/exceptions/global-exceptions.ts">
+export abstract class BaseException extends Error
+⋮----
+constructor(message: string, code: string, statusCode: number)
+public toJSON(): object
+⋮----
+export class BadRequestException extends BaseException
+⋮----
+constructor(message: string = 'Bad Request', code: string = 'BAD_REQUEST')
+⋮----
+export class UnauthorizedException extends BaseException
+⋮----
+constructor(message: string = 'Unauthorized', code: string = 'UNAUTHORIZED')
+⋮----
+export class ForbiddenException extends BaseException
+⋮----
+constructor(message: string = 'Forbidden', code: string = 'FORBIDDEN')
+⋮----
+export class NotFoundException extends BaseException
+⋮----
+constructor(message: string = 'Not Found', code: string = 'NOT_FOUND')
+⋮----
+export class ConflictException extends BaseException
+⋮----
+constructor(message: string = 'Conflict', code: string = 'CONFLICT')
+⋮----
+export class UnprocessableEntityException extends BaseException
+⋮----
+constructor(message: string = 'Unprocessable Entity', code: string = 'UNPROCESSABLE_ENTITY')
+⋮----
+export class InternalServerErrorException extends BaseException
+⋮----
+constructor(message: string = 'Internal Server Error', code: string = 'INTERNAL_SERVER_ERROR')
+⋮----
+export class ValidationException extends BaseException
+⋮----
+constructor(
+    errors: Record<string, string[]>,
+    message: string = 'Validation failed',
+    code: string = 'VALIDATION_ERROR'
+)
+⋮----
+export class DomainException extends BaseException
+⋮----
+constructor(message: string, code: string = 'DOMAIN_ERROR')
+</file>
+
+<file path="src/shared/domain/repositories/base.repository.ts">
+export abstract class BaseRepository<TEntity, TCreateData, TUpdateData>
+⋮----
+abstract findById(id: string): Promise<TEntity | null>;
+abstract findAll(options?: {
+    skip?: number;
+    take?: number;
+    orderBy?: Record<string, 'asc' | 'desc'>;
+    where?: Record<string, any>;
+  }): Promise<TEntity[]>;
+abstract create(data: TCreateData): Promise<TEntity>;
+abstract update(id: string, data: TUpdateData): Promise<TEntity>;
+abstract delete(id: string): Promise<void>;
+abstract exists(id: string): Promise<boolean>;
+abstract count(where?: Record<string, any>): Promise<number>;
+</file>
+
+<file path="src/shared/domain/services/base.service.ts">
+export abstract class BaseService
+⋮----
+constructor()
+protected log(message: string, data?: any): void
+protected logError(message: string, error?: any): void
+</file>
+
+<file path="src/shared/domain/use-cases/base.use-case.ts">
+export abstract class BaseUseCase<TRequest, TResponse>
+⋮----
+constructor()
+abstract execute(request: TRequest): Promise<TResponse>;
+protected log(message: string, data?: any): void
+protected logError(message: string, error?: any): void
+</file>
+
+<file path="src/shared/domain/value-objects/base.value-object.ts">
+export abstract class ValueObject<T>
+⋮----
+constructor(protected readonly value: T)
+protected abstract validate(value: T): void;
+public getValue(): T
+public equals(other: ValueObject<T>): boolean
+public toString(): string
+</file>
+
+<file path="src/shared/domain/value-objects/email.value-object.ts">
+import { ValueObject } from './base.value-object';
+⋮----
+export class Email extends ValueObject<string>
+⋮----
+protected validate(value: string): void
+public static create(email: string): Email
+public getDomain(): string
+public getLocalPart(): string
+</file>
+
+<file path="src/shared/domain/value-objects/password.value-object.ts">
+import { ValueObject } from './base.value-object';
+export class Password extends ValueObject<string>
+⋮----
+protected validate(value: string): void
+public static create(password: string): Password
+public getStrength(): 'weak' | 'medium' | 'strong'
+</file>
+
+<file path="src/shared/domain/value-objects/uuid.value-object.ts">
+import { ValueObject } from './base.value-object';
+import { v4 as uuidv4, validate as validateUuid } from 'uuid';
+export class UUID extends ValueObject<string>
+⋮----
+protected validate(value: string): void
+public static create(uuid?: string): UUID
+public static generate(): UUID
+public static isValid(value: string): boolean
+</file>
+
+<file path="src/shared/domain/wrappers/api-response.wrapper.ts">
+export class ApiResponse<T>
+⋮----
+constructor(
+public static success<T>(
+    data: T,
+    message: string = 'Success',
+    statusCode: number = 200
+): ApiResponse<T>
+public static error<T = null>(
+    message: string,
+    statusCode: number = 500,
+    errors?: Record<string, string[]>
+): ApiResponse<T>
+public static created<T>(data: T, message: string = 'Created successfully'): ApiResponse<T>
+public static noContent(message: string = 'No content'): ApiResponse<null>
+public static badRequest(
+    message: string = 'Bad request',
+    errors?: Record<string, string[]>
+): ApiResponse<null>
+public static unauthorized(message: string = 'Unauthorized'): ApiResponse<null>
+public static forbidden(message: string = 'Forbidden'): ApiResponse<null>
+public static notFound(message: string = 'Not found'): ApiResponse<null>
+public static conflict(message: string = 'Conflict'): ApiResponse<null>
+public static internalError(message: string = 'Internal server error'): ApiResponse<null>
+public toJSON(): object
+</file>
+
+<file path="src/shared/domain/wrappers/pagination-wrapper.ts">
+export interface PaginationOptions {
+  page: number;
+  limit: number;
+  orderBy?: Record<string, 'asc' | 'desc'>;
+}
+export class PaginationMeta
+⋮----
+constructor(
+public static create(page: number, limit: number, totalCount: number): PaginationMeta
+public toJSON(): object
+⋮----
+export class PaginatedResult<T>
+⋮----
+public static create<T>(
+    data: T[],
+    page: number,
+    limit: number,
+    totalCount: number
+): PaginatedResult<T>
+⋮----
+export class PaginationHelper
+⋮----
+public static validateOptions(options: Partial<PaginationOptions>): PaginationOptions
+public static getSkipTake(page: number, limit: number):
+</file>
+
+<file path="src/shared/infrastructure/config/database.config.ts">
+import { EnvironmentConfig } from './environment.config';
+export interface DatabaseConnectionOptions {
+  url: string;
+  maxConnections?: number;
+  connectionTimeout?: number;
+  queryTimeout?: number;
+  logQueries?: boolean;
+}
+export class DatabaseConfig
+⋮----
+constructor(environmentConfig: EnvironmentConfig)
+public getConnectionOptions(): DatabaseConnectionOptions
+public getUrl(): string
+public shouldLogQueries(): boolean
+public getMaxConnections(): number
+public getConnectionTimeout(): number
+public getQueryTimeout(): number
+public validateConnection(): void
+</file>
+
+<file path="src/shared/infrastructure/config/environment.config.ts">
+import dotenv from 'dotenv';
+import { z } from 'zod';
+⋮----
+export type EnvironmentConfig = z.infer<typeof EnvironmentSchema>;
+export class EnvironmentConfigService
+⋮----
+private constructor()
+public static getInstance(): EnvironmentConfigService
+public get(): EnvironmentConfig
+public isDevelopment(): boolean
+public isProduction(): boolean
+public isTest(): boolean
+private logConfiguration(): void
+private maskSensitiveData(value: string): string
+</file>
+
+<file path="src/shared/infrastructure/database/prisma.client.ts">
+import { PrismaClient } from '@prisma/client';
+import { DatabaseConfig } from '../config/database.config';
+export class PrismaClientService
+⋮----
+private constructor(databaseConfig: DatabaseConfig)
+public static getInstance(databaseConfig?: DatabaseConfig): PrismaClientService
+public getClient(): PrismaClient
+public async connect(): Promise<void>
+public async disconnect(): Promise<void>
+public async healthCheck(): Promise<boolean>
+public isConnectionActive(): boolean
+private setupEventHandlers(): void
+</file>
+
+<file path="src/shared/infrastructure/swagger/swagger.config.ts">
+import swaggerJSDoc from 'swagger-jsdoc';
+</file>
+
+<file path="src/shared/infrastructure/swagger/swagger.service.ts">
+import express, { Application, Request, Response } from 'express';
+⋮----
+import { swaggerSpec } from './swagger.config';
+export class SwaggerService
+⋮----
+public static setup(app: Application, basePath: string = '/api/docs'): void
+</file>
+
+<file path="src/test/setup.ts">
+
+</file>
+
+<file path=".claude/settings.local.json">
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run:*)",
+      "Bash(npx prisma db seed:*)",
+      "Bash(npm test)"
+    ],
+    "deny": []
+  }
+}
+</file>
+
+<file path=".husky/pre-commit">
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Ejecutar lint-staged (solo en archivos modificados)
+npx lint-staged
+
+# Ejecutar tests para asegurar que no se rompe nada
+</file>
+
+<file path="eslint.config.js">
+export default tseslint.config(
+</file>
+
+<file path="jest.config.cjs">
+/* eslint-disable no-undef */
+⋮----
+branches: 70, // Reduced due to integration test mocking
+⋮----
+testTimeout: 30000, // Increased timeout for integration tests
+// Separate unit and integration tests
+</file>
+
+<file path="prisma/seed.ts">
+import { Permission, PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+⋮----
+async function main()
+</file>
+
+<file path="src/modules/auth/domain/services/jwt.service.ts">
+import { BaseService } from '../../../../shared/domain/services/base.service';
+export interface TokenPayload {
+  userId: string;
+  email: string;
+  tokenId: string;
+  sessionId?: string;
+}
+export interface AccessTokenPayload extends TokenPayload {
+  roles?: string[];
+  permissions?: string[];
+}
+export interface RefreshTokenPayload extends TokenPayload {
+}
+export interface TokenValidationResult {
+  isValid: boolean;
+  payload?: TokenPayload;
+  error?: string;
+}
+export abstract class JwtService extends BaseService
+⋮----
+abstract generateAccessToken(payload: AccessTokenPayload): Promise<string>;
+abstract generateRefreshToken(payload: RefreshTokenPayload): Promise<string>;
+abstract verifyAccessToken(token: string): Promise<TokenValidationResult>;
+abstract verifyRefreshToken(token: string): Promise<TokenValidationResult>;
+abstract decodeToken(token: string): TokenPayload | null;
+abstract getTokenExpiry(token: string): Date | null;
+abstract isTokenExpired(token: string): boolean;
+</file>
+
+<file path="src/modules/auth/infrastructure/services/jwt.service.impl.ts">
+import jwt, { SignOptions } from 'jsonwebtoken';
+import {
+  JwtService,
+  TokenPayload,
+  AccessTokenPayload,
+  RefreshTokenPayload,
+  TokenValidationResult,
+} from '../../domain/services/jwt.service';
+import { EnvironmentConfigService } from '../../../../shared/infrastructure/config/environment.config';
+import {
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+export class JwtServiceImpl extends JwtService
+⋮----
+constructor()
+public async generateAccessToken(payload: AccessTokenPayload): Promise<string>
+public async generateRefreshToken(payload: RefreshTokenPayload): Promise<string>
+public async verifyAccessToken(token: string): Promise<TokenValidationResult>
+public async verifyRefreshToken(token: string): Promise<TokenValidationResult>
+public decodeToken(token: string): TokenPayload | null
+public getTokenExpiry(token: string): Date | null
+public isTokenExpired(token: string): boolean
+</file>
+
+<file path="src/modules/auth/infrastructure/services/token.service.impl.ts">
+import { TokenService, TokenPair } from '../../domain/services/token.service';
+import {
+  JwtService,
+  AccessTokenPayload,
+  RefreshTokenPayload,
+} from '../../domain/services/jwt.service';
+import { AuthRepository } from '../../domain/repositories/auth.repository';
+import { AuthTokenEntity, TokenType } from '../../domain/entities/auth-token.entity';
+import { UserRepository } from '../../../users/domain/repositories/user.repository';
+import {
+  UnauthorizedException,
+  NotFoundException,
+} from '../../../../shared/domain/exceptions/global-exceptions';
+import { EnvironmentConfigService } from '../../../../shared/infrastructure/config/environment.config';
+export class TokenServiceImpl extends TokenService
+⋮----
+constructor(
+    private readonly jwtService: JwtService,
+    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository
+)
+public async createTokenPair(
+    userId: string,
+    deviceInfo?: string,
+    ipAddress?: string
+): Promise<
+⋮----
+tokenId: '', // Will be filled with JWT
+roles: [], // TODO: Get from user roles when RBAC is implemented
+permissions: [], // TODO: Get from user permissions when RBAC is implemented
+⋮----
+tokenId: '', // Will be filled with JWT
+⋮----
+// Store tokens in database first to get IDs
+⋮----
+public async refreshTokenPair(refreshTokenJwt: string): Promise<
+public async revokeToken(tokenId: string): Promise<void>
+public async revokeAllUserTokens(userId: string): Promise<void>
+public async validateAccessToken(tokenJwt: string): Promise<AuthTokenEntity | null>
+public async validateRefreshToken(tokenJwt: string): Promise<AuthTokenEntity | null>
+public async cleanupExpiredTokens(): Promise<void>
+public async createResetPasswordToken(userId: string): Promise<AuthTokenEntity>
+⋮----
+token: '', // Will be generated as UUID by the entity
+⋮----
+public async createEmailVerificationToken(userId: string): Promise<AuthTokenEntity>
+⋮----
+token: '', // Will be generated as UUID by the entity
+⋮----
+public async validateResetPasswordToken(token: string): Promise<AuthTokenEntity | null>
+public async validateEmailVerificationToken(token: string): Promise<AuthTokenEntity | null>
+private parseExpiryToMs(expiry: string): number
+</file>
+
+<file path="src/shared/application/dependencies/tokens.ts">
+export type TokenType = (typeof TOKENS)[keyof typeof TOKENS];
+</file>
+
+<file path="src/shared/application/middleware/auth.middleware.ts">
+import { Request, Response, NextFunction } from 'express';
+import {
+  UnauthorizedException,
+  ForbiddenException,
+} from '../../domain/exceptions/global-exceptions';
+export interface AuthenticatedUser {
+  id: string;
+  email: string;
+  sessionId?: string;
+  roles: string[];
+  permissions: string[];
+}
+export interface AuthenticatedRequest extends Request {
+  user?: AuthenticatedUser;
+}
+export class AuthMiddleware
+⋮----
+public static setServices(jwtService: any, tokenService: any)
+public static authenticate()
+public static authorize(requiredPermissions: string[])
+public static requireRole(requiredRoles: string[])
+public static optional()
+private static extractToken(req: Request): string | null
+</file>
+
+<file path=".gitignore">
+# Dependencies
+node_modules/
+
+# Compiled output
+dist/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+*.lcov
+
+# Prisma
+prisma/dev.db*
+
+# Husky (mantener .husky/ en el repo)
+# .husky/ <- NO agregar esto al .gitignore
+</file>
+
+<file path="docker-compose.yml">
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: keven-backend-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: starter_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d starter_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - keven-network
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: keven-backend-dev
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://user:password@postgres:5432/starter_db
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - keven-network
+    profiles:
+      - dev
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: keven-backend-prod
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:password@postgres:5432/starter_db
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - keven-network
+    profiles:
+      - prod
+  redis:
+    image: redis:7-alpine
+    container_name: keven-backend-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - keven-network
+    profiles:
+      - with-redis
+volumes:
+  postgres_data:
+  redis_data:
+  node_modules:
+networks:
+  keven-network:
+    driver: bridge
+</file>
+
+<file path="src/modules/auth/infrastructure/controllers/auth.controller.ts">
+import { Request, Response, NextFunction } from 'express';
+import { LoginUseCase } from '../../domain/use-cases/login.use-case';
+import { RefreshTokenUseCase } from '../../domain/use-cases/refresh-token.use-case';
+import { LogoutUseCase } from '../../domain/use-cases/logout.use-case';
+import { RegisterUseCase } from '../../domain/use-cases/register.use-case';
+import { LoginDto } from '../../application/dto/login.dto';
+import { RefreshTokenDto } from '../../application/dto/refresh-token.dto';
+import { RegisterDto } from '../../application/dto/register.dto';
+import { AuthResponseDto, RefreshTokenResponseDto } from '../../application/dto/auth-response.dto';
+import { ApiResponse } from '../../../../shared/domain/wrappers/api-response.wrapper';
+import { AuthenticatedRequest } from '../../../../shared/application/middleware/auth.middleware';
+export class AuthController
+⋮----
+constructor(
+public async register(req: Request, res: Response, next: NextFunction): Promise<void>
+public async login(req: Request, res: Response, next: NextFunction): Promise<void>
+public async refreshToken(req: Request, res: Response, next: NextFunction): Promise<void>
+public async logout(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void>
+public async logoutAll(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async getProfile(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void>
+public async validateToken(req: Request, res: Response, next: NextFunction): Promise<void>
+private extractToken(req: Request): string | null
+private getClientIp(req: Request): string | undefined
+</file>
+
+<file path="src/modules/auth/infrastructure/routes/auth.routes.ts">
+import { Router } from 'express';
+import { AuthController } from '../controllers/auth.controller';
+import { ValidationMiddleware } from '../../../../shared/application/middleware/validation.middleware';
+import { AuthMiddleware } from '../../../../shared/application/middleware/auth.middleware';
+import { RateLimitMiddleware } from '../../../../api/middleware/rate-limit.middleware';
+import { LoginDto } from '../../application/dto/login.dto';
+import { RefreshTokenDto } from '../../application/dto/refresh-token.dto';
+export class AuthRoutes
+⋮----
+constructor(private readonly authController: AuthController)
+private setupRoutes(): void
+private asyncHandler(fn: any)
+public getRouter(): Router
+⋮----
+export function createAuthRoutes(authController: AuthController): Router
+</file>
+
+<file path="src/modules/users/infrastructure/routes/users.routes.ts">
+import { Router } from 'express';
+import { UsersController } from '../controllers/users.controller';
+import { ValidationMiddleware } from '../../../../shared/application/middleware/validation.middleware';
+import { AuthMiddleware } from '../../../../shared/application/middleware/auth.middleware';
+import { RateLimitMiddleware } from '../../../../api/middleware/rate-limit.middleware';
+import { CreateUserDto } from '../../application/dto/create-user.dto';
+import { UpdateUserDto } from '../../application/dto/update-user.dto';
+import { GetUserByIdDto } from '../../application/dto/get-user-by-id.dto';
+export class UsersRoutes
+⋮----
+constructor(private readonly usersController: UsersController)
+private setupRoutes(): void
+private asyncHandler(fn: any)
+public getRouter(): Router
+⋮----
+export function createUsersRoutes(usersController: UsersController): Router
+</file>
+
+<file path="src/server.ts">
+export function greetUser(name: string): string
+export function calculatePort(envPort?: string): number
+</file>
+
+<file path="src/shared/application/dependencies/register-dependencies.ts">
+import { DependencyContainer } from './dependency.container';
+import { TOKENS } from './tokens';
+import { EnvironmentConfigService } from '../../infrastructure/config/environment.config';
+import { DatabaseConfig } from '../../infrastructure/config/database.config';
+import { PrismaClientService } from '../../infrastructure/database/prisma.client';
+import { BcryptPasswordService } from '../../../modules/users/infrastructure/services/bcrypt-password.service';
+import { UserRepositoryImpl } from '../../../modules/users/infrastructure/repositories/user.repository.impl';
+import { CreateUserUseCaseImpl } from '../../../modules/users/application/use-cases/create-user.use-case.impl';
+import { GetUsersUseCaseImpl } from '../../../modules/users/application/use-cases/get-users.use-case.impl';
+import { GetUserByIdUseCaseImpl } from '../../../modules/users/application/use-cases/get-user-by-id.use-case.impl';
+import { UpdateUserUseCaseImpl } from '../../../modules/users/application/use-cases/update-user.use-case.impl';
+import { DeleteUserUseCaseImpl } from '../../../modules/users/application/use-cases/delete-user.use-case.impl';
+import { UsersController } from '../../../modules/users/infrastructure/controllers/users.controller';
+import { JwtServiceImpl } from '../../../modules/auth/infrastructure/services/jwt.service.impl';
+import { TokenServiceImpl } from '../../../modules/auth/infrastructure/services/token.service.impl';
+import { AuthRepositoryImpl } from '../../../modules/auth/infrastructure/repositories/auth.repository.impl';
+import { LoginUseCaseImpl } from '../../../modules/auth/application/use-cases/login.use-case.impl';
+import { RefreshTokenUseCaseImpl } from '../../../modules/auth/application/use-cases/refresh-token.use-case.impl';
+import { LogoutUseCaseImpl } from '../../../modules/auth/application/use-cases/logout.use-case.impl';
+import { RegisterUseCaseImpl } from '../../../modules/auth/application/use-cases/register.use-case.impl';
+import { AuthController } from '../../../modules/auth/infrastructure/controllers/auth.controller';
+import { RoleRepositoryImpl } from '../../../modules/rbac/infrastructure/repositories/role.repository.impl';
+import { PermissionRepositoryImpl } from '../../../modules/rbac/infrastructure/repositories/permission.repository.impl';
+import { ModuleRepositoryImpl } from '../../../modules/rbac/infrastructure/repositories/module.repository.impl';
+import { CreateRoleUseCaseImpl } from '../../../modules/rbac/application/use-cases/create-role.use-case.impl';
+import { ListRolesUseCaseImpl } from '../../../modules/rbac/application/use-cases/list-roles.use-case.impl';
+import { RolesController } from '../../../modules/rbac/infrastructure/controllers/roles.controller';
+export class DependencyRegistrar
+⋮----
+private constructor()
+public static register(container: DependencyContainer): void
+private static registerInfrastructure(container: DependencyContainer): void
+private static registerSharedServices(container: DependencyContainer): void
+private static registerUserModule(container: DependencyContainer): void
+private static registerAuthModule(container: DependencyContainer): void
+private static registerRbacModule(container: DependencyContainer): void
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@modules/*": ["modules/*"],
+      "@shared/*": ["modules/shared/*"]
+    },
+    "types": ["jest", "node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "coverage"]
+}
+</file>
+
+<file path="src/api/routes/index.ts">
+import { Router } from 'express';
+import { createUsersRoutes } from '../../modules/users/infrastructure/routes/users.routes';
+import { UsersController } from '../../modules/users/infrastructure/controllers/users.controller';
+import { createAuthRoutes } from '../../modules/auth/infrastructure/routes/auth.routes';
+import { AuthController } from '../../modules/auth/infrastructure/controllers/auth.controller';
+import { createRolesRoutes } from '../../modules/rbac/infrastructure/routes/roles.routes';
+import { RolesController } from '../../modules/rbac/infrastructure/controllers/roles.controller';
+import { globalContainer } from '../../shared/application/dependencies/register-dependencies';
+import { TOKENS } from '../../shared/application/dependencies/tokens';
+import { ApiResponse } from '../../shared/domain/wrappers/api-response.wrapper';
+export class ApiRoutes
+⋮----
+constructor()
+private setupRoutes(): void
+private setupModuleRoutes(): void
+public getRouter(): Router
+⋮----
+export function createApiRoutes(): Router
+</file>
+
+<file path="src/api/server.ts">
+import express, { Application, Request, Response, NextFunction } from 'express';
+import { EnvironmentConfigService } from '../shared/infrastructure/config/environment.config';
+import { DatabaseConfig } from '../shared/infrastructure/config/database.config';
+import { PrismaClientService } from '../shared/infrastructure/database/prisma.client';
+import { ErrorHandlerMiddleware } from '../shared/application/middleware/error-handler.middleware';
+import { CorsMiddleware } from './middleware/cors.middleware';
+import { CompressionMiddleware } from './middleware/compression.middleware';
+import { SecurityMiddleware } from './middleware/security.middleware';
+import { RateLimitMiddleware } from './middleware/rate-limit.middleware';
+import { createApiRoutes } from './routes/index';
+import { ApiResponse } from '../shared/domain/wrappers/api-response.wrapper';
+import { SwaggerService } from '../shared/infrastructure/swagger/swagger.service';
+export class Server
+⋮----
+constructor()
+private initializeMiddlewares(): void
+private initializeRoutes(): void
+private initializeErrorHandling(): void
+public async start(): Promise<void>
+private async initializeDatabase(): Promise<void>
+private async gracefulShutdown(signal: string): Promise<void>
+public getApp(): Application
+</file>
+
+<file path="package.json">
+{
+  "name": "keven-backend-template",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A modern TypeScript backend with clean architecture",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:push": "prisma db push",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:unit": "jest --selectProjects=unit",
+    "test:integration": "jest --selectProjects=integration",
+    "test:watch": "jest --watch",
+    "test:watch:unit": "jest --selectProjects=unit --watch",
+    "test:watch:integration": "jest --selectProjects=integration --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --coverage --watchAll=false",
+    "prepare": "husky"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keven-bardales/keven-backend-template.git"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "keywords": [
+    "typescript",
+    "backend",
+    "clean-architecture"
+  ],
+  "author": "Keven Bardales",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keven-bardales/keven-backend-template/issues"
+  },
+  "homepage": "https://github.com/keven-bardales/keven-backend-template#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/express-rate-limit": "^5.1.3",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.2.0",
+    "@types/supertest": "^6.0.3",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "jest": "^30.0.5",
+    "lint-staged": "^16.1.4",
+    "prettier": "^3.6.2",
+    "prisma": "^6.13.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.1",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.13.0",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "reflect-metadata": "^0.2.2",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "uuid": "^11.1.0",
+    "zod": "^4.0.15"
+  }
+}
+</file>
+
+</files>

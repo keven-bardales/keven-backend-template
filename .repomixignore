@@ -1,0 +1,14 @@
+# Build & deps
+node_modules/
+dist/
+coverage/
+.next/
+.out/
+
+# Env & secrets
+.env*
+!.env.example
+
+# Noise
+*.log
+*.DS_Store
