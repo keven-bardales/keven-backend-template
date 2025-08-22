@@ -14,6 +14,10 @@ import { AuthMiddleware } from '../shared/application/middleware/auth.middleware
 import { PermissionMiddleware } from '../shared/application/middleware/permission.middleware';
 import { globalContainer } from '../shared/application/dependencies/register-dependencies';
 import { TOKENS } from '../shared/application/dependencies/tokens';
+import { JwtService } from '../modules/auth/domain/services/jwt.service';
+import { TokenService } from '../modules/auth/domain/services/token.service';
+import { RoleRepository } from '../modules/rbac/domain/repositories/role.repository';
+import { PermissionRepository } from '../modules/rbac/domain/repositories/permission.repository';
 
 export class Server {
   private readonly app: Application;
@@ -204,10 +208,12 @@ export class Server {
       console.log('🔧 Configuring middleware services...');
 
       // Get services from dependency container
-      const jwtService = globalContainer.resolve(TOKENS.JWT_SERVICE);
-      const tokenService = globalContainer.resolve(TOKENS.TOKEN_SERVICE);
-      const roleRepository = globalContainer.resolve(TOKENS.ROLE_REPOSITORY);
-      const permissionRepository = globalContainer.resolve(TOKENS.PERMISSION_REPOSITORY);
+      const jwtService = globalContainer.resolve<JwtService>(TOKENS.JWT_SERVICE);
+      const tokenService = globalContainer.resolve<TokenService>(TOKENS.TOKEN_SERVICE);
+      const roleRepository = globalContainer.resolve<RoleRepository>(TOKENS.ROLE_REPOSITORY);
+      const permissionRepository = globalContainer.resolve<PermissionRepository>(
+        TOKENS.PERMISSION_REPOSITORY
+      );
 
       // Configure AuthMiddleware with services
       AuthMiddleware.setServices(jwtService, tokenService);

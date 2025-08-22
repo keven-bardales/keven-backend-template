@@ -143,6 +143,7 @@ export class DependencyRegistrar {
         TOKENS.USER_REPOSITORY,
         TOKENS.ROLE_REPOSITORY,
         TOKENS.PERMISSION_REPOSITORY,
+        TOKENS.MODULE_REPOSITORY,
       ],
     });
 

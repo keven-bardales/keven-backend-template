@@ -186,22 +186,22 @@ export class PermissionMiddleware {
         });
       }
 
-      const userPermissions =
-        await PermissionMiddleware.permissionRepository.findPermissionsByUserId(user.id);
+      console.log('🔍 DEBUG: Using repository-based permission check');
 
-      const hasPermission =
-        operator === 'AND'
-          ? permissions.every(perm =>
-              userPermissions.some(
-                up => up.moduleId === perm.module && up.matches(perm.action, perm.scope)
-              )
-            )
-          : permissions.some(perm =>
-              userPermissions.some(
-                up => up.moduleId === perm.module && up.matches(perm.action, perm.scope)
-              )
-            );
+      // Since JWT token already contains properly formatted permissions,
+      // use the fallback method for better performance and consistency
+      const hasPermission = permissions.some(perm => {
+        const permKey = `${perm.module}:${perm.action}${perm.scope ? ':' + perm.scope : ''}`;
+        const hasIt = user.permissions.includes(permKey);
+        console.log('🔍 DEBUG: Checking permission', {
+          requiredPermission: permKey,
+          userPermissions: user.permissions,
+          hasPermission: hasIt,
+        });
+        return hasIt;
+      });
 
+      console.log('🔍 DEBUG: Final permission result', { hasPermission });
       return hasPermission;
     } catch (error) {
       console.error('Error checking user permissions:', error);

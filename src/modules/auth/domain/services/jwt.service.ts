@@ -20,9 +20,9 @@ export interface RefreshTokenPayload extends TokenPayload {
   type: 'refresh';
 }
 
-export interface TokenValidationResult {
+export interface TokenValidationResult<TPayload = TokenPayload> {
   isValid: boolean;
-  payload?: TokenPayload;
+  payload?: TPayload;
   error?: string;
   isBlacklisted?: boolean;
 }
@@ -36,10 +36,10 @@ export interface TokenPair {
 
 export abstract class JwtService extends BaseService {
   abstract generateAccessToken(
-    payload: Omit<AccessTokenPayload, 'jti' | 'iat' | 'exp' | 'type'>
+    payload: Omit<AccessTokenPayload, 'jti' | 'iat' | 'exp' | 'type'> & { jti?: string }
   ): Promise<string>;
   abstract generateRefreshToken(
-    payload: Omit<RefreshTokenPayload, 'jti' | 'iat' | 'exp' | 'type'>
+    payload: Omit<RefreshTokenPayload, 'jti' | 'iat' | 'exp' | 'type'> & { jti?: string }
   ): Promise<string>;
   abstract generateTokenPair(payload: {
     userId: string;
@@ -48,8 +48,8 @@ export abstract class JwtService extends BaseService {
     permissions?: string[];
     sessionId?: string;
   }): Promise<TokenPair>;
-  abstract verifyAccessToken(token: string): Promise<TokenValidationResult>;
-  abstract verifyRefreshToken(token: string): Promise<TokenValidationResult>;
+  abstract verifyAccessToken(token: string): Promise<TokenValidationResult<AccessTokenPayload>>;
+  abstract verifyRefreshToken(token: string): Promise<TokenValidationResult<RefreshTokenPayload>>;
   abstract decodeToken(token: string): TokenPayload | null;
   abstract getTokenExpiry(token: string): Date | null;
   abstract isTokenExpired(token: string): boolean;

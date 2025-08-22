@@ -40,7 +40,7 @@ export class AuthMapper {
     deviceInfo?: string;
     ipAddress?: string;
   } {
-    const id = uuidv4();
+    const id = createData.id || uuidv4();
     return {
       id,
       userId: createData.userId,

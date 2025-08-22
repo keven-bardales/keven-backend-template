@@ -38,11 +38,11 @@ export class EnhancedJwtService extends JwtService {
   }
 
   public async generateAccessToken(
-    payload: Omit<AccessTokenPayload, 'jti' | 'iat' | 'exp' | 'type'>
+    payload: Omit<AccessTokenPayload, 'jti' | 'iat' | 'exp' | 'type'> & { jti?: string }
   ): Promise<string> {
     try {
       const now = Math.floor(Date.now() / 1000);
-      const jti = uuidv4();
+      const jti = payload.jti || uuidv4();
 
       const fullPayload: AccessTokenPayload = {
         ...payload,
@@ -72,11 +72,11 @@ export class EnhancedJwtService extends JwtService {
   }
 
   public async generateRefreshToken(
-    payload: Omit<RefreshTokenPayload, 'jti' | 'iat' | 'exp' | 'type'>
+    payload: Omit<RefreshTokenPayload, 'jti' | 'iat' | 'exp' | 'type'> & { jti?: string }
   ): Promise<string> {
     try {
       const now = Math.floor(Date.now() / 1000);
-      const jti = uuidv4();
+      const jti = payload.jti || uuidv4();
 
       const fullPayload: RefreshTokenPayload = {
         ...payload,
@@ -145,7 +145,9 @@ export class EnhancedJwtService extends JwtService {
     }
   }
 
-  public async verifyAccessToken(token: string): Promise<TokenValidationResult> {
+  public async verifyAccessToken(
+    token: string
+  ): Promise<TokenValidationResult<AccessTokenPayload>> {
     try {
       const payload = jwt.verify(token, this.accessTokenSecret) as AccessTokenPayload;
 
@@ -172,11 +174,13 @@ export class EnhancedJwtService extends JwtService {
         payload,
       };
     } catch (error) {
-      return this.handleJwtError(error);
+      return this.handleJwtError<AccessTokenPayload>(error);
     }
   }
 
-  public async verifyRefreshToken(token: string): Promise<TokenValidationResult> {
+  public async verifyRefreshToken(
+    token: string
+  ): Promise<TokenValidationResult<RefreshTokenPayload>> {
     try {
       const payload = jwt.verify(token, this.refreshTokenSecret) as RefreshTokenPayload;
 
@@ -203,7 +207,7 @@ export class EnhancedJwtService extends JwtService {
         payload,
       };
     } catch (error) {
-      return this.handleJwtError(error);
+      return this.handleJwtError<RefreshTokenPayload>(error);
     }
   }
 
@@ -366,7 +370,7 @@ export class EnhancedJwtService extends JwtService {
     }
   }
 
-  private handleJwtError(error: any): TokenValidationResult {
+  private handleJwtError<TPayload = TokenPayload>(error: any): TokenValidationResult<TPayload> {
     if (error instanceof jwt.TokenExpiredError) {
       return {
         isValid: false,

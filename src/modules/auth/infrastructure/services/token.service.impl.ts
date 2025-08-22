@@ -9,11 +9,13 @@ import { AuthTokenEntity, TokenType } from '../../domain/entities/auth-token.ent
 import { UserRepository } from '../../../users/domain/repositories/user.repository';
 import { RoleRepository } from '../../../rbac/domain/repositories/role.repository';
 import { PermissionRepository } from '../../../rbac/domain/repositories/permission.repository';
+import { ModuleRepository } from '../../../rbac/domain/repositories/module.repository';
 import {
   UnauthorizedException,
   NotFoundException,
 } from '../../../../shared/domain/exceptions/global-exceptions';
 import { EnvironmentConfigService } from '../../../../shared/infrastructure/config/environment.config';
+import { UUID } from '../../../../shared/domain/value-objects/uuid.value-object';
 
 export class TokenServiceImpl extends TokenService {
   constructor(
@@ -21,7 +23,8 @@ export class TokenServiceImpl extends TokenService {
     private readonly authRepository: AuthRepository,
     private readonly userRepository: UserRepository,
     private readonly roleRepository: RoleRepository,
-    private readonly permissionRepository: PermissionRepository
+    private readonly permissionRepository: PermissionRepository,
+    private readonly moduleRepository: ModuleRepository
   ) {
     super();
   }
@@ -50,13 +53,19 @@ export class TokenServiceImpl extends TokenService {
       this.log('🔍 DEBUG: User roles loaded', { userId, roleCount: userRoles.length, roleNames });
 
       const userPermissions = await this.permissionRepository.findPermissionsByUserId(userId);
-      const permissionStrings = userPermissions.map(perm => {
-        // Format: action:scope or module:action:scope
-        if (perm.scope) {
-          return `${perm.action}:${perm.scope}`;
-        }
-        return perm.action;
-      });
+      const permissionStrings = await Promise.all(
+        userPermissions.map(async perm => {
+          // We need to get the module name from moduleId to format as module:action:scope
+          const module = await this.moduleRepository.findById(perm.moduleId);
+          const moduleName = module?.name || 'unknown';
+
+          // Format: module:action:scope (to match middleware fallback expectations)
+          if (perm.scope) {
+            return `${moduleName}:${perm.action}:${perm.scope}`;
+          }
+          return `${moduleName}:${perm.action}`;
+        })
+      );
       this.log('🔍 DEBUG: User permissions loaded', {
         userId,
         permissionCount: userPermissions.length,
@@ -72,19 +81,31 @@ export class TokenServiceImpl extends TokenService {
       const accessTokenExpiry = new Date(now.getTime() + accessTokenExpiryMs);
       const refreshTokenExpiry = new Date(now.getTime() + refreshTokenExpiryMs);
 
-      // Generate token pair using new JWT service with actual roles and permissions
-      const tokenPair = await this.jwtService.generateTokenPair({
-        userId: user.id,
-        email: user.email.getValue(),
-        roles: roleNames,
-        permissions: permissionStrings,
-      });
+      // Create tokens with pre-generated IDs that will match database records
+      const accessTokenId = UUID.generate().getValue();
+      const refreshTokenId = UUID.generate().getValue();
 
-      const accessTokenJwt = tokenPair.accessToken;
-      const refreshTokenJwt = tokenPair.refreshToken;
+      // Generate JWT tokens with specific IDs
+      const [accessTokenJwt, refreshTokenJwt] = await Promise.all([
+        this.jwtService.generateAccessToken({
+          userId: user.id,
+          email: user.email.getValue(),
+          roles: roleNames,
+          permissions: permissionStrings,
+          jti: accessTokenId,
+          tokenId: accessTokenId,
+        }),
+        this.jwtService.generateRefreshToken({
+          userId: user.id,
+          email: user.email.getValue(),
+          jti: refreshTokenId,
+          tokenId: refreshTokenId,
+        }),
+      ]);
 
-      // Store tokens in database first to get IDs
+      // Store tokens in database with matching IDs
       const savedAccessToken = await this.authRepository.create({
+        id: accessTokenId,
         userId,
         token: accessTokenJwt,
         type: TokenType.ACCESS,
@@ -92,14 +113,25 @@ export class TokenServiceImpl extends TokenService {
         deviceInfo,
         ipAddress,
       });
+      this.log('🔍 DEBUG: Access token saved to database', {
+        tokenId: savedAccessToken.id,
+        userId,
+        expiresAt: accessTokenExpiry,
+      });
 
       const savedRefreshToken = await this.authRepository.create({
+        id: refreshTokenId,
         userId,
         token: refreshTokenJwt,
         type: TokenType.REFRESH,
         expiresAt: refreshTokenExpiry,
         deviceInfo,
         ipAddress,
+      });
+      this.log('🔍 DEBUG: Refresh token saved to database', {
+        tokenId: savedRefreshToken.id,
+        userId,
+        expiresAt: refreshTokenExpiry,
       });
 
       this.log('Token pair created successfully', { userId });

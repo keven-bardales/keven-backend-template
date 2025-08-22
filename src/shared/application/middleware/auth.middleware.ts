@@ -3,6 +3,8 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from '../../domain/exceptions/global-exceptions';
+import { JwtService } from '@/modules/auth/domain/services/jwt.service';
+import { TokenService } from '@/modules/auth/domain/services/token.service';
 
 export interface AuthenticatedUser {
   id: string;
@@ -18,10 +20,10 @@ export interface AuthenticatedRequest extends Request {
 
 export class AuthMiddleware {
   // Static references to services - will be injected via dependency container
-  private static jwtService: any; // Will be properly typed when integrated
-  private static tokenService: any; // Will be properly typed when integrated
+  private static jwtService: JwtService; // Will be properly typed when integrated
+  private static tokenService: TokenService; // Will be properly typed when integrated
 
-  public static setServices(jwtService: any, tokenService: any) {
+  public static setServices(jwtService: JwtService, tokenService: TokenService) {
     AuthMiddleware.jwtService = jwtService;
     AuthMiddleware.tokenService = tokenService;
   }

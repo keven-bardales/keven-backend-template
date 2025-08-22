@@ -3,6 +3,7 @@ import { AuthTokenEntity, TokenType } from '../entities/auth-token.entity';
 import { LoginSessionEntity } from '../entities/login-session.entity';
 
 export interface CreateAuthTokenData {
+  id?: string;
   userId: string;
   token: string;
   type: TokenType;
