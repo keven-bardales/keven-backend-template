@@ -193,11 +193,7 @@ export class PermissionMiddleware {
       const hasPermission = permissions.some(perm => {
         const permKey = `${perm.module}:${perm.action}${perm.scope ? ':' + perm.scope : ''}`;
         const hasIt = user.permissions.includes(permKey);
-        console.log('🔍 DEBUG: Checking permission', {
-          requiredPermission: permKey,
-          userPermissions: user.permissions,
-          hasPermission: hasIt,
-        });
+
         return hasIt;
       });
 
