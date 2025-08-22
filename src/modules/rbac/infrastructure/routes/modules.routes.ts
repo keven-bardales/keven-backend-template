@@ -8,6 +8,10 @@ import { Router } from 'express';
 import { ModulesController } from '../controllers/modules.controller';
 import { ValidationMiddleware } from '../../../../shared/application/middleware/validation.middleware';
 import { AuthMiddleware } from '../../../../shared/application/middleware/auth.middleware';
+import {
+  PermissionMiddleware,
+  CommonPermissions,
+} from '../../../../shared/application/middleware/permission.middleware';
 import { RateLimitMiddleware } from '../../../../api/middleware/rate-limit.middleware';
 import { CreateModuleDto } from '../../application/dto/create-module.dto';
 import { UpdateModuleDto } from '../../application/dto/update-module.dto';
@@ -28,7 +32,7 @@ export class ModulesRoutes {
 
     /**
      * @swagger
-     * /modules:
+     * /rbac/modules:
      *   get:
      *     summary: Get all modules with pagination and filtering
      *     description: Retrieve a paginated list of system modules with optional filtering and search
@@ -125,14 +129,14 @@ export class ModulesRoutes {
     this.router.get(
       '/',
       ValidationMiddleware.validate(GetModulesDto.getSchema(), 'query'),
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:read']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_LIST),
       this.asyncHandler(this.modulesController.getModules.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules/active:
+     * /rbac/modules/active:
      *   get:
      *     summary: Get active modules only
      *     description: Retrieve all active system modules
@@ -167,13 +171,14 @@ export class ModulesRoutes {
      */
     this.router.get(
       '/active',
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_READ),
       this.asyncHandler(this.modulesController.getActiveModules.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules:
+     * /rbac/modules:
      *   post:
      *     summary: Create a new module
      *     description: Create a new system module
@@ -233,14 +238,14 @@ export class ModulesRoutes {
     this.router.post(
       '/',
       ValidationMiddleware.validate(CreateModuleDto.getSchema(), 'body'),
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:create']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_CREATE),
       this.asyncHandler(this.modulesController.createModule.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules/{id}:
+     * /rbac/modules/{id}:
      *   get:
      *     summary: Get module by ID
      *     description: Retrieve a specific module by its ID
@@ -286,14 +291,14 @@ export class ModulesRoutes {
     this.router.get(
       '/:id',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'), // Reuse for UUID validation
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:read']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_READ),
       this.asyncHandler(this.modulesController.getModuleById.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules/{id}:
+     * /rbac/modules/{id}:
      *   put:
      *     summary: Update a module
      *     description: Update an existing module
@@ -364,14 +369,14 @@ export class ModulesRoutes {
         { schema: GetUserByIdDto.getSchema(), target: 'params' },
         { schema: UpdateModuleDto.getSchema(), target: 'body' },
       ]),
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:update']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_UPDATE),
       this.asyncHandler(this.modulesController.updateModule.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules/{id}:
+     * /rbac/modules/{id}:
      *   delete:
      *     summary: Delete a module
      *     description: Delete a module (this may affect related permissions)
@@ -419,14 +424,14 @@ export class ModulesRoutes {
     this.router.delete(
       '/:id',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:delete']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_DELETE),
       this.asyncHandler(this.modulesController.deleteModule.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules/{id}/activate:
+     * /rbac/modules/{id}/activate:
      *   patch:
      *     summary: Activate a module
      *     description: Activate a module that was previously deactivated
@@ -474,14 +479,14 @@ export class ModulesRoutes {
     this.router.patch(
       '/:id/activate',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:update']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_UPDATE),
       this.asyncHandler(this.modulesController.activateModule.bind(this.modulesController))
     );
 
     /**
      * @swagger
-     * /modules/{id}/deactivate:
+     * /rbac/modules/{id}/deactivate:
      *   patch:
      *     summary: Deactivate a module
      *     description: Deactivate a module without deleting it
@@ -529,8 +534,8 @@ export class ModulesRoutes {
     this.router.patch(
       '/:id/deactivate',
       ValidationMiddleware.validate(GetUserByIdDto.getSchema(), 'params'),
-      // AuthMiddleware.authenticate(), // TODO: Uncomment when JWT service is implemented
-      // AuthMiddleware.authorize(['modules:update']), // TODO: Add when RBAC is implemented
+      AuthMiddleware.authenticate(),
+      PermissionMiddleware.requirePermission(CommonPermissions.MODULE_UPDATE),
       this.asyncHandler(this.modulesController.deactivateModule.bind(this.modulesController))
     );
   }

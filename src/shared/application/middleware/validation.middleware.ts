@@ -81,7 +81,14 @@ export class ValidationMiddleware {
         req.params = data;
         break;
       case 'query':
-        req.query = data;
+        // Instead of replacing req.query, we'll extend the request object with validated query data
+        (req as any).validatedQuery = data;
+        // Also merge back into req.query for backward compatibility (where possible)
+        Object.keys(data).forEach(key => {
+          if (req.query && typeof req.query === 'object') {
+            (req.query as any)[key] = data[key];
+          }
+        });
         break;
       default:
         throw new Error(`Invalid validation target: ${target}`);
