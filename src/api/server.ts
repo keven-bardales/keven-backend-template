@@ -10,6 +10,10 @@ import { RateLimitMiddleware } from './middleware/rate-limit.middleware';
 import { createApiRoutes } from './routes/index';
 import { ApiResponse } from '../shared/domain/wrappers/api-response.wrapper';
 import { SwaggerService } from '../shared/infrastructure/swagger/swagger.service';
+import { AuthMiddleware } from '../shared/application/middleware/auth.middleware';
+import { PermissionMiddleware } from '../shared/application/middleware/permission.middleware';
+import { globalContainer } from '../shared/application/dependencies/register-dependencies';
+import { TOKENS } from '../shared/application/dependencies/tokens';
 
 export class Server {
   private readonly app: Application;
@@ -138,6 +142,9 @@ export class Server {
       // Initialize database connection
       await this.initializeDatabase();
 
+      // Configure middleware services after dependencies are registered
+      this.configureMiddlewareServices();
+
       // Start HTTP server
       const server = this.app.listen(this.port, () => {
         console.log('✅ Server started successfully');
@@ -188,6 +195,29 @@ export class Server {
       console.log('✅ Database connection initialized successfully');
     } catch (error) {
       console.error('❌ Failed to initialize database:', error);
+      throw error;
+    }
+  }
+
+  private configureMiddlewareServices(): void {
+    try {
+      console.log('🔧 Configuring middleware services...');
+
+      // Get services from dependency container
+      const jwtService = globalContainer.resolve(TOKENS.JWT_SERVICE);
+      const tokenService = globalContainer.resolve(TOKENS.TOKEN_SERVICE);
+      const roleRepository = globalContainer.resolve(TOKENS.ROLE_REPOSITORY);
+      const permissionRepository = globalContainer.resolve(TOKENS.PERMISSION_REPOSITORY);
+
+      // Configure AuthMiddleware with services
+      AuthMiddleware.setServices(jwtService, tokenService);
+
+      // Configure PermissionMiddleware with repositories
+      PermissionMiddleware.setRepositories(permissionRepository, roleRepository);
+
+      console.log('✅ Middleware services configured successfully');
+    } catch (error) {
+      console.error('❌ Failed to configure middleware services:', error);
       throw error;
     }
   }

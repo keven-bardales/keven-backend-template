@@ -33,6 +33,12 @@ export class PermissionMiddleware {
           throw new UnauthorizedException('User not authenticated');
         }
 
+        console.log('🔍 DEBUG: Permission check', {
+          userId: req.user.id,
+          userPermissions: req.user.permissions,
+          requiredPermissions: Array.isArray(permissions) ? permissions : [permissions],
+        });
+
         const permissionList = Array.isArray(permissions) ? permissions : [permissions];
         const hasPermission = await PermissionMiddleware.checkUserPermissions(
           req.user,
@@ -219,38 +225,47 @@ export class PermissionMiddleware {
   }
 }
 
-// Common permission patterns
+// Common permission patterns - must match seed.ts permissions exactly
 export const CommonPermissions = {
-  // User management
-  USER_READ: { module: 'users', action: 'read' },
-  USER_CREATE: { module: 'users', action: 'create' },
-  USER_UPDATE: { module: 'users', action: 'update' },
-  USER_DELETE: { module: 'users', action: 'delete' },
-  USER_MANAGE_ROLES: { module: 'users', action: 'manage_roles' },
+  // Auth management (auth module)
+  AUTH_LOGIN: { module: 'auth', action: 'login', scope: 'auth' },
+  AUTH_REGISTER: { module: 'auth', action: 'register', scope: 'auth' },
+  AUTH_REFRESH: { module: 'auth', action: 'refresh', scope: 'auth' },
+  AUTH_LOGOUT: { module: 'auth', action: 'logout', scope: 'auth' },
 
-  // Role management
-  ROLE_READ: { module: 'roles', action: 'read' },
-  ROLE_CREATE: { module: 'roles', action: 'create' },
-  ROLE_UPDATE: { module: 'roles', action: 'update' },
-  ROLE_DELETE: { module: 'roles', action: 'delete' },
-  ROLE_ASSIGN: { module: 'roles', action: 'assign' },
+  // User management (users module)
+  USER_CREATE: { module: 'users', action: 'create', scope: 'users' },
+  USER_READ: { module: 'users', action: 'read', scope: 'users' },
+  USER_UPDATE: { module: 'users', action: 'update', scope: 'users' },
+  USER_DELETE: { module: 'users', action: 'delete', scope: 'users' },
+  USER_LIST: { module: 'users', action: 'list', scope: 'users' },
 
-  // Permission management
-  PERMISSION_READ: { module: 'permissions', action: 'read' },
-  PERMISSION_CREATE: { module: 'permissions', action: 'create' },
-  PERMISSION_UPDATE: { module: 'permissions', action: 'update' },
-  PERMISSION_DELETE: { module: 'permissions', action: 'delete' },
-  PERMISSION_ASSIGN: { module: 'permissions', action: 'assign' },
+  // Role management (rbac module)
+  ROLE_CREATE: { module: 'rbac', action: 'create', scope: 'roles' },
+  ROLE_READ: { module: 'rbac', action: 'read', scope: 'roles' },
+  ROLE_UPDATE: { module: 'rbac', action: 'update', scope: 'roles' },
+  ROLE_DELETE: { module: 'rbac', action: 'delete', scope: 'roles' },
+  ROLE_LIST: { module: 'rbac', action: 'list', scope: 'roles' },
+  ROLE_ASSIGN: { module: 'rbac', action: 'assign', scope: 'roles' },
 
-  // Module management
-  MODULE_READ: { module: 'modules', action: 'read' },
-  MODULE_CREATE: { module: 'modules', action: 'create' },
-  MODULE_UPDATE: { module: 'modules', action: 'update' },
-  MODULE_DELETE: { module: 'modules', action: 'delete' },
+  // Permission management (rbac module)
+  PERMISSION_CREATE: { module: 'rbac', action: 'create', scope: 'permissions' },
+  PERMISSION_READ: { module: 'rbac', action: 'read', scope: 'permissions' },
+  PERMISSION_UPDATE: { module: 'rbac', action: 'update', scope: 'permissions' },
+  PERMISSION_DELETE: { module: 'rbac', action: 'delete', scope: 'permissions' },
+  PERMISSION_LIST: { module: 'rbac', action: 'list', scope: 'permissions' },
 
-  // System administration
-  SYSTEM_ADMIN: { module: 'system', action: 'admin' },
-  SYSTEM_CONFIG: { module: 'system', action: 'config' },
+  // Module management (rbac module)
+  MODULE_CREATE: { module: 'rbac', action: 'create', scope: 'modules' },
+  MODULE_READ: { module: 'rbac', action: 'read', scope: 'modules' },
+  MODULE_UPDATE: { module: 'rbac', action: 'update', scope: 'modules' },
+  MODULE_DELETE: { module: 'rbac', action: 'delete', scope: 'modules' },
+  MODULE_LIST: { module: 'rbac', action: 'list', scope: 'modules' },
+
+  // System administration (system module)
+  SYSTEM_ADMIN: { module: 'system', action: 'admin', scope: '*' },
+  SYSTEM_CONFIG: { module: 'system', action: 'config', scope: 'system' },
+  SYSTEM_HEALTH: { module: 'system', action: 'health', scope: 'system' },
 } as const;
 
 // Permission decorators/helpers

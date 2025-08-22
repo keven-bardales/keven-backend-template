@@ -45,8 +45,8 @@ if not exist ".env.dev" (
         echo POSTGRES_DB=keven_dev_db
         echo.
         echo # JWT Configuration ^(Development keys - DO NOT use in production^)
-        echo JWT_ACCESS_SECRET=dev-super-secret-access-key-at-least-32-chars-long-for-security-purposes
-        echo JWT_REFRESH_SECRET=dev-super-secret-refresh-key-at-least-32-chars-long-for-security-purposes
+        echo JWT_ACCESS_SECRET=h7K9mL2nP5qR8sT1uV4wX7yZ0aB3cD6eF9gH2iJ5kL8mN1oP4qR7sT0uV3wX6yZ9a
+        echo JWT_REFRESH_SECRET=m4N7pQ0rS3tU6vW9xY2zA5bC8dE1fG4hI7jK0lM3nO6pQ9rS2tU5vW8xY1zA4bC7dE0f
         echo JWT_ACCESS_EXPIRES_IN=15m
         echo JWT_REFRESH_EXPIRES_IN=7d
         echo.

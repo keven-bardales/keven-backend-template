@@ -137,7 +137,13 @@ export class DependencyRegistrar {
     });
 
     container.registerClass(TOKENS.TOKEN_SERVICE, TokenServiceImpl, {
-      dependencies: [TOKENS.JWT_SERVICE, TOKENS.AUTH_REPOSITORY, TOKENS.USER_REPOSITORY],
+      dependencies: [
+        TOKENS.JWT_SERVICE,
+        TOKENS.AUTH_REPOSITORY,
+        TOKENS.USER_REPOSITORY,
+        TOKENS.ROLE_REPOSITORY,
+        TOKENS.PERMISSION_REPOSITORY,
+      ],
     });
 
     // Repository

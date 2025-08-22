@@ -7,6 +7,8 @@ import {
 import { AuthRepository } from '../../domain/repositories/auth.repository';
 import { AuthTokenEntity, TokenType } from '../../domain/entities/auth-token.entity';
 import { UserRepository } from '../../../users/domain/repositories/user.repository';
+import { RoleRepository } from '../../../rbac/domain/repositories/role.repository';
+import { PermissionRepository } from '../../../rbac/domain/repositories/permission.repository';
 import {
   UnauthorizedException,
   NotFoundException,
@@ -17,7 +19,9 @@ export class TokenServiceImpl extends TokenService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly authRepository: AuthRepository,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
+    private readonly roleRepository: RoleRepository,
+    private readonly permissionRepository: PermissionRepository
   ) {
     super();
   }
@@ -40,6 +44,25 @@ export class TokenServiceImpl extends TokenService {
         throw new NotFoundException('User not found');
       }
 
+      // Get user roles and permissions
+      const userRoles = await this.roleRepository.findRolesByUserId(userId);
+      const roleNames = userRoles.map(role => role.name);
+      this.log('🔍 DEBUG: User roles loaded', { userId, roleCount: userRoles.length, roleNames });
+
+      const userPermissions = await this.permissionRepository.findPermissionsByUserId(userId);
+      const permissionStrings = userPermissions.map(perm => {
+        // Format: action:scope or module:action:scope
+        if (perm.scope) {
+          return `${perm.action}:${perm.scope}`;
+        }
+        return perm.action;
+      });
+      this.log('🔍 DEBUG: User permissions loaded', {
+        userId,
+        permissionCount: userPermissions.length,
+        permissionStrings,
+      });
+
       // Calculate expiry dates
       const envConfig = EnvironmentConfigService.getInstance().get();
       const accessTokenExpiryMs = this.parseExpiryToMs(envConfig.JWT_ACCESS_EXPIRES_IN);
@@ -49,12 +72,12 @@ export class TokenServiceImpl extends TokenService {
       const accessTokenExpiry = new Date(now.getTime() + accessTokenExpiryMs);
       const refreshTokenExpiry = new Date(now.getTime() + refreshTokenExpiryMs);
 
-      // Generate token pair using new JWT service
+      // Generate token pair using new JWT service with actual roles and permissions
       const tokenPair = await this.jwtService.generateTokenPair({
         userId: user.id,
         email: user.email.getValue(),
-        roles: [], // TODO: Get from user roles when RBAC is implemented
-        permissions: [], // TODO: Get from user permissions when RBAC is implemented
+        roles: roleNames,
+        permissions: permissionStrings,
       });
 
       const accessTokenJwt = tokenPair.accessToken;
@@ -177,12 +200,26 @@ export class TokenServiceImpl extends TokenService {
 
       const verification = await this.jwtService.verifyAccessToken(tokenJwt);
       if (!verification.isValid || !verification.payload) {
+        this.log('🔍 DEBUG: JWT verification failed', { verification });
         return null;
       }
 
-      const token = await this.authRepository.findById(
-        verification.payload.tokenId || verification.payload.jti
-      );
+      const tokenId = verification.payload.tokenId || verification.payload.jti;
+      this.log('🔍 DEBUG: Looking for token in database', {
+        tokenId,
+        payload: verification.payload,
+      });
+
+      const token = await this.authRepository.findById(tokenId);
+      this.log('🔍 DEBUG: Token found in database', {
+        found: !!token,
+        isValid: token?.isValid(),
+        isAccessToken: token?.isAccessToken(),
+        isRevoked: token?.isRevoked,
+        expiresAt: token?.expiresAt,
+        now: new Date(),
+      });
+
       if (!token || !token.isValid() || !token.isAccessToken()) {
         return null;
       }

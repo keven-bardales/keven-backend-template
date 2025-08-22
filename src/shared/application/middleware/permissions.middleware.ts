@@ -199,37 +199,45 @@ export class PermissionsMiddleware {
   }
 }
 
-// Common permission requirements
+// Common permission requirements - must match seed.ts permissions exactly
 export const CommonPermissions = {
-  // User management
-  USER_CREATE: { action: 'create', scope: 'user', module: 'users' },
-  USER_READ: { action: 'read', scope: 'user', module: 'users' },
-  USER_UPDATE: { action: 'update', scope: 'user', module: 'users' },
-  USER_DELETE: { action: 'delete', scope: 'user', module: 'users' },
+  // Auth management (auth module)
+  AUTH_LOGIN: { action: 'login', scope: 'auth', module: 'auth' },
+  AUTH_REGISTER: { action: 'register', scope: 'auth', module: 'auth' },
+  AUTH_REFRESH: { action: 'refresh', scope: 'auth', module: 'auth' },
+  AUTH_LOGOUT: { action: 'logout', scope: 'auth', module: 'auth' },
+
+  // User management (users module)
+  USER_CREATE: { action: 'create', scope: 'users', module: 'users' },
+  USER_READ: { action: 'read', scope: 'users', module: 'users' },
+  USER_UPDATE: { action: 'update', scope: 'users', module: 'users' },
+  USER_DELETE: { action: 'delete', scope: 'users', module: 'users' },
   USER_LIST: { action: 'list', scope: 'users', module: 'users' },
 
-  // Role management
-  ROLE_CREATE: { action: 'create', scope: 'role', module: 'rbac' },
-  ROLE_READ: { action: 'read', scope: 'role', module: 'rbac' },
-  ROLE_UPDATE: { action: 'update', scope: 'role', module: 'rbac' },
-  ROLE_DELETE: { action: 'delete', scope: 'role', module: 'rbac' },
+  // Role management (rbac module)
+  ROLE_CREATE: { action: 'create', scope: 'roles', module: 'rbac' },
+  ROLE_READ: { action: 'read', scope: 'roles', module: 'rbac' },
+  ROLE_UPDATE: { action: 'update', scope: 'roles', module: 'rbac' },
+  ROLE_DELETE: { action: 'delete', scope: 'roles', module: 'rbac' },
   ROLE_LIST: { action: 'list', scope: 'roles', module: 'rbac' },
+  ROLE_ASSIGN: { action: 'assign', scope: 'roles', module: 'rbac' },
 
-  // Permission management
-  PERMISSION_CREATE: { action: 'create', scope: 'permission', module: 'rbac' },
-  PERMISSION_READ: { action: 'read', scope: 'permission', module: 'rbac' },
-  PERMISSION_UPDATE: { action: 'update', scope: 'permission', module: 'rbac' },
-  PERMISSION_DELETE: { action: 'delete', scope: 'permission', module: 'rbac' },
+  // Permission management (rbac module)
+  PERMISSION_CREATE: { action: 'create', scope: 'permissions', module: 'rbac' },
+  PERMISSION_READ: { action: 'read', scope: 'permissions', module: 'rbac' },
+  PERMISSION_UPDATE: { action: 'update', scope: 'permissions', module: 'rbac' },
+  PERMISSION_DELETE: { action: 'delete', scope: 'permissions', module: 'rbac' },
   PERMISSION_LIST: { action: 'list', scope: 'permissions', module: 'rbac' },
 
-  // Module management
-  MODULE_CREATE: { action: 'create', scope: 'module', module: 'rbac' },
-  MODULE_READ: { action: 'read', scope: 'module', module: 'rbac' },
-  MODULE_UPDATE: { action: 'update', scope: 'module', module: 'rbac' },
-  MODULE_DELETE: { action: 'delete', scope: 'module', module: 'rbac' },
+  // Module management (rbac module)
+  MODULE_CREATE: { action: 'create', scope: 'modules', module: 'rbac' },
+  MODULE_READ: { action: 'read', scope: 'modules', module: 'rbac' },
+  MODULE_UPDATE: { action: 'update', scope: 'modules', module: 'rbac' },
+  MODULE_DELETE: { action: 'delete', scope: 'modules', module: 'rbac' },
   MODULE_LIST: { action: 'list', scope: 'modules', module: 'rbac' },
 
-  // System administration
-  SYSTEM_ADMIN: { action: 'admin', scope: '*' },
-  SYSTEM_CONFIG: { action: 'config', scope: 'system' },
+  // System administration (system module)
+  SYSTEM_ADMIN: { action: 'admin', scope: '*', module: 'system' },
+  SYSTEM_CONFIG: { action: 'config', scope: 'system', module: 'system' },
+  SYSTEM_HEALTH: { action: 'health', scope: 'system', module: 'system' },
 } as const;
