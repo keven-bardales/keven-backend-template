@@ -55,64 +55,135 @@ src/
 
 ## 📋 Prerequisites
 
+Choose your development approach:
+
+### For Local Development
 - Node.js 18+ and npm
-- PostgreSQL 14+ (or use Docker)
-- Docker & Docker Compose (optional but recommended)
+- PostgreSQL 15+ installed locally
+- Basic command line knowledge
+
+### For Docker Development  
+- Docker & Docker Compose
+- No other dependencies needed
 
 ## 🚀 Quick Start
 
-### 1. Clone and Install
+Choose one of two development approaches:
 
+---
+
+## 🏠 **Option 1: Local Development** (Traditional)
+
+Perfect for developers who prefer working with local tools and have PostgreSQL installed.
+
+### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd starter-backend
-npm install
+cd keven-backend-template
 ```
 
-### 2. Environment Setup
+### 2. Run Setup Script
 
+#### Windows
 ```bash
-# Copy environment template
-cp .env.example .env
-
-# Edit .env with your configuration
-nano .env
+setup-local.bat
 ```
 
-### 3. Database Setup
-
-#### Option A: Using Docker (Recommended)
+#### Linux/macOS
 ```bash
-# Start PostgreSQL container
-docker-compose up -d postgres
-
-# Run migrations and seed
-npm run db:migrate
-npm run db:seed
+chmod +x setup-local.sh
+./setup-local.sh
 ```
 
-#### Option B: Local PostgreSQL
+The setup script will:
+- ✅ Check Node.js installation (18+)
+- ✅ Check PostgreSQL availability
+- ✅ Copy `.env.example` to `.env`
+- ✅ Install dependencies
+- ✅ Run database migrations
+- ✅ Smart seed database (only if empty)
+- ✅ Generate Prisma client
+
+### 3. Configure Environment
+Update `.env` with your database credentials:
 ```bash
-# Make sure PostgreSQL is running locally
-# Update DATABASE_URL in .env
-npm run db:migrate
-npm run db:seed
+# Edit the generated .env file
+DATABASE_URL="postgresql://keven_user:your_password@localhost:5432/keven_dev_db"
+JWT_ACCESS_SECRET="your-super-secure-access-secret"
+JWT_REFRESH_SECRET="your-super-secure-refresh-secret"
+SUPER_ADMIN_EMAIL="admin@yourcompany.com"
 ```
 
 ### 4. Start Development Server
-
 ```bash
-# Start with hot reload
 npm run dev
-
-# Or start all services with Docker
-docker-compose -f docker-compose.dev.yml up
 ```
 
-The API will be available at:
+**Local Development URLs:**
 - **API**: http://localhost:3000
-- **API Documentation**: http://localhost:3000/api/docs
-- **Database Studio**: http://localhost:5555 (run `npm run db:studio`)
+- **API Docs**: http://localhost:3000/api/docs
+- **Database Studio**: `npm run db:studio` → http://localhost:5555
+
+---
+
+## 🐳 **Option 2: Docker Development** (Recommended)
+
+Perfect for rapid setup with zero configuration. Everything runs in containers with hot reload.
+
+### 1. Clone Repository
+```bash
+git clone <repository-url>
+cd keven-backend-template
+```
+
+### 2. Quick Start with Docker
+```bash
+# Copy Docker environment template
+cp .env.docker.example .env.docker
+
+# Start development environment with hot reload
+npm run docker:dev
+```
+
+That's it! The Docker setup includes:
+- ✅ PostgreSQL database with persistent data
+- ✅ Redis cache (optional, use `--profile redis`)
+- ✅ Backend API with hot reload
+- ✅ Automatic database migrations
+- ✅ Smart database seeding
+- ✅ Volume mounts for code changes
+
+### Docker Development Commands
+```bash
+# Start with hot reload (recommended)
+npm run docker:dev
+
+# Start with Redis cache
+npm run docker:dev --profile redis
+
+# Stop all services
+npm run docker:dev:down
+
+# View logs
+npm run docker:logs
+
+# Clean restart
+npm run docker:dev:down && npm run docker:dev
+```
+
+**Docker Development URLs:**
+- **API**: http://localhost:3000
+- **API Docs**: http://localhost:3000/api/docs
+- **Database**: localhost:5432
+- **Redis** (if enabled): localhost:6379
+
+### Hot Reload Feature
+Docker development uses modern `develop.watch` for instant hot reload:
+- 🔄 **Code changes**: Automatically sync to container
+- 🔄 **Package.json changes**: Rebuild container
+- 🔄 **Database changes**: Persist between restarts
+
+---
 
 ## 🔑 Default Credentials
 
@@ -213,40 +284,92 @@ POST /api/v1/auth/login
 
 ## 🔧 Configuration
 
-### Environment Variables
+### Environment Files Overview
 
-Create a `.env` file based on `.env.example`:
+The project includes three environment templates for different deployment scenarios:
+
+| File | Purpose | Usage |
+|------|---------|--------|
+| `.env.example` | Local development | Copy to `.env` for local PostgreSQL |
+| `.env.docker.example` | Docker development | Copy to `.env.docker` for containerized dev |
+| `.env.production.example` | Production deployment | Copy to `.env.production` for production |
+
+### Local Development Configuration
+
+For **local development**, copy `.env.example` to `.env`:
 
 ```bash
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/starter_db"
-
-# JWT Configuration
-JWT_ACCESS_SECRET="your-super-secure-access-secret-key"
-JWT_REFRESH_SECRET="your-super-secure-refresh-secret-key"
-JWT_ACCESS_EXPIRES_IN="10m"
-JWT_REFRESH_EXPIRES_IN="7d"
-
-# Bcrypt
-BCRYPT_SALT_ROUNDS=10
-
-# Super Admin
-SUPER_ADMIN_EMAIL="superadmin@yourcompany.com"
-
-# Application
-PORT=3000
-NODE_ENV="development"
-
-# Swagger Documentation
-SWAGGER_ENABLED=true
+cp .env.example .env
 ```
 
-### Required Environment Variables
+Key settings for local development:
+```bash
+NODE_ENV=development
+DATABASE_URL="postgresql://keven_user:your_password@localhost:5432/keven_dev_db"
+JWT_ACCESS_SECRET="your-super-secure-access-secret-at-least-64-characters-long"
+JWT_REFRESH_SECRET="your-super-secure-refresh-secret-different-from-access-secret"
+SUPER_ADMIN_EMAIL="admin@example.com"
+SWAGGER_ENABLED=true
+HOT_RELOAD=true
+```
 
+### Docker Development Configuration
+
+For **Docker development**, the system automatically uses `.env.docker.example`:
+
+Key differences for Docker:
+```bash
+NODE_ENV=development
+DATABASE_URL="postgresql://dev_user:dev_password@postgres:5432/keven_dev_db"
+REDIS_URL="redis://redis:6379"
+# Pre-configured secure JWT secrets for development
+# All services connect via Docker network names
+```
+
+### Production Configuration
+
+For **production**, copy `.env.production.example` to `.env.production`:
+
+```bash
+cp .env.production.example .env.production
+```
+
+Critical production settings:
+```bash
+NODE_ENV=production
+DATABASE_URL="postgresql://production_user:secure_password@production_host:5432/keven_production"
+JWT_ACCESS_SECRET="CRITICAL_CHANGE_TO_SECURE_64_CHAR_SECRET"
+JWT_REFRESH_SECRET="CRITICAL_CHANGE_TO_DIFFERENT_64_CHAR_SECRET"
+SWAGGER_ENABLED=false
+BCRYPT_SALT_ROUNDS=12
+# SSL, SMTP, monitoring, and security configurations
+```
+
+### Required Environment Variables (All Environments)
+
+**Critical Variables (Must be set):**
 - `DATABASE_URL` - PostgreSQL connection string
-- `JWT_ACCESS_SECRET` - Secret for access tokens (min 32 characters)
-- `JWT_REFRESH_SECRET` - Secret for refresh tokens (min 32 characters)
+- `JWT_ACCESS_SECRET` - Access token secret (min 64 characters for production)
+- `JWT_REFRESH_SECRET` - Refresh token secret (must be different from access)
 - `SUPER_ADMIN_EMAIL` - Email for the Super Admin user
+
+**Important Variables:**
+- `NODE_ENV` - Environment mode (development/production)
+- `PORT` - Server port (default: 3000)
+- `BCRYPT_SALT_ROUNDS` - Password hashing complexity (10 dev, 12+ prod)
+
+### JWT Secret Generation
+
+Generate cryptographically secure JWT secrets:
+```bash
+# Generate a secure JWT secret
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Or use online tools (for development only):
+# https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
+```
+
+**Security Note:** Never use weak or example secrets in production!
 
 ## 🗄️ Database Schema
 
@@ -274,35 +397,68 @@ Examples:
 
 ## 🧪 Development Commands
 
+### Local Development Commands
 ```bash
-# Development
+# Development Server
 npm run dev              # Start development server with hot reload
-npm run build            # Build TypeScript to JavaScript
+npm run build            # Build TypeScript to JavaScript  
 npm start                # Start production server
 
-# Database
-npm run db:migrate       # Run database migrations
-npm run db:seed          # Seed database with initial data
+# Setup & Environment
+npm run setup:local      # Install deps, migrate, and smart seed
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))" # Generate JWT secret
+
+# Database (Local)
+npm run db:migrate       # Run database migrations (creates new migration)
+npm run db:deploy        # Apply migrations (non-destructive)
+npm run db:seed:check    # Smart seed (only if database is empty)
 npm run db:generate      # Generate Prisma client
 npm run db:studio        # Open Prisma Studio
-npm run db:reset         # Reset database (dev only)
+npm run db:reset         # Reset database (WARNING: deletes all data)
+```
 
-# Code Quality
+### Docker Development Commands
+```bash
+# Docker Environment
+npm run docker:dev       # Start development with hot reload
+npm run docker:dev:down  # Stop all Docker services
+npm run docker:logs      # View Docker container logs
+npm run docker:prod      # Run production Docker setup
+
+# Docker Database Access
+npm run docker:db:studio # Open Prisma Studio in Docker
+npm run docker:db:reset  # Reset Docker database (WARNING: deletes all data)
+
+# Docker with Redis Cache
+npm run docker:dev --profile redis  # Start with Redis enabled
+```
+
+### Code Quality Commands
+```bash
 npm run lint             # Check ESLint rules
 npm run lint:fix         # Fix ESLint issues automatically
-npm run format           # Format code with Prettier
+npm run format           # Format code with Prettier  
 npm run type-check       # Check TypeScript types
+```
 
-# Testing (when implemented)
+### Testing Commands (Future Implementation)
+```bash
 npm test                 # Run tests
 npm run test:watch       # Run tests in watch mode
 npm run test:coverage    # Run tests with coverage
+```
 
-# Docker
-docker-compose up -d postgres    # Start only database
-docker-compose up               # Start all services
-docker-compose down             # Stop all services
-docker-compose logs backend     # View backend logs
+### Utility Commands
+```bash
+# Environment Setup
+./setup-local.sh         # Linux/macOS setup script
+./setup-local.bat        # Windows setup script
+
+# Manual Docker Commands (if needed)
+docker-compose up postgres              # Start only database
+docker-compose up --build               # Rebuild and start all
+docker-compose logs backend             # View backend logs
+docker-compose exec backend npm run db:studio  # Access DB studio in container
 ```
 
 ## 📊 API Response Format
@@ -339,35 +495,114 @@ interface ErrorItem {
 
 ## 🚀 Deployment
 
-### Docker Production
+### Production Docker Deployment (Recommended)
+
+The project includes a production-ready `docker-compose.prod.yml` configuration:
+
+```bash
+# 1. Prepare production environment
+cp .env.production.example .env.production
+# Edit .env.production with secure values
+
+# 2. Deploy with production compose
+npm run docker:prod
+# or manually:
+docker-compose -f docker-compose.prod.yml up -d --build
+
+# 3. View production logs
+docker-compose -f docker-compose.prod.yml logs -f backend
+```
+
+The production setup includes:
+- 🔒 **Security hardening** with non-root user
+- 📊 **Resource limits** for memory and CPU  
+- 🔍 **Health checks** with proper monitoring
+- 🗄️ **Persistent data volumes** for database
+- 🚀 **Production optimizations** (disabled Swagger, optimized logging)
+- 🔧 **Advanced configuration** (SSL, Redis, monitoring)
+
+### Manual Docker Production
 
 ```bash
 # Build production image
-docker build -t starter-backend .
+docker build -t keven-backend-api .
 
-# Run with environment variables
-docker run -p 3000:3000 \
-  -e DATABASE_URL="postgresql://..." \
-  -e JWT_ACCESS_SECRET="..." \
-  starter-backend
+# Run with production environment
+docker run -d \
+  --name keven-backend \
+  -p 3000:3000 \
+  --env-file .env.production \
+  keven-backend-api
 ```
 
-### Environment-Specific Deployment
+### Cloud Platform Deployment
 
-1. **Digital Ocean Apps** - Use `.do/app.yaml` configuration
-2. **Railway** - Connect GitHub repository
-3. **AWS/GCP** - Use Docker containers with managed databases
+#### 1. **Digital Ocean Apps**
+```yaml
+# .do/app.yaml
+name: keven-backend-api
+services:
+- name: api
+  source_dir: /
+  github:
+    repo: your-username/keven-backend-template
+    branch: main
+  run_command: npm start
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  envs:
+  - key: NODE_ENV
+    value: "production"
+```
 
-### Production Checklist
+#### 2. **Railway**
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
 
-- [ ] Strong JWT secrets (min 32 characters)
-- [ ] Secure DATABASE_URL with SSL
+# Deploy
+railway login
+railway init
+railway up
+```
+
+#### 3. **AWS/GCP with Docker**
+Use the production `Dockerfile` with managed databases (RDS/Cloud SQL).
+
+### Production Environment Checklist
+
+**Critical Security Setup:**
+- [ ] Strong JWT secrets (min 64 characters, cryptographically random)
+- [ ] Secure DATABASE_URL with SSL enabled
 - [ ] Set NODE_ENV=production
-- [ ] Configure reverse proxy (Nginx)
-- [ ] Set up SSL certificates
-- [ ] Configure monitoring and logging
-- [ ] Set up database backups
-- [ ] Configure rate limiting
+- [ ] Disable SWAGGER_ENABLED in production
+- [ ] Use BCRYPT_SALT_ROUNDS=12 or higher
+- [ ] Configure secure CORS_ORIGINS (no wildcards)
+- [ ] Set up proper SSL certificates (Let's Encrypt or purchased)
+
+**Infrastructure Setup:**
+- [ ] Configure reverse proxy (Nginx/Traefik)
+- [ ] Set up database backups (automated daily/weekly)
+- [ ] Configure log rotation and monitoring
+- [ ] Set up rate limiting and DDoS protection
+- [ ] Configure health checks and uptime monitoring
+- [ ] Set up error tracking (Sentry/Bugsnag)
+
+**Performance & Monitoring:**
+- [ ] Set up application monitoring (New Relic/DataDog)
+- [ ] Configure performance metrics collection
+- [ ] Set up database connection pooling
+- [ ] Enable Redis caching for sessions
+- [ ] Configure CDN for static assets (if applicable)
+- [ ] Set up automated deployment pipeline
+
+**Operational Setup:**
+- [ ] Set up staging environment for testing
+- [ ] Configure automated database migrations
+- [ ] Set up backup and disaster recovery procedures
+- [ ] Document incident response procedures
+- [ ] Set up team access and permissions
 
 ## 🔍 Monitoring and Logging
 
@@ -386,6 +621,106 @@ Log format includes:
 - Request context
 - User information (when available)
 
+## 🔧 Troubleshooting
+
+### Common Development Issues
+
+#### Database Connection Issues
+```bash
+# Issue: "Database connection failed"
+# Solutions:
+1. Check if PostgreSQL is running: pg_ctl status
+2. Verify DATABASE_URL in .env file
+3. Ensure database exists: CREATE DATABASE keven_dev_db;
+4. Check user permissions: GRANT ALL PRIVILEGES ON DATABASE keven_dev_db TO keven_user;
+```
+
+#### JWT Secret Validation Errors
+```bash
+# Issue: "JWT secret must be at least 32 characters"
+# Solution: Generate secure secrets
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+# Update JWT_ACCESS_SECRET and JWT_REFRESH_SECRET in .env
+```
+
+#### Docker Development Issues
+```bash
+# Issue: Hot reload not working
+# Solutions:
+1. Ensure you're using: npm run docker:dev (with --watch)
+2. Check Docker version supports compose watch: docker compose version
+3. Restart with clean build: npm run docker:dev:down && npm run docker:dev
+
+# Issue: Database data lost on restart
+# Solution: This is by design in development. To persist data:
+1. Use local development mode instead
+2. Or manually backup: docker exec postgres pg_dump -U dev_user keven_dev_db > backup.sql
+```
+
+#### Permission System Issues
+```bash
+# Issue: "Access denied. Required permissions: rbac:read:users"
+# Solutions:
+1. Check user roles: npm run db:studio -> users -> userRoles
+2. Verify token contains permissions: decode JWT at jwt.io
+3. Re-seed database: npm run db:reset (WARNING: deletes all data)
+4. Check middleware configuration in routes
+```
+
+#### Environment Configuration Issues
+```bash
+# Issue: Wrong environment file being used
+# Solutions:
+1. Local development: Use .env file (copy from .env.example)
+2. Docker development: Use .env.docker file (auto-loaded)
+3. Production: Use .env.production file
+4. Check NODE_ENV setting matches your environment
+```
+
+### Performance Issues
+
+#### Slow API Responses
+```bash
+# Check database queries with Prisma logging
+# Add to .env:
+DEBUG="prisma:query"
+
+# Monitor container resources:
+docker stats
+
+# Check database connection pool:
+# Prisma will show connection issues in logs
+```
+
+#### Memory Issues with Docker
+```bash
+# Check Docker memory usage:
+docker stats
+
+# Increase Docker memory limit in Docker Desktop settings
+# Or add memory limits to docker-compose.yml
+```
+
+### Recovery Commands
+
+```bash
+# Complete reset (WARNING: Deletes all data)
+npm run docker:dev:down
+docker volume prune -f
+npm run docker:dev
+
+# Reset just the database
+npm run db:reset  # Local
+npm run docker:db:reset  # Docker
+
+# Regenerate Prisma client
+npm run db:generate
+
+# Check service status
+docker-compose ps  # Docker services
+pg_ctl status  # Local PostgreSQL
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -402,6 +737,7 @@ Log format includes:
 - **Follow Result pattern** - for consistent error handling
 - **Strict TypeScript** - enable all strict mode options
 - **Test critical paths** - authentication, authorization, data validation
+- **Database persistence** - Use `db:deploy` instead of `db:migrate` to avoid data loss
 
 ## 📚 Additional Resources
 

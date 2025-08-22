@@ -80,6 +80,7 @@ if "%1"=="restart" goto :restart_dev
 if "%1"=="clean" goto :clean_dev
 if "%1"=="logs" goto :logs_dev
 if "%1"=="tools" goto :tools_dev
+if "%1"=="reset-db" goto :reset_db
 
 :start_dev
 echo 🐳 Starting development environment...
@@ -97,11 +98,11 @@ if %errorlevel% neq 0 (
     goto :db_wait
 )
 
-echo 🔄 Running database migrations...
-docker-compose -f docker-compose.dev.yml exec -T backend-dev npm run db:migrate
+echo 🔄 Applying database migrations (non-destructive)...
+docker-compose -f docker-compose.dev.yml exec -T backend-dev npm run db:deploy
 
-echo 🌱 Seeding database...
-docker-compose -f docker-compose.dev.yml exec -T backend-dev npm run db:seed
+echo 🌱 Checking if database needs seeding...
+docker-compose -f docker-compose.dev.yml exec -T backend-dev npm run db:seed:check
 
 echo.
 echo 🎉 Development environment is ready!
@@ -157,16 +158,26 @@ echo 🗄️  Adminer: http://localhost:8080
 echo 📊 Redis Commander: http://localhost:8081
 goto :end
 
+:reset_db
+echo ⚠️  WARNING: This will reset the database and delete all data!
+echo Press any key to continue or Ctrl+C to cancel...
+pause >nul
+echo 🗑️  Resetting database...
+docker-compose -f docker-compose.dev.yml exec -T backend-dev npm run db:reset
+echo ✅ Database reset completed
+goto :end
+
 :help
-echo Usage: dev-setup.bat [start^|stop^|restart^|clean^|logs^|tools]
+echo Usage: dev-setup.bat [start^|stop^|restart^|clean^|logs^|tools^|reset-db]
 echo.
 echo Commands:
-echo   start   - Start the development environment ^(default^)
-echo   stop    - Stop the development environment
-echo   restart - Restart the development environment
-echo   clean   - Clean all containers and volumes
-echo   logs    - Show backend logs
-echo   tools   - Start development tools ^(Adminer, Redis Commander^)
+echo   start    - Start the development environment ^(default^)
+echo   stop     - Stop the development environment
+echo   restart  - Restart the development environment
+echo   clean    - Clean all containers and volumes
+echo   logs     - Show backend logs
+echo   tools    - Start development tools ^(Adminer, Redis Commander^)
+echo   reset-db - Reset database ^(WARNING: deletes all data^)
 goto :end
 
 :end

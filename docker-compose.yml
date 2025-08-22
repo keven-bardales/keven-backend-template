@@ -1,45 +1,49 @@
-version: '3.8'
+# Keven Backend Template - Development Environment
+# Run with: npm run docker:dev (uses watch mode for hot reloading)
+
+version: '3.9'
 
 services:
-  # PostgreSQL Database
+  # PostgreSQL Database with persistent data
   postgres:
     image: postgres:15-alpine
-    container_name: keven-backend-postgres
+    container_name: keven-postgres
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: starter_db
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: keven_dev_db
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Only create initial database structure, no forced migrations
+      - ./prisma/init.sql:/docker-entrypoint-initdb.d/01-init.sql
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d starter_db"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d keven_dev_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
-      - keven-network
+      - app-network
 
-  # Backend Application (Development)
-  app-dev:
+  # Backend with hot reloading
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
       target: development
-    container_name: keven-backend-dev
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://user:password@postgres:5432/starter_db
-      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
-      - PORT=3000
+    container_name: keven-backend
+    env_file:
+      - .env.docker
     ports:
       - "3000:3000"
+      - "9229:9229" # Node.js debugger port
     volumes:
-      - .:/app
-      - node_modules:/app/node_modules
+      # Logs directory
+      - ./logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
@@ -49,45 +53,39 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
     networks:
-      - keven-network
-    profiles:
-      - dev
+      - app-network
+    # Hot reloading with Docker Compose watch mode
+    develop:
+      watch:
+        # Sync source code changes (no rebuild needed)
+        - action: sync
+          path: ./src
+          target: /app/src
+        # Sync Prisma schema changes
+        - action: sync
+          path: ./prisma
+          target: /app/prisma
+        # Rebuild when package.json changes
+        - action: rebuild
+          path: ./package.json
+        # Rebuild when package-lock.json changes
+        - action: rebuild
+          path: ./package-lock.json
+        # Sync and restart when environment changes
+        - action: sync+restart
+          path: ./.env.docker
+          target: /app/.env
+        # Sync TypeScript config changes
+        - action: sync+restart
+          path: ./tsconfig.json
+          target: /app/tsconfig.json
 
-  # Backend Application (Production)
-  app-prod:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: production
-    container_name: keven-backend-prod
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://user:password@postgres:5432/starter_db
-      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
-      - PORT=3000
-    ports:
-      - "3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    networks:
-      - keven-network
-    profiles:
-      - prod
-
-  # Redis (Optional - for caching and sessions)
+  # Redis (optional - enabled with --profile redis)
   redis:
     image: redis:7-alpine
-    container_name: keven-backend-redis
+    container_name: keven-redis
     ports:
       - "6379:6379"
     volumes:
@@ -95,19 +93,55 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
+      interval: 10s
+      timeout: 5s
       retries: 3
     networks:
-      - keven-network
+      - app-network
     profiles:
-      - with-redis
+      - redis
+    command: redis-server --appendonly yes
+
+  # Development tools (optional - enabled with --profile tools)
+  adminer:
+    image: adminer:4.8.1
+    container_name: keven-adminer
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: dracula
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    profiles:
+      - tools
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: keven-redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+      HTTP_USER: admin
+      HTTP_PASSWORD: dev_password
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    profiles:
+      - tools
 
 volumes:
   postgres_data:
+    driver: local
   redis_data:
-  node_modules:
+    driver: local
 
 networks:
-  keven-network:
+  app-network:
     driver: bridge
+    name: keven-network

@@ -1,67 +1,82 @@
-version: '3.8'
+# Keven Backend Template - Production Environment
+# Run with: npm run docker:prod
+
+version: '3.9'
 
 services:
   # PostgreSQL Database (Production)
   postgres:
     image: postgres:15-alpine
-    container_name: keven-backend-postgres-prod
+    container_name: keven-postgres-prod
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-starter_db}
+      POSTGRES_USER: ${POSTGRES_USER:-keven_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-keven_production}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      # Internal only - remove external port exposure for security
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Production database initialization script
+      - ./database/init-prod.sql:/docker-entrypoint-initdb.d/01-init.sql
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-starter_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-keven_user} -d ${POSTGRES_DB:-keven_production}"]
       interval: 30s
       timeout: 10s
-      retries: 5
-      start_period: 60s
+      retries: 3
+      start_period: 20s
     networks:
-      - keven-network
+      - app-network
+    # Production security settings
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
     deploy:
       resources:
         limits:
           memory: 512M
+          cpus: '0.5'
         reservations:
           memory: 256M
+          cpus: '0.25'
 
   # Backend Application (Production)
-  app:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
       target: production
-      args:
-        - NODE_ENV=production
-    container_name: keven-backend-app-prod
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-starter_db}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
-      - PORT=${PORT:-3000}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
+    container_name: keven-backend-prod
+    env_file:
+      - .env.production
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - "${PORT:-3000}:3000"
     volumes:
-      - app_logs:/app/logs
+      # Production logs with proper permissions
+      - ./logs:/app/logs
+      # Optional: Upload directory if needed
+      - ./uploads:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${PORT:-3000}/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
-      timeout: 15s
-      retries: 5
-      start_period: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
-      - keven-network
+      - app-network
+    # Production security settings
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    # Resource limits for production
     deploy:
       resources:
         limits:
@@ -84,75 +99,108 @@ services:
   # Redis (Production Cache & Session Store)
   redis:
     image: redis:7-alpine
-    container_name: keven-backend-redis-prod
+    container_name: keven-redis-prod
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      # Internal only, no external exposure
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
-      - ./redis.conf:/etc/redis/redis.conf:ro
-    command: redis-server /etc/redis/redis.conf
+      # Redis configuration for production
+      - ./config/redis-prod.conf:/usr/local/etc/redis/redis.conf:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s
       timeout: 10s
-      retries: 5
+      retries: 3
     networks:
-      - keven-network
+      - app-network
+    # Production Redis configuration
+    command: redis-server /usr/local/etc/redis/redis.conf
+    security_opt:
+      - no-new-privileges:true
+    # Resource limits
     deploy:
       resources:
         limits:
           memory: 256M
+          cpus: '0.25'
         reservations:
           memory: 128M
+          cpus: '0.1'
     logging:
       driver: "json-file"
       options:
         max-size: "5m"
         max-file: "2"
 
-  # Nginx Reverse Proxy (Optional)
+  # Nginx Reverse Proxy (Optional - enabled with --profile nginx)
   nginx:
     image: nginx:alpine
-    container_name: keven-backend-nginx
+    container_name: keven-nginx-prod
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./ssl:/etc/nginx/ssl:ro
-      - nginx_logs:/var/log/nginx
+      # Let's Encrypt certificates (if using)
+      - ./letsencrypt:/etc/letsencrypt:ro
     depends_on:
-      - app
+      - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
     networks:
-      - keven-network
+      - app-network
     profiles:
-      - with-nginx
+      - nginx
+    security_opt:
+      - no-new-privileges:true
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
+  # Monitoring (Optional - enabled with --profile monitoring)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: keven-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - app-network
+    profiles:
+      - monitoring
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+
 volumes:
   postgres_data:
     driver: local
   redis_data:
     driver: local
-  app_logs:
-    driver: local
-  nginx_logs:
+  prometheus_data:
     driver: local
 
 networks:
-  keven-network:
+  app-network:
     driver: bridge
+    name: keven-production-network
+    # Production network with custom subnet
     ipam:
       config:
         - subnet: 172.20.0.0/16
