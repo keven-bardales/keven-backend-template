@@ -1313,7 +1313,6 @@ function goodDateHandling(): string {
 
 - **Express.js**: Web framework
 - **Prisma**: Database ORM
-- **Jest**: Testing framework
 - **Zod**: Schema validation
 - **Winston**: Logging
 - **bcrypt**: Password hashing
@@ -1324,7 +1323,6 @@ function goodDateHandling(): string {
 
 - [Express.js Documentation](https://expressjs.com/)
 - [Prisma Documentation](https://www.prisma.io/docs/)
-- [Jest Testing Framework](https://jestjs.io/docs/getting-started)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
 ---
