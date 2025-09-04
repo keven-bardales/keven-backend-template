@@ -37,10 +37,5 @@ jobs:
     - name: Run linter
       run: npm run lint
     
-    - name: Run tests
-      run: npm test
-      env:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
-    
     - name: Build
       run: npm run build

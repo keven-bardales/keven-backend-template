@@ -5,12 +5,15 @@ This file provides comprehensive guidance to Claude Code when working with this 
 ## Core Development Philosophy
 
 ### KISS (Keep It Simple, Stupid)
+
 Simplicity should be a key goal in design. Choose straightforward solutions over complex ones whenever possible. This starter template follows clean architecture principles while keeping implementation practical and maintainable.
 
 ### YAGNI (You Aren't Gonna Need It)
+
 Avoid building functionality on speculation. This starter template provides essential authentication and authorization features that every application needs, without over-engineering for hypothetical future requirements.
 
 ### Clean Architecture Principles
+
 - **Dependency Inversion**: High-level modules (use cases) should not depend on low-level modules (repositories). Both depend on abstractions (interfaces).
 - **Open/Closed Principle**: Software entities should be open for extension but closed for modification.
 - **Single Responsibility**: Each class, function, and module should have one clear purpose.
@@ -19,6 +22,7 @@ Avoid building functionality on speculation. This starter template provides esse
 ## 🏗️ Project Architecture Overview
 
 This is a comprehensive Node.js/TypeScript backend API built with:
+
 - **Framework**: Express.js with clean architecture
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: JWT tokens with refresh token rotation (10min access, 7-day refresh)
@@ -28,9 +32,11 @@ This is a comprehensive Node.js/TypeScript backend API built with:
 - **Documentation**: Swagger/OpenAPI auto-generation
 
 ### Core Modules System
+
 The template includes 5 essential modules:
+
 1. **USERS** - User management functionality
-2. **ROLES** - Role management and permission assignment  
+2. **ROLES** - Role management and permission assignment
 3. **MODULES** - Module management (user-manageable)
 4. **PERMISSIONS** - Permission management (user-manageable)
 5. **AUTH** - Authentication logs and session management
@@ -38,6 +44,7 @@ The template includes 5 essential modules:
 ## 🧱 Code Structure & Modularity
 
 ### File and Function Limits
+
 - **Never create a file longer than 300 lines of code**. If approaching this limit, refactor by splitting into modules.
 - **Functions should be under 40 lines** with a single, clear responsibility.
 - **Classes should be under 150 lines** and represent a single concept or entity.
@@ -45,6 +52,7 @@ The template includes 5 essential modules:
 - **Use npm** as the package manager throughout the project.
 
 ### Backend Project Architecture
+
 Follow strict clean architecture with dependency injection:
 
 ```
@@ -74,6 +82,7 @@ backend/
 ## 🛠️ Development Environment
 
 ### Package Management
+
 This project uses **npm** for package management. Always use npm commands.
 
 ### Development Commands
@@ -114,6 +123,7 @@ docker-compose logs backend     # View backend logs
 ### TypeScript Strict Typing Guidelines
 
 **MANDATORY: Always use strict TypeScript typing**
+
 - **NEVER use `any`** - use `unknown` if type is truly unknown
 - **Use generics** wherever possible for type safety
 - **Prefer type unions** over `any` for multiple possible types
@@ -199,12 +209,12 @@ export class DateUtils {
 
 // ✅ Use case examples for date filtering
 interface DateFilterOptions {
-  dateOnly?: string;        // "2024-01-15" - converted to UTC date range
-  createdAfter?: string;    // ISO UTC timestamp
-  createdBefore?: string;   // ISO UTC timestamp
+  dateOnly?: string; // "2024-01-15" - converted to UTC date range
+  createdAfter?: string; // ISO UTC timestamp
+  createdBefore?: string; // ISO UTC timestamp
   dateRange?: {
-    start: string;          // "2024-01-15" - converted to start of day UTC
-    end: string;            // "2024-01-20" - converted to end of day UTC
+    start: string; // "2024-01-15" - converted to start of day UTC
+    end: string; // "2024-01-20" - converted to end of day UTC
   };
 }
 ```
@@ -212,6 +222,7 @@ interface DateFilterOptions {
 ### Naming Conventions
 
 #### Backend Naming
+
 - **Files**: `kebab-case` (e.g., `user-service.ts`, `auth-controller.ts`)
 - **Classes**: `PascalCase` (e.g., `UserService`, `AuthController`)
 - **Interfaces**: `PascalCase` with `I` prefix (e.g., `IUserRepository`, `IAuthService`)
@@ -222,23 +233,25 @@ interface DateFilterOptions {
 ### Database Naming Standards
 
 #### Entity-Specific Primary Keys
+
 All database tables use UUID primary keys:
 
 ```sql
 -- ✅ STANDARDIZED: Entity-specific primary keys
 users.id UUID PRIMARY KEY
-roles.id UUID PRIMARY KEY  
+roles.id UUID PRIMARY KEY
 modules.id UUID PRIMARY KEY
 permissions.id UUID PRIMARY KEY
 user_roles.user_id, user_roles.role_id (composite key)
 ```
 
 #### Field Naming Conventions
+
 ```sql
 -- Primary keys: id (UUID)
 id UUID PRIMARY KEY
 
--- Foreign keys: {entity}_id  
+-- Foreign keys: {entity}_id
 user_id UUID REFERENCES users(id)
 role_id UUID REFERENCES roles(id)
 
@@ -332,17 +345,17 @@ export class ConfigService {
       DATABASE_URL: 'Database connection string is required',
       JWT_ACCESS_SECRET: 'JWT access secret is required',
       JWT_REFRESH_SECRET: 'JWT refresh secret is required',
-      SUPER_ADMIN_EMAIL: 'Super admin email is required'
+      SUPER_ADMIN_EMAIL: 'Super admin email is required',
     };
-    
+
     const missing: string[] = [];
-    
+
     for (const [key, message] of Object.entries(required)) {
       if (!process.env[key]) {
         missing.push(`${key}: ${message}`);
       }
     }
-    
+
     if (missing.length > 0) {
       throw new Error(`Missing required environment variables:\n${missing.join('\n')}`);
     }
@@ -351,23 +364,23 @@ export class ConfigService {
       throw new Error('JWT_ACCESS_SECRET must be at least 32 characters for security');
     }
   }
-  
+
   static get database(): DatabaseConfig {
     if (!this._database) {
       this._database = {
-        url: process.env.DATABASE_URL!
+        url: process.env.DATABASE_URL!,
       };
     }
     return this._database;
   }
-  
+
   static get jwt(): JwtConfig {
     if (!this._jwt) {
       this._jwt = {
         accessSecret: process.env.JWT_ACCESS_SECRET!,
         refreshSecret: process.env.JWT_REFRESH_SECRET!,
         accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '10m',
-        refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d'
+        refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
       };
     }
     return this._jwt;
@@ -384,73 +397,12 @@ export class ConfigService {
         port: parseInt(process.env.PORT || '3000', 10),
         nodeEnv,
         superAdminEmail: process.env.SUPER_ADMIN_EMAIL!,
-        bcryptSaltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10)
+        bcryptSaltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10),
       };
     }
     return this._app;
   }
 }
-```
-
-## 🧪 Testing Strategy
-
-### Testing Implementation Plan
-Since tests will be implemented later for development velocity, follow these guidelines when the time comes:
-
-1. **Focus on Critical Paths First** - Prioritize testing for:
-   - Authentication and authorization logic
-   - User management operations  
-   - Permission checking mechanisms
-   - Database operations
-   - API error handling
-
-2. **Testing Framework Setup**
-   - **Backend**: Jest for unit and integration tests
-
-### Backend Testing Pattern Examples (For Future Implementation)
-
-```typescript
-// Example: Use case unit test with strict typing
-describe('CreateUserUseCase', () => {
-  let createUserUseCase: CreateUserUseCase;
-  let mockUserRepository: jest.Mocked<IUserRepository>;
-  let mockHashService: jest.Mocked<IHashService>;
-
-  beforeEach(() => {
-    mockUserRepository = createMockUserRepository();
-    mockHashService = createMockHashService();
-    createUserUseCase = new CreateUserUseCase(
-      mockUserRepository,
-      mockHashService
-    );
-  });
-
-  describe('execute', () => {
-    it('should create user with hashed password and UTC timestamps', async () => {
-      // Arrange
-      const userData: CreateUserRequest = {
-        email: 'test@example.com',
-        password: 'password123',
-        firstName: 'Test',
-        lastName: 'User'
-      };
-      const hashedPassword = 'hashed_password';
-      const mockUser: User = createMockUserWithUtcDates();
-      
-      mockHashService.hash.mockResolvedValue(hashedPassword);
-      mockUserRepository.findByEmail.mockResolvedValue(null);
-      mockUserRepository.create.mockResolvedValue(mockUser);
-
-      // Act
-      const result = await createUserUseCase.execute(userData);
-
-      // Assert
-      expect(result.isSuccess).toBe(true);
-      expect(mockHashService.hash).toHaveBeenCalledWith('password123');
-      expect(mockUser.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
-    });
-  });
-});
 ```
 
 ## 🚨 Error Handling
@@ -464,11 +416,7 @@ export class Result<T> {
   public readonly data: T | null;
   public readonly errors: ErrorItem[];
 
-  private constructor(
-    isSuccess: boolean,
-    data: T | null,
-    errors: ErrorItem[]
-  ) {
+  private constructor(isSuccess: boolean, data: T | null, errors: ErrorItem[]) {
     this.isSuccess = isSuccess;
     this.data = data;
     this.errors = errors;
@@ -563,40 +511,46 @@ export const globalErrorHandler = (
     errorResponse = {
       success: false,
       data: null,
-      errors: [{
-        type: 'ValidationError',
-        code: error.code,
-        message: error.message,
-        field: error.field,
-        critical: true
-      }],
-      timestamp: new Date().toISOString()
+      errors: [
+        {
+          type: 'ValidationError',
+          code: error.code,
+          message: error.message,
+          field: error.field,
+          critical: true,
+        },
+      ],
+      timestamp: new Date().toISOString(),
     };
   } else if (error instanceof UnauthorizedError) {
     statusCode = 401;
     errorResponse = {
       success: false,
       data: null,
-      errors: [{
-        type: 'UnauthorizedError',
-        code: error.code,
-        message: error.message,
-        critical: true
-      }],
-      timestamp: new Date().toISOString()
+      errors: [
+        {
+          type: 'UnauthorizedError',
+          code: error.code,
+          message: error.message,
+          critical: true,
+        },
+      ],
+      timestamp: new Date().toISOString(),
     };
   } else {
     // Generic error handling
     errorResponse = {
       success: false,
       data: null,
-      errors: [{
-        type: 'InternalServerError',
-        code: 'INTERNAL_ERROR',
-        message: 'An unexpected error occurred',
-        critical: true
-      }],
-      timestamp: new Date().toISOString()
+      errors: [
+        {
+          type: 'InternalServerError',
+          code: 'INTERNAL_ERROR',
+          message: 'An unexpected error occurred',
+          critical: true,
+        },
+      ],
+      timestamp: new Date().toISOString(),
     };
   }
 
@@ -612,17 +566,13 @@ export const globalErrorHandler = (
 // JWT token service with rotation
 export class TokenService {
   generateTokens(userId: string, permissions: string[]) {
-    const accessToken = jwt.sign(
-      { userId, permissions },
-      ConfigService.jwt.accessSecret,
-      { expiresIn: ConfigService.jwt.accessExpiresIn }
-    );
+    const accessToken = jwt.sign({ userId, permissions }, ConfigService.jwt.accessSecret, {
+      expiresIn: ConfigService.jwt.accessExpiresIn,
+    });
 
-    const refreshToken = jwt.sign(
-      { userId, type: 'refresh' },
-      ConfigService.jwt.refreshSecret,
-      { expiresIn: ConfigService.jwt.refreshExpiresIn }
-    );
+    const refreshToken = jwt.sign({ userId, type: 'refresh' }, ConfigService.jwt.refreshSecret, {
+      expiresIn: ConfigService.jwt.refreshExpiresIn,
+    });
 
     return { accessToken, refreshToken };
   }
@@ -641,20 +591,16 @@ export class TokenService {
 
 ```typescript
 // Permission checking middleware
-export const requirePermission = (
-  permission: string,
-  scope: 'OWN' | 'ALL' = 'ALL'
-) => {
+export const requirePermission = (permission: string, scope: 'OWN' | 'ALL' = 'ALL') => {
   return (req: Request, res: Response, next: NextFunction) => {
     const user = req.user; // Set by auth middleware
-    
+
     if (!user) {
       throw new UnauthorizedError();
     }
 
-    const hasPermission = user.permissions.some(p => 
-      p === `${permission}_${scope}` || 
-      p === `${permission}_ALL`
+    const hasPermission = user.permissions.some(
+      p => p === `${permission}_${scope}` || p === `${permission}_ALL`
     );
 
     if (!hasPermission) {
@@ -664,19 +610,6 @@ export const requirePermission = (
     next();
   };
 };
-
-// Usage in routes
-router.get('/users', 
-  authenticateToken,
-  requirePermission('USERS_READ', 'ALL'),
-  getUsersController
-);
-
-router.get('/users/profile',
-  authenticateToken, 
-  requirePermission('USERS_READ', 'OWN'),
-  getCurrentUserController
-);
 ```
 
 ### Input Validation with Zod
@@ -687,12 +620,12 @@ export const CreateUserSchema = z.object({
   email: z.string().email().min(1).max(255),
   password: z.string().min(8).max(100),
   firstName: z.string().min(1).max(100),
-  lastName: z.string().min(1).max(100)
+  lastName: z.string().min(1).max(100),
 });
 
 export const LoginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1)
+  password: z.string().min(1),
 });
 
 // Validation middleware
@@ -709,14 +642,14 @@ export const validateRequest = <T>(schema: z.ZodSchema<T>) => {
           code: 'INVALID_INPUT',
           message: err.message,
           field: err.path.join('.'),
-          critical: true
+          critical: true,
         }));
-        
+
         res.status(400).json({
           success: false,
           data: null,
           errors,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
       } else {
         next(error);
@@ -742,10 +675,10 @@ model User {
   isActive             Boolean     @default(true) @map("is_active")
   createdAt            DateTime    @default(now()) @map("created_at")
   updatedAt            DateTime    @updatedAt @map("updated_at")
-  
+
   // Relations
   userRoles            UserRole[]
-  
+
   @@map("users")
 }
 ```
@@ -754,22 +687,24 @@ model User {
 
 ```typescript
 // ✅ Generic repository interface with strict typing
-interface IRepository<TEntity extends { id: string }, TCreateData = Omit<TEntity, 'id' | 'createdAt' | 'updatedAt'>, TUpdateData = Partial<Omit<TEntity, 'id' | 'createdAt'>>> {
+interface IRepository<
+  TEntity extends { id: string },
+  TCreateData = Omit<TEntity, 'id' | 'createdAt' | 'updatedAt'>,
+  TUpdateData = Partial<Omit<TEntity, 'id' | 'createdAt'>>,
+> {
   create(data: TCreateData): Promise<TEntity>;
   findById(id: string): Promise<TEntity | null>;
-  findMany<TFilter extends Record<string, unknown> = Record<string, unknown>>(
-    options?: {
-      filter?: TFilter;
-      pagination?: {
-        page: number;
-        limit: number;
-      };
-      orderBy?: {
-        field: keyof TEntity;
-        direction: 'asc' | 'desc';
-      };
-    }
-  ): Promise<{
+  findMany<TFilter extends Record<string, unknown> = Record<string, unknown>>(options?: {
+    filter?: TFilter;
+    pagination?: {
+      page: number;
+      limit: number;
+    };
+    orderBy?: {
+      field: keyof TEntity;
+      direction: 'asc' | 'desc';
+    };
+  }): Promise<{
     data: TEntity[];
     total: number;
   }>;
@@ -830,15 +765,15 @@ export class UserRepository implements IUserRepository {
 
   async create(userData: CreateUserData): Promise<User> {
     const now = DateUtils.utcNow();
-    
+
     return this.prisma.user.create({
       data: {
         ...userData,
         id: crypto.randomUUID(),
         createdAt: now,
         updatedAt: now,
-        isActive: true
-      }
+        isActive: true,
+      },
     });
   }
 
@@ -852,37 +787,39 @@ export class UserRepository implements IUserRepository {
               include: {
                 rolePermissions: {
                   include: {
-                    permission: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    permission: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
   }
 
-  async findMany<TFilter extends Record<string, unknown>>(
-    options?: {
-      filter?: TFilter;
-      pagination?: { page: number; limit: number };
-      orderBy?: { field: keyof User; direction: 'asc' | 'desc' };
-    }
-  ): Promise<{ data: User[]; total: number }> {
+  async findMany<TFilter extends Record<string, unknown>>(options?: {
+    filter?: TFilter;
+    pagination?: { page: number; limit: number };
+    orderBy?: { field: keyof User; direction: 'asc' | 'desc' };
+  }): Promise<{ data: User[]; total: number }> {
     const where = this.buildWhereClause(options?.filter);
-    const orderBy = options?.orderBy ? {
-      [options.orderBy.field]: options.orderBy.direction
-    } : { createdAt: 'desc' as const };
+    const orderBy = options?.orderBy
+      ? {
+          [options.orderBy.field]: options.orderBy.direction,
+        }
+      : { createdAt: 'desc' as const };
 
     const [data, total] = await Promise.all([
       this.prisma.user.findMany({
         where,
         orderBy,
-        skip: options?.pagination ? (options.pagination.page - 1) * options.pagination.limit : undefined,
-        take: options?.pagination?.limit
+        skip: options?.pagination
+          ? (options.pagination.page - 1) * options.pagination.limit
+          : undefined,
+        take: options?.pagination?.limit,
       }),
-      this.prisma.user.count({ where })
+      this.prisma.user.count({ where }),
     ]);
 
     return { data, total };
@@ -895,10 +832,10 @@ export class UserRepository implements IUserRepository {
 
     // Handle date filtering with UTC
     if (filter.createdAfter && typeof filter.createdAfter === 'string') {
-      where.createdAt = { ...where.createdAt as object, gte: filter.createdAfter };
+      where.createdAt = { ...(where.createdAt as object), gte: filter.createdAfter };
     }
     if (filter.createdBefore && typeof filter.createdBefore === 'string') {
-      where.createdAt = { ...where.createdAt as object, lte: filter.createdBefore };
+      where.createdAt = { ...(where.createdAt as object), lte: filter.createdBefore };
     }
     if (filter.dateOnly && typeof filter.dateOnly === 'string') {
       const startOfDay = DateUtils.dateOnlyUtc(filter.dateOnly);
@@ -957,16 +894,16 @@ class PermissionCacheService {
   async getUserPermissions(userId: string): Promise<string[]> {
     const cached = this.cache.get(userId);
     const now = Date.now();
-    
+
     if (cached && cached.expiresAt > now) {
       return cached.data;
     }
 
     const permissions = await this.fetchUserPermissions(userId);
-    
+
     this.cache.set(userId, {
       data: permissions,
-      expiresAt: now + this.TTL_MS
+      expiresAt: now + this.TTL_MS,
     });
 
     return permissions;
@@ -978,7 +915,7 @@ class PermissionCacheService {
       if (!user) {
         return [];
       }
-      
+
       return this.extractPermissions(user);
     } catch (error) {
       this.logger.error('Failed to fetch user permissions', { userId, error });
@@ -1010,8 +947,9 @@ class PermissionCacheService {
 ## 🔄 Git Workflow
 
 ### Branch Strategy
+
 - `main` - Production-ready code (protected branch)
-- `develop` - Integration branch for features  
+- `develop` - Integration branch for features
 - `feature/*` - New features (e.g., `feature/user-management`)
 - `fix/*` - Bug fixes (e.g., `fix/auth-token-refresh`)
 - `docs/*` - Documentation updates
@@ -1019,6 +957,7 @@ class PermissionCacheService {
 - `test/*` - Test additions or fixes
 
 ### Commit Message Format
+
 Follow conventional commits format:
 
 ```
@@ -1032,6 +971,7 @@ Follow conventional commits format:
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 Examples:
+
 ```
 feat(auth): implement JWT refresh token rotation
 
@@ -1049,7 +989,7 @@ Closes #123
 ```typescript
 /**
  * Service responsible for user authentication and authorization.
- * 
+ *
  * Handles user login, token generation, permission validation, and session management.
  * Implements JWT token strategy with refresh token rotation for enhanced security.
  */
@@ -1057,7 +997,7 @@ Closes #123
 export class AuthService {
   /**
    * Authenticates a user with email and password.
-   * 
+   *
    * @param credentials - User login credentials
    * @returns Promise resolving to authentication result with tokens and user info
    * @throws UnauthorizedError when credentials are invalid
@@ -1110,6 +1050,7 @@ router.post('/login', validateRequest(LoginSchema), loginController);
 ## 🛡️ Security Checklist
 
 ### Production Security Requirements
+
 - [ ] Environment variables secured and not committed to git
 - [ ] JWT secrets are cryptographically strong (min 256 bits)
 - [ ] Password hashing uses bcrypt with sufficient rounds (10+)
@@ -1157,12 +1098,10 @@ export class ProductionConfigValidator {
       'DATABASE_URL',
       'JWT_ACCESS_SECRET',
       'JWT_REFRESH_SECRET',
-      'SUPER_ADMIN_EMAIL'
+      'SUPER_ADMIN_EMAIL',
     ];
 
-    const missingVars = requiredProdVars.filter(
-      varName => !process.env[varName]
-    );
+    const missingVars = requiredProdVars.filter(varName => !process.env[varName]);
 
     if (missingVars.length > 0) {
       throw new Error(
@@ -1193,15 +1132,15 @@ export const logger = winston.createLogger({
   ),
   defaultMeta: {
     service: 'starter-template-backend',
-    version: process.env.APP_VERSION || '1.0.0'
+    version: process.env.APP_VERSION || '1.0.0',
   },
   transports: [
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
     new winston.transports.File({ filename: 'logs/combined.log' }),
     new winston.transports.Console({
-      format: winston.format.simple()
-    })
-  ]
+      format: winston.format.simple(),
+    }),
+  ],
 });
 
 // Usage with context
@@ -1209,13 +1148,14 @@ logger.info('User login attempt', {
   userId: user.id,
   email: user.email,
   ipAddress: req.ip,
-  userAgent: req.get('User-Agent')
+  userAgent: req.get('User-Agent'),
 });
 ```
 
 ## ⚠️ Important Notes
 
 ### Development Guidelines
+
 - **NEVER ASSUME OR GUESS** - When in doubt about requirements, ask for clarification
 - **Always verify file paths and imports** before implementing
 - **Test your code** - No feature is complete without proper tests
@@ -1224,6 +1164,7 @@ logger.info('User login attempt', {
 - **Security first** - Always consider security implications of your changes
 
 ### Code Review Checklist
+
 - [ ] Code follows established naming conventions
 - [ ] All public methods have proper documentation
 - [ ] Error handling follows the Result pattern
@@ -1274,10 +1215,10 @@ async createUser(userData: CreateUserRequest): Promise<Result<CreateUserResponse
         critical: true
       }]);
     }
-    
+
     // Hash password
     const hashedPassword = await this.hashService.hash(userData.password);
-    
+
     // Create user with UTC timestamps
     const createData: CreateUserData = {
       email: userData.email,
@@ -1286,9 +1227,9 @@ async createUser(userData: CreateUserRequest): Promise<Result<CreateUserResponse
       lastName: userData.lastName,
       mustChangePassword: true
     };
-    
+
     const user = await this.userRepository.create(createData);
-    
+
     // Return response without sensitive data
     const response: CreateUserResponse = {
       user: {
@@ -1302,14 +1243,14 @@ async createUser(userData: CreateUserRequest): Promise<Result<CreateUserResponse
       },
       mustChangePassword: user.mustChangePassword
     };
-    
+
     return Result.success(response);
   } catch (error) {
-    this.logger.error('Failed to create user', { 
+    this.logger.error('Failed to create user', {
       error: error instanceof Error ? error.message : 'Unknown error',
-      email: userData.email 
+      email: userData.email
     });
-    
+
     return Result.failure<CreateUserResponse>([{
       type: 'InternalError',
       code: 'USER_CREATION_FAILED',
@@ -1369,6 +1310,7 @@ function goodDateHandling(): string {
 ### Essential Dependencies
 
 #### Backend
+
 - **Express.js**: Web framework
 - **Prisma**: Database ORM
 - **Jest**: Testing framework
@@ -1379,6 +1321,7 @@ function goodDateHandling(): string {
 - **Swagger**: API documentation
 
 ### Documentation Links
+
 - [Express.js Documentation](https://expressjs.com/)
 - [Prisma Documentation](https://www.prisma.io/docs/)
 - [Jest Testing Framework](https://jestjs.io/docs/getting-started)

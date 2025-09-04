@@ -1,77 +1,57 @@
-# Dependencies
-node_modules
+# Node modules
+node_modules/
 npm-debug.log*
+yarn-error.log*
 
-# Production build
-dist
+# Build output
+dist/
+*.js
+*.js.map
+*.d.ts
 
 # Environment files
 .env
 .env.*
 !.env.example
 
-# Git
+# Version control
 .git
 .gitignore
 
-# IDE files
+# IDE
 .vscode
 .idea
 *.swp
 *.swo
-*~
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+
+# Scripts
+*.bat
+*.sh
+
+# Documentation
+README.md
+CLAUDE.md
+docs/
+
+# Logs
+logs/
+*.log
 
 # OS files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Coverage reports
-coverage
+# Testing (removed)
+coverage/
 *.lcov
-.nyc_output
 
-# Test files
-**/*.test.ts
-**/*.spec.ts
-**/__tests__/
-src/test/
-
-# Documentation
-*.md
-docs/
-
-# Docker files
-Dockerfile*
-docker-compose*
-.dockerignore
-
-# CI/CD
-.github
-.gitlab-ci.yml
-.circleci
-
-# Temporary files
-*.tmp
-*.temp
-
-# ESLint cache
-.eslintcache
-
-# Prisma migrations during development (optional - comment out if needed)
-# prisma/migrations/
-
-# Husky
-.husky
+# Development files
+.eslintrc*
+.prettierrc*
+.husky/
+tsconfig.json
+nodemon.json
