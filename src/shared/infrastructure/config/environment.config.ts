@@ -70,7 +70,7 @@ const EnvironmentSchema = z.object({
   // Optional: Logging
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 
-  // Optional: Rate Limiting
+  // Optional: Rate Limiting - General
   RATE_LIMIT_WINDOW_MS: z
     .string()
     .default('900000')
@@ -78,6 +78,46 @@ const EnvironmentSchema = z.object({
   RATE_LIMIT_MAX_REQUESTS: z
     .string()
     .default('100')
+    .transform(val => parseInt(val, 10)),
+
+  // Optional: Rate Limiting - User Management
+  RATE_LIMIT_USERS_WINDOW_MS: z
+    .string()
+    .default('900000')
+    .transform(val => parseInt(val, 10)),
+  RATE_LIMIT_USERS_MAX: z
+    .string()
+    .default('30')
+    .transform(val => parseInt(val, 10)),
+
+  // Optional: Rate Limiting - Authentication
+  RATE_LIMIT_AUTH_WINDOW_MS: z
+    .string()
+    .default('900000')
+    .transform(val => parseInt(val, 10)),
+  RATE_LIMIT_AUTH_MAX: z
+    .string()
+    .default('10')
+    .transform(val => parseInt(val, 10)),
+
+  // Optional: Rate Limiting - RBAC
+  RATE_LIMIT_RBAC_WINDOW_MS: z
+    .string()
+    .default('900000')
+    .transform(val => parseInt(val, 10)),
+  RATE_LIMIT_RBAC_MAX: z
+    .string()
+    .default('20')
+    .transform(val => parseInt(val, 10)),
+
+  // Optional: Rate Limiting - Sensitive Operations
+  RATE_LIMIT_SENSITIVE_WINDOW_MS: z
+    .string()
+    .default('3600000')
+    .transform(val => parseInt(val, 10)),
+  RATE_LIMIT_SENSITIVE_MAX: z
+    .string()
+    .default('5')
     .transform(val => parseInt(val, 10)),
 
   // Optional: CORS
@@ -190,6 +230,10 @@ export class EnvironmentConfigService {
     console.log(`  SUPER_ADMIN_EMAIL: ${this.config.SUPER_ADMIN_EMAIL}`);
     console.log(`  LOG_LEVEL: ${this.config.LOG_LEVEL}`);
     console.log(`  RATE_LIMIT_MAX_REQUESTS: ${this.config.RATE_LIMIT_MAX_REQUESTS}`);
+    console.log(`  RATE_LIMIT_USERS_MAX: ${this.config.RATE_LIMIT_USERS_MAX}`);
+    console.log(`  RATE_LIMIT_AUTH_MAX: ${this.config.RATE_LIMIT_AUTH_MAX}`);
+    console.log(`  RATE_LIMIT_RBAC_MAX: ${this.config.RATE_LIMIT_RBAC_MAX}`);
+    console.log(`  RATE_LIMIT_SENSITIVE_MAX: ${this.config.RATE_LIMIT_SENSITIVE_MAX}`);
     console.log(`  HEALTH_CHECK_ENABLED: ${this.config.HEALTH_CHECK_ENABLED}`);
     console.log(`  SWAGGER_ENABLED: ${this.config.SWAGGER_ENABLED}`);
     console.log(`  DB_POOL_MIN/MAX: ${this.config.DB_POOL_MIN}/${this.config.DB_POOL_MAX}`);

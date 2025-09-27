@@ -1,5 +1,6 @@
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
+import { EnvironmentConfigService } from '../../shared/infrastructure/config/environment.config';
 
 // Extend Request interface to include rateLimit property using module augmentation
 declare module 'express-serve-static-core' {
@@ -14,13 +15,18 @@ declare module 'express-serve-static-core' {
 }
 
 export class RateLimitMiddleware {
+  private static getConfig() {
+    return EnvironmentConfigService.getInstance().get();
+  }
+
   /**
    * General rate limiting for all API endpoints
    */
   public static general() {
+    const config = this.getConfig();
     return rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100, // Limit each IP to 100 requests per windowMs
+      windowMs: config.RATE_LIMIT_WINDOW_MS,
+      max: config.RATE_LIMIT_MAX_REQUESTS,
       message: {
         status: 'error',
         statusCode: 429,
@@ -51,9 +57,10 @@ export class RateLimitMiddleware {
    * Strict rate limiting for authentication endpoints
    */
   public static auth() {
+    const config = this.getConfig();
     return rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 10, // Limit each IP to 10 auth requests per windowMs
+      windowMs: config.RATE_LIMIT_AUTH_WINDOW_MS,
+      max: config.RATE_LIMIT_AUTH_MAX,
       message: {
         status: 'error',
         statusCode: 429,
@@ -86,9 +93,10 @@ export class RateLimitMiddleware {
    * Very strict rate limiting for password reset and sensitive operations
    */
   public static sensitive() {
+    const config = this.getConfig();
     return rateLimit({
-      windowMs: 60 * 60 * 1000, // 1 hour
-      max: 5, // Limit each IP to 5 sensitive requests per hour
+      windowMs: config.RATE_LIMIT_SENSITIVE_WINDOW_MS,
+      max: config.RATE_LIMIT_SENSITIVE_MAX,
       message: {
         status: 'error',
         statusCode: 429,
@@ -119,9 +127,10 @@ export class RateLimitMiddleware {
    * Moderate rate limiting for user management endpoints
    */
   public static users() {
+    const config = this.getConfig();
     return rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 30, // Limit each IP to 30 user requests per windowMs
+      windowMs: config.RATE_LIMIT_USERS_WINDOW_MS,
+      max: config.RATE_LIMIT_USERS_MAX,
       message: {
         status: 'error',
         statusCode: 429,
@@ -152,9 +161,10 @@ export class RateLimitMiddleware {
    * Rate limiting for RBAC operations
    */
   public static rbac() {
+    const config = this.getConfig();
     return rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 20, // Limit each IP to 20 RBAC requests per windowMs
+      windowMs: config.RATE_LIMIT_RBAC_WINDOW_MS,
+      max: config.RATE_LIMIT_RBAC_MAX,
       message: {
         status: 'error',
         statusCode: 429,
